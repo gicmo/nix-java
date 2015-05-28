@@ -11,9 +11,7 @@ import java.util.Date;
 
 @Platform(value = "linux",
         include = {"<nix/File.hpp>"},
-        link = {"nix"},
-        linkpath = {"/usr/local/lib/"},
-        includepath = {"/usr/local/include/"})
+        link = {"nix"})
 @Namespace("nix")
 public class File extends Pointer {
 
