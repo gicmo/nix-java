@@ -34,17 +34,6 @@ public class File extends Pointer {
 
     private native void allocate();
 
-    /**
-     * Copy constructor.
-     *
-     * @param other The file to copy.
-     */
-    public File(@Const @ByRef File other) {
-        allocate(other);
-    }
-
-    private native void allocate(@Const @ByRef File other);
-
     //--------------------------------------------------
     // Base class methods
     //--------------------------------------------------
