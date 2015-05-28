@@ -54,6 +54,12 @@
                     <configuration>
                         <properties>${platform.properties}</properties>
                         <classPath>${project.build.outputDirectory}</classPath>
+                        <includePath>/usr/local/include/</includePath>
+                        <linkPath>/usr/local/lib/</linkPath>
+                        <linkPath>/usr/local/lib/</linkPath>
+                        <compilerOptions>
+                            <compilerOption>-std=c++11</compilerOption>
+                        </compilerOptions>
                     </configuration>
                     <executions>
                         <execution>
