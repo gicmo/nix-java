@@ -1,0 +1,45 @@
+sudo: required
+
+language: java
+
+jdk:
+  - openjdk7
+  - oraclejdk7
+
+compiler:
+  - gcc
+
+before_install:
+
+  - sudo add-apt-repository ppa:boost-latest/ppa -y
+  - sudo add-apt-repository ppa:gnode/pandora -y
+  - sudo apt-get update -qq -y
+  - sudo apt-get install -q libcppunit-dev libboost1.54-all-dev libhdf5-serial-dev libhdf5-dev libhdf5-7 valgrind cmake
+
+  # update gcc
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y;
+  - sudo apt-get update -qq -y;
+  - sudo apt-get install -q gcc-4.8 g++-4.8 libstdc++-4.8-dev;
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100;
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 100;
+  - sudo update-alternatives --config gcc;
+  - sudo update-alternatives --config g++;
+  - g++ --version;
+
+  # build nix library
+  - mkdir nix-build
+  - cd nix-build
+  - git clone https://github.com/G-Node/nix
+  - cd nix
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make all
+  - sudo make install
+  - cd ..
+  - cd ..
+  - cd .. 
+
+install: 
+  - mvn clean package
+
