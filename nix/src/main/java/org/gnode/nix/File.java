@@ -7,6 +7,7 @@ import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Platform(value = "linux",
         include = {"<nix/File.hpp>"},
@@ -129,23 +130,31 @@ public class File extends Pointer {
     @StdString
     String getLocation();
 
+    private native
+    @Cast("time_t")
+    long createdAt();
+
     /**
      * Get the creation date of the file.
      *
      * @return The creation date of the file.
      */
-    public native
+    public Date getCreatedAt() {
+        return Utils.convertSecondsToDate(createdAt());
+    }
+
+    private native
     @Cast("time_t")
-    long createdAt();
+    long updatedAt();
 
     /**
      * Get the date of the last update.
      *
      * @return The date of the last update.
      */
-    public native
-    @Cast("time_t")
-    long updatedAt();
+    public Date getUpdatedAt() {
+        return Utils.convertSecondsToDate(updatedAt());
+    }
 
     /**
      * Sets the time of the last update to the current time if the field is not set.
@@ -162,12 +171,16 @@ public class File extends Pointer {
      */
     public native void setCreatedAt();
 
+    private native void forceCreatedAt(@Cast("time_t") long time);
+
     /**
-     * Sets the creation time to the provided value even if the attribute is set.
+     * Sets the creation date to the provided value even if the attribute is set.
      *
-     * @param time The creation time to set.
+     * @param date The creation date to set.
      */
-    public native void forceCreatedAt(@Cast("time_t") long time);
+    public void forceCreatedAt(Date date) {
+        forceCreatedAt(Utils.convertDateToSeconds(date));
+    }
 
 
     //------------------------------------------------------
