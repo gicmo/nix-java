@@ -1,4 +1,4 @@
-package org.gnode.nix;
+package org.gnode.nix.internal;
 
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.IntPointer;
