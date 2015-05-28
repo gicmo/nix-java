@@ -17,10 +17,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <generate-sources.skip>false</generate-sources.skip>
-        <process-classes.skip>false</process-classes.skip>
         <platform>${os.name}-${os.arch}</platform>
         <platform.properties>${platform}</platform.properties>
+        <includePath>/usr/local/include/</includePath>
+        <linkPath>/usr/local/lib/</linkPath>
     </properties>
 
     <dependencyManagement>
@@ -54,9 +54,8 @@
                     <configuration>
                         <properties>${platform.properties}</properties>
                         <classPath>${project.build.outputDirectory}</classPath>
-                        <includePath>/usr/local/include/</includePath>
-                        <linkPath>/usr/local/lib/</linkPath>
-                        <linkPath>/usr/local/lib/</linkPath>
+                        <includePath>${includePath}</includePath>
+                        <linkPath>${linkPath}</linkPath>
                         <compilerOptions>
                             <compilerOption>-std=c++11</compilerOption>
                         </compilerOptions>
@@ -69,7 +68,7 @@
                                 <goal>build</goal>
                             </goals>
                             <configuration>
-                                <skip>${process-classes.skip}</skip>
+                                <skip>false</skip>
                                 <classOrPackageName>org.gnode.nix.*</classOrPackageName>
                                 <copyLibs>true</copyLibs>
                             </configuration>
