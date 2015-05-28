@@ -99,6 +99,7 @@
                                 </archive>
                                 <includes>
                                     <include>org/gnode/nix/*</include>
+                                    <include>org/gnode/nix/internal/*</include>
                                 </includes>
                                 <excludes>
                                     <exclude>org/gnode/nix/*.h</exclude>
