@@ -15,4 +15,19 @@ This project is still work in progress and should not be seen as a final product
 Getting Started (Linux)
 -----------------------
 
-Add build instructions for Linux here.
+Build instructions
+
+Install JavaCPP into Maven local repository :
+
+```
+$ cd libs
+$ mvn install:install-file -Dfile=javacpp.jar -DgroupId=org.bytedeco -DartifactId=javacpp -Dversion=0.11 -Dpackaging=jar
+$ cd ..
+```
+
+
+Build project and generate jars :
+
+```
+$ mvn clean package --projects nix
+```
