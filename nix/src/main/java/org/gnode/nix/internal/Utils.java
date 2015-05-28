@@ -14,7 +14,7 @@ public class Utils {
      * @param ip {@link IntPointer} pointer to be converted
      * @return array list of ints
      */
-    protected static ArrayList<Integer> convertPointerToList(IntPointer ip) {
+    public static ArrayList<Integer> convertPointerToList(IntPointer ip) {
         ArrayList<Integer> intList = new ArrayList<Integer>();
         if (ip != null) {
             for (int i = 0; i < ip.capacity(); i++) {
@@ -30,7 +30,7 @@ public class Utils {
      * @param dp {@link DoublePointer} pointer to be converted
      * @return array list of doubles
      */
-    protected static ArrayList<Double> convertPointerToList(DoublePointer dp) {
+    public static ArrayList<Double> convertPointerToList(DoublePointer dp) {
         ArrayList<Double> doubleList = new ArrayList<Double>();
         if (dp != null) {
             for (int i = 0; i < dp.capacity(); i++) {
@@ -48,7 +48,7 @@ public class Utils {
      * @param <T>     generic type
      * @return array list of object of class cls
      */
-    protected static <T> ArrayList<T> convertPointerToList(Pointer pointer, Class<T> cls) {
+    public static <T> ArrayList<T> convertPointerToList(Pointer pointer, Class<T> cls) {
         ArrayList<T> arrayList = new ArrayList<T>();
         if (pointer != null) {
             for (int i = 0; i < pointer.capacity(); i++) {
