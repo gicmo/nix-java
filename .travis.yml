@@ -41,5 +41,5 @@ before_install:
   - cd .. 
 
 install: 
-  - mvn clean package --projects nix
+  - mvn clean package
 
