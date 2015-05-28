@@ -21,3 +21,6 @@ target/
 
 # Remove temporary files
 *~
+
+# Remove hdf files 
+*.h5
