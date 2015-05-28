@@ -22,3 +22,13 @@ Build project and generate jars :
 ```
 $ mvn clean package
 ```
+
+To specify include and link path
+```
+$ mvn clean package -DincludePath=<path> -DlinkPath=<path>
+```
+
+Sample usage
+```
+$ mvn clean package -DincludePath=/usr/local/include/ -DlinkPath=/usr/local/lib/
+```
