@@ -73,7 +73,10 @@
                         </goals>
                         <configuration>
                             <skip>false</skip>
-                            <classOrPackageName>org.gnode.nix.*</classOrPackageName>
+                            <classOrPackageNames>
+                                <classOrPackageName>org.gnode.nix.*</classOrPackageName>
+                                <classOrPackageName>org.gnode.nix.internal.*</classOrPackageName>
+                            </classOrPackageNames>
                             <copyLibs>true</copyLibs>
                         </configuration>
                     </execution>
@@ -127,6 +130,7 @@
                             <skipIfEmpty>true</skipIfEmpty>
                             <includes>
                                 <include>org/gnode/nix/${platform}/</include>
+                                <include>org/gnode/nix/internal/${platform}/</include>
                             </includes>
                         </configuration>
                     </execution>
