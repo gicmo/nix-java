@@ -14,7 +14,7 @@ import java.util.List;
         include = {"<nix/File.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class File extends Pointer {
+public class File extends Pointer implements Comparable<File> {
 
     static {
         Loader.load();
@@ -306,4 +306,11 @@ public class File extends Pointer {
     @Cast("bool")
     boolean isOpen();
 
+    @Override
+    public int compareTo(File file) {
+        if (this == file) {
+            return 0;
+        }
+        return this.getLocation().compareTo(file.getLocation());
+    }
 }
