@@ -186,4 +186,9 @@ public class Block extends Pointer {
 
         return this.getId().equals(block.getId());
     }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }
