@@ -171,4 +171,19 @@ public class Block extends Pointer {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Block)) {
+            return false;
+        }
+
+        Block block = (Block) obj;
+
+        return this.getId().equals(block.getId());
+    }
 }
