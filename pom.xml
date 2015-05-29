@@ -17,6 +17,7 @@
         <platform>${os.name}-${os.arch}</platform>
         <platform.properties>${platform}</platform.properties>
         <includePath>/usr/local/include/</includePath>
+        <boostIncludePath>/usr/include/boost/</boostIncludePath>
         <linkPath>/usr/local/lib/</linkPath>
     </properties>
 
@@ -54,7 +55,10 @@
                 <configuration>
                     <properties>${platform.properties}</properties>
                     <classPath>${project.build.outputDirectory}</classPath>
-                    <includePath>${includePath}</includePath>
+                    <includePaths>
+                        <includePath>${includePath}</includePath>
+                        <includePath>${boostIncludePath}</includePath>
+                    </includePaths>
                     <linkPath>${linkPath}</linkPath>
                     <compilerOptions>
                         <compilerOption>-std=c++11</compilerOption>

@@ -8,6 +8,7 @@ import org.gnode.nix.internal.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Platform(value = "linux",
         include = {"<nix/File.hpp>"},
@@ -89,6 +90,112 @@ public class File extends Pointer {
     @ByVal
     File open(@StdString String name);
 
+    //--------------------------------------------------
+    // Methods concerning Block
+    //--------------------------------------------------
+
+    /**
+     * Get the number of blocks in in the file.
+     *
+     * @return The number of blocks.
+     * @see Block
+     */
+    public native
+    @Name("blockCount")
+    long getBlockCount();
+
+    /**
+     * Check if a block exists in the file.
+     *
+     * @param nameOrId Name or ID of the block.
+     * @return True if the block exists, false otherwise.
+     * @see Block
+     */
+    public native
+    @Cast("bool")
+    boolean hasBlock(@StdString String nameOrId);
+
+    /**
+     * Check if a block exists in the file.
+     *
+     * @param block The block to check.
+     * @return True if the block exists, false otherwise.
+     * @see Block
+     */
+    public native
+    @Cast("bool")
+    boolean hasBlock(@Const @ByRef Block block);
+
+    /**
+     * Read an existing block from the file.
+     *
+     * @param nameOrId Name or ID of the block.
+     * @return The block with the given name or id.
+     * @see Block
+     */
+    public native
+    @ByVal
+    Block getBlock(@StdString String nameOrId);
+
+    /**
+     * Read an existing with block from the file, addressed by index.
+     *
+     * @param index The index of the block to read.
+     * @return The block at the given index.
+     * @see Block
+     */
+    public native
+    @ByVal
+    Block getBlock(@Cast("size_t") long index);
+
+    /**
+     * Create an new block, that is immediately persisted in the file.
+     *
+     * @param name The name of the block.
+     * @param type The type of the block.
+     * @return The created block.
+     * @see Block
+     */
+    public native
+    @ByVal
+    Block createBlock(@StdString String name, @StdString String type);
+
+    /**
+     * Deletes a block from the file.
+     *
+     * @param nameOrId Name or id of the block to delete.
+     * @return True if the block has been removed, false otherwise.
+     * @see Block
+     */
+    public native
+    @Cast("bool")
+    boolean deleteBlock(@StdString String nameOrId);
+
+    /**
+     * Deletes a block from the file.
+     *
+     * @param block The block to delete.
+     * @return True if the block has been removed, false otherwise.
+     * @see Block
+     */
+    public native
+    @Cast("bool")
+    boolean deleteBlock(@Const @ByRef Block block);
+
+    private native
+    @StdVector
+    Block blocks();
+
+    /**
+     * Get all blocks within this file.
+     *
+     * @return A list with Block entities.
+     * @see Block
+     */
+    public List<Block> getBlocks() {
+        return Utils.convertPointerToList(blocks(), Block.class);
+    }
+
     //------------------------------------------------------
     // Methods for file attribute access.
     //------------------------------------------------------
@@ -111,7 +218,7 @@ public class File extends Pointer {
     /**
      * Read the format hint from the file.
      *
-     * @return
+     * @return format of file
      */
     public native
     @Name("format")
