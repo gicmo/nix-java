@@ -217,7 +217,7 @@ public class File extends Pointer {
     /**
      * Read the format hint from the file.
      *
-     * @return
+     * @return format of file
      */
     public native
     @Name("format")
