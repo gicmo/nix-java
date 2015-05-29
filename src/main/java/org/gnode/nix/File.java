@@ -8,6 +8,7 @@ import org.gnode.nix.internal.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Platform(value = "linux",
         include = {"<nix/File.hpp>"},
@@ -191,7 +192,7 @@ public class File extends Pointer {
      * @return A list with Block entities.
      * @see Block
      */
-    public ArrayList<Block> getBlocks() {
+    public List<Block> getBlocks() {
         return Utils.convertPointerToList(blocks(), Block.class);
     }
 
