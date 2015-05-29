@@ -13,7 +13,7 @@ import java.util.Date;
         include = {"<nix/Block.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Block extends Pointer {
+public class Block extends Pointer implements Comparable<Block> {
 
     static {
         Loader.load();
@@ -190,5 +190,13 @@ public class Block extends Pointer {
     @Override
     public int hashCode() {
         return this.getId().hashCode();
+    }
+
+    @Override
+    public int compareTo(Block block) {
+        if (this == block) {
+            return 0;
+        }
+        return this.getName().compareTo(block.getName());
     }
 }
