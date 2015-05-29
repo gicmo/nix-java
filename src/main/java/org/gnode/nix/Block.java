@@ -138,14 +138,22 @@ public class Block extends Pointer {
     @StdString
     String getName();
 
+    private native void definition(@Const @ByVal None t);
+
+    private native void definition(@StdString String definition);
+
     /**
-     * Setter for the definition of the block.
+     * Setter for the definition of the block. If null is passed definition is removed.
      *
-     * @param definition The definition of the block.
+     * @param definition definition of block
      */
-    public native
-    @Name("definition")
-    void setDefinition(@StdString String definition);
+    public void setDefinition(String definition) {
+        if (definition != null) {
+            definition(definition);
+        } else {
+            definition(new None());
+        }
+    }
 
     private native
     @ByVal
@@ -163,14 +171,4 @@ public class Block extends Pointer {
         }
         return null;
     }
-
-    private native void definition(@Const @ByVal None t);
-
-    /**
-     * Deletes for the definition of the block.
-     */
-    public void removeDefinition() {
-        definition(new None());
-    }
-
 }
