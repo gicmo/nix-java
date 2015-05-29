@@ -3,6 +3,8 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
 
 import java.util.Date;
@@ -105,6 +107,70 @@ public class Block extends Pointer {
      */
     public void forceCreatedAt(Date date) {
         forceCreatedAt(Utils.convertDateToSeconds(date));
+    }
+
+    /**
+     * Setter for the type of the block
+     *
+     * @param type The type of the block
+     */
+    public native
+    @Name("type")
+    void setType(@StdString String type);
+
+    /**
+     * Getter for the type of the block
+     *
+     * @return The type of the block
+     */
+    public native
+    @Name("type")
+    @StdString
+    String getType();
+
+    /**
+     * Getter for the name of the block.
+     *
+     * @return The name of the block.
+     */
+    public native
+    @Name("name")
+    @StdString
+    String getName();
+
+    /**
+     * Setter for the definition of the block.
+     *
+     * @param definition The definition of the block.
+     */
+    public native
+    @Name("definition")
+    void setDefinition(@StdString String definition);
+
+    private native
+    @ByVal
+    OptionalString definition();
+
+    /**
+     * Getter for the definition of the block.
+     *
+     * @return The definition of the block.
+     */
+    public String getDefinition() {
+        OptionalString defintion = definition();
+        if (defintion.isPresent()) {
+            return defintion.getString();
+        }
+        return null;
+    }
+
+    private native void definition(@Const @ByVal None t);
+
+    /**
+     * Deletes for the definition of the block.
+     */
+    public void removeDefinition() {
+        definition(new None());
     }
 
 }
