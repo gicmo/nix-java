@@ -1,10 +1,15 @@
 package org.gnode.nix;
 
+import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalDouble;
 import org.gnode.nix.internal.OptionalString;
+import org.gnode.nix.internal.Utils;
+
+import java.util.List;
 
 @Platform(value = "linux",
         include = {"<nix/Dimensions.hpp>"},
@@ -169,5 +174,97 @@ public class SampledDimension extends Pointer {
     public native
     @Name("samplingInterval")
     void setSamplingInterval(double interval);
+
+    private native
+    @ByVal
+    OptionalDouble offset();
+
+    /**
+     * Gets the offset of the dimension.
+     * <p/>
+     * The offset defines at which position the sampling was started. The offset is
+     * interpreted in the same unit as the sampling interval.
+     * <p/>
+     * By default the offset is 0.
+     *
+     * @return The offset of the SampledDimension.
+     */
+    public double getOffset() {
+        OptionalDouble offset = offset();
+        if (offset.isPresent()) {
+            return offset.getDouble();
+        }
+        return 0.0;
+    }
+
+    /**
+     * Sets the offset of the dimension.
+     *
+     * @param offset The offset of the dimension.
+     */
+    public native
+    @Name("offset")
+    void setOffset(double offset);
+
+    /**
+     * Returns the index of the given position.
+     * <p/>
+     * This method returns the index of the given position. Use this method for
+     * example to find out which data point (index) relates to a given
+     * time. Note: This method does not check if the position is within the
+     * extent of the data!
+     *
+     * @param position The position
+     * @return The respective index.
+     */
+    public native
+    @Name("indexOf")
+    @Cast("size_t")
+    long getIndexOf(double position);
+
+    /**
+     * Returns the position of this dimension at a given index.
+     * <p/>
+     * This method returns the position at a given index. Use this method for
+     * example to find the position that relates to a certain index. Note: This
+     * method does not check if the index is the extent of the data!
+     *
+     * @param index The index.
+     * @return The respective position
+     */
+    public native
+    @Name("positionAt")
+    double getPositionAt(@Cast("const size_t") long index);
+
+    private native
+    @StdVector
+    DoublePointer axis(@Cast("const size_t") long count, @Cast("const size_t") long startIndex);
+
+    /**
+     * Returns a vector containing the positions defined by this
+     * dimension.
+     *
+     * @param count      The number of indices
+     * @param startIndex The start index
+     * @return list containing the respective dimension.
+     */
+    public List<Double> getAxis(long count, long startIndex) {
+        return Utils.convertPointerToList(axis(count, startIndex));
+    }
+
+    private native
+    @StdVector
+    DoublePointer axis(@Cast("const size_t") long count);
+
+    /**
+     * Returns a list containing the positions defined by this
+     * dimension with the start index set to 0.
+     *
+     * @param count The number of indices
+     * @return list containing the respective dimension.
+     */
+    public List<Double> getAxis(long count) {
+        return Utils.convertPointerToList(axis(count));
+    }
 
 }
