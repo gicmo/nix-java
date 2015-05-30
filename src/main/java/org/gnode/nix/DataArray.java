@@ -174,4 +174,117 @@ public class DataArray extends Pointer {
     // Methods concerning dimensions
     //--------------------------------------------------
 
+    private native
+    @StdVector
+    Dimension dimensions();
+
+    /**
+     * Get all dimensions associated with this data array.
+     *
+     * @return The dimensions as a list
+     */
+    public List<Dimension> getDimensions() {
+        return Utils.convertPointerToList(dimensions(), Dimension.class);
+    }
+
+    /**
+     * Returns the number of dimensions stored in the DataArray.
+     * <p/>
+     * This matches the dimensionality of the data stored in this property.
+     *
+     * @return The number of dimensions.
+     */
+    public native
+    @Name("dimensionCount")
+    @Cast("size_t")
+    long getDimensionCount();
+
+    /**
+     * Returns the Dimension object for the specified dimension of the data.
+     *
+     * @param id The index of the respective dimension.
+     * @return The dimension object.
+     */
+    public native
+    @ByVal
+    Dimension getDimension(@Cast("size_t") long id);
+
+    /**
+     * Append a new SetDimension to the list of existing dimension descriptors.
+     *
+     * @return The newly created SetDimension.
+     */
+    public native
+    @ByVal
+    SetDimension appendSetDimension();
+
+    /**
+     * Append a new RangeDimension to the list of existing dimension descriptors.
+     *
+     * @param ticks The ticks of the RangeDimension to create.
+     * @return The newly created RangeDimension
+     */
+    public native
+    @ByVal
+    RangeDimension appendRangeDimension(@StdVector double[] ticks);
+
+    /**
+     * Append a new SampledDimension to the list of existing dimension descriptors.
+     *
+     * @param samplingInterval The sampling interval of the SetDimension to create.
+     * @return The newly created SampledDimension.
+     */
+    public native
+    @ByVal
+    SampledDimension appendSampledDimension(double samplingInterval);
+
+    /**
+     * Create a new SetDimension at a specified dimension index.
+     * <p/>
+     * This adds a new dimension descriptor of the type {@link SetDimension} that describes the dimension
+     * of the data at the specified index.
+     *
+     * @param id The index of the dimension. Must be a value > 0 and <= `dimensionCount + 1`.
+     * @return The created dimension descriptor.
+     */
+    public native
+    @ByVal
+    SetDimension createSetDimension(@Cast("size_t") long id);
+
+    /**
+     * Create a new RangeDimension at a specified dimension index.
+     * <p/>
+     * This adds a new dimension descriptor of the type {@link RangeDimension} that describes the dimension
+     * of the data at the specified index.
+     *
+     * @param id    The index of the dimension. Must be a value > 0 and <= `dimensionCount + 1`.
+     * @param ticks Vector with {@link RangeDimension#ticks}.
+     * @return The created dimension descriptor.
+     */
+    public native
+    @ByVal
+    RangeDimension createRangeDimension(@Cast("size_t") long id, @StdVector double[] ticks);
+
+    /**
+     * Create a new SampledDimension at a specified dimension index.
+     * <p/>
+     * This adds a new dimension descriptor of the type {@link SampledDimension} that describes the dimension
+     * of the data at the specified index.
+     *
+     * @param id               The index of the dimension. Must be a value > 0 and <= `dimensionCount + 1`.
+     * @param samplingInterval The sampling interval of the dimension.
+     * @return The created dimension descriptor.
+     */
+    public native
+    @ByVal
+    SampledDimension createSampledDimension(@Cast("size_t") long id, double samplingInterval);
+
+    /**
+     * Remove a dimension descriptor at a specified index.
+     *
+     * @param id The index of the dimension. Must be a value > 0 and < `getDimensionCount + 1`.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteDimension(@Cast("size_t") long id);
 }
