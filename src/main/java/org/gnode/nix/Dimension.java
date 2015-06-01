@@ -8,7 +8,7 @@ import org.bytedeco.javacpp.annotation.*;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Dimension extends Pointer {
+public class Dimension extends Pointer implements Comparable<Dimension> {
     static {
         Loader.load();
     }
@@ -103,4 +103,11 @@ public class Dimension extends Pointer {
     @ByVal
     RangeDimension asRangeDimension();
 
+    @Override
+    public int compareTo(Dimension dimension) {
+        if (this == dimension) {
+            return 0;
+        }
+        return (int) (this.getIndex() - dimension.getIndex());
+    }
 }
