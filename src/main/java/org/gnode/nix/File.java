@@ -126,27 +126,49 @@ public class File extends ImplContainer implements Comparable<File> {
     @Cast("bool")
     boolean hasBlock(@Const @ByRef Block block);
 
+    private native
+    @Name("getBlock")
+    @ByVal
+    Block block(@StdString String nameOrId);
+
     /**
      * Read an existing block from the file.
      *
      * @param nameOrId Name or ID of the block.
-     * @return The block with the given name or id.
+     * @return The block with the given name or id. {@link null} returned if not present.
      * @see Block
      */
-    public native
+    public
     @ByVal
-    Block getBlock(@StdString String nameOrId);
+    Block getBlock(@StdString String nameOrId) {
+        Block block = block(nameOrId);
+        if (block.isInitialized()) {
+            return block;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getBlock")
+    @ByVal
+    Block block(@Cast("size_t") long index);
 
     /**
      * Read an existing with block from the file, addressed by index.
      *
      * @param index The index of the block to read.
-     * @return The block at the given index.
+     * @return The block at the given index. {@link null} returned if not present.
      * @see Block
      */
-    public native
+    public
     @ByVal
-    Block getBlock(@Cast("size_t") long index);
+    Block getBlock(@Cast("size_t") long index) {
+        Block block = block(index);
+        if (block.isInitialized()) {
+            return block;
+        }
+        return null;
+    }
 
     /**
      * Create an new block, that is immediately persisted in the file.
