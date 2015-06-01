@@ -9,6 +9,7 @@ import org.gnode.nix.internal.OptionalDouble;
 import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
 
+import java.util.Date;
 import java.util.List;
 
 @Platform(value = "linux",
@@ -35,6 +36,148 @@ public class DataArray extends Pointer {
     }
 
     private native void allocate();
+
+    private native
+    @Cast("bool")
+    boolean isNone();
+
+    //--------------------------------------------------
+    // Base class methods
+    //--------------------------------------------------
+
+    /**
+     * Checks if data array is initialized
+     *
+     * @return true if initialized, False otherwise
+     */
+    public boolean isInitialized() {
+        return !isNone();
+    }
+
+    /**
+     * Get id of the data array
+     *
+     * @return id string
+     */
+    public native
+    @Name("id")
+    @StdString
+    String getId();
+
+    private native
+    @Cast("time_t")
+    long createdAt();
+
+    /**
+     * Get the creation date of the data array.
+     *
+     * @return The creation date of the data array.
+     */
+    public Date getCreatedAt() {
+        return Utils.convertSecondsToDate(createdAt());
+    }
+
+    private native
+    @Cast("time_t")
+    long updatedAt();
+
+    /**
+     * Get the date of the last update.
+     *
+     * @return The date of the last update.
+     */
+    public Date getUpdatedAt() {
+        return Utils.convertSecondsToDate(updatedAt());
+    }
+
+    /**
+     * Sets the time of the last update to the current time if the field is not set.
+     */
+    public native void setUpdatedAt();
+
+    /**
+     * Sets the time of the last update to the current time.
+     */
+    public native void forceUpdatedAt();
+
+    /**
+     * Sets the creation time to the current time if the field is not set.
+     */
+    public native void setCreatedAt();
+
+    private native void forceCreatedAt(@Cast("time_t") long time);
+
+    /**
+     * Sets the creation date to the provided value even if the attribute is set.
+     *
+     * @param date The creation date to set.
+     */
+    public void forceCreatedAt(Date date) {
+        forceCreatedAt(Utils.convertDateToSeconds(date));
+    }
+
+    /**
+     * Setter for the type of the data array
+     *
+     * @param type The type of the data array
+     */
+    public native
+    @Name("type")
+    void setType(@StdString String type);
+
+    /**
+     * Getter for the type of the data array
+     *
+     * @return The type of the data array
+     */
+    public native
+    @Name("type")
+    @StdString
+    String getType();
+
+    /**
+     * Getter for the name of the data array.
+     *
+     * @return The name of the data array.
+     */
+    public native
+    @Name("name")
+    @StdString
+    String getName();
+
+    private native void definition(@Const @ByVal None t);
+
+    private native void definition(@StdString String definition);
+
+    /**
+     * Setter for the definition of the data array. If null is passed definition is removed.
+     *
+     * @param definition definition of data array
+     */
+    public void setDefinition(String definition) {
+        if (definition != null) {
+            definition(definition);
+        } else {
+            definition(new None());
+        }
+    }
+
+    private native
+    @ByVal
+    OptionalString definition();
+
+    /**
+     * Getter for the definition of the data array.
+     *
+     * @return The definition of the data array.
+     */
+    public String getDefinition() {
+        OptionalString defintion = definition();
+        if (defintion.isPresent()) {
+            return defintion.getString();
+        }
+        return null;
+    }
 
     //--------------------------------------------------
     // Element getters and setters
