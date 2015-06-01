@@ -2,8 +2,8 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.Utils;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
         include = {"<nix/File.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class File extends Pointer implements Comparable<File> {
+public class File extends ImplContainer implements Comparable<File> {
 
     static {
         Loader.load();
@@ -39,7 +39,7 @@ public class File extends Pointer implements Comparable<File> {
     // Base class methods
     //--------------------------------------------------
 
-    private native
+    public native
     @Cast("bool")
     boolean isNone();
 
