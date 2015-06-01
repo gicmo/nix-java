@@ -1,8 +1,8 @@
 package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.NamedEntity;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
@@ -13,7 +13,7 @@ import java.util.Date;
         include = {"<nix/Block.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Block extends Pointer implements Comparable<Block> {
+public class Block extends NamedEntity implements Comparable<Block> {
 
     static {
         Loader.load();
@@ -34,7 +34,7 @@ public class Block extends Pointer implements Comparable<Block> {
     // Base class methods
     //--------------------------------------------------
 
-    private native
+    public native
     @Cast("bool")
     boolean isNone();
 
