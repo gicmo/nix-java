@@ -179,11 +179,6 @@ public class Block extends NamedEntity implements Comparable<Block> {
     }
 
     @Override
-    public int hashCode() {
-        return this.getId().hashCode();
-    }
-
-    @Override
     public int compareTo(Block block) {
         if (this == block) {
             return 0;

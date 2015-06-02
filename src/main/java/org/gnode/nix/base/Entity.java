@@ -56,4 +56,9 @@ public abstract class Entity extends ImplContainer {
      * @param date The creation time to set.
      */
     abstract public void forceCreatedAt(Date date);
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }
