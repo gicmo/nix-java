@@ -61,4 +61,19 @@ public abstract class Entity extends ImplContainer {
     public int hashCode() {
         return this.getId().hashCode();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Entity)) {
+            return false;
+        }
+
+        Entity entity = (Entity) obj;
+
+        return this.getId().equals(entity.getId());
+    }
 }

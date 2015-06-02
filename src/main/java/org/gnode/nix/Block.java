@@ -164,21 +164,6 @@ public class Block extends NamedEntity implements Comparable<Block> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof Block)) {
-            return false;
-        }
-
-        Block block = (Block) obj;
-
-        return this.getId().equals(block.getId());
-    }
-
-    @Override
     public int compareTo(Block block) {
         if (this == block) {
             return 0;
