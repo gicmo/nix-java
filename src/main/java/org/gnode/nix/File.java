@@ -2,8 +2,8 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.Utils;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
         include = {"<nix/File.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class File extends Pointer {
+public class File extends ImplContainer implements Comparable<File> {
 
     static {
         Loader.load();
@@ -39,19 +39,9 @@ public class File extends Pointer {
     // Base class methods
     //--------------------------------------------------
 
-    private native
+    public native
     @Cast("bool")
     boolean isNone();
-
-    /**
-     * Checks if file is initialized
-     *
-     * @return true if initialized else false
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
-
 
     /**
      * Opens a file.
@@ -126,27 +116,49 @@ public class File extends Pointer {
     @Cast("bool")
     boolean hasBlock(@Const @ByRef Block block);
 
+    private native
+    @Name("getBlock")
+    @ByVal
+    Block block(@StdString String nameOrId);
+
     /**
      * Read an existing block from the file.
      *
      * @param nameOrId Name or ID of the block.
-     * @return The block with the given name or id.
+     * @return The block with the given name or id. {@link null} returned if not present.
      * @see Block
      */
-    public native
+    public
     @ByVal
-    Block getBlock(@StdString String nameOrId);
+    Block getBlock(@StdString String nameOrId) {
+        Block block = block(nameOrId);
+        if (block.isInitialized()) {
+            return block;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getBlock")
+    @ByVal
+    Block block(@Cast("size_t") long index);
 
     /**
      * Read an existing with block from the file, addressed by index.
      *
      * @param index The index of the block to read.
-     * @return The block at the given index.
+     * @return The block at the given index. {@link null} returned if not present.
      * @see Block
      */
-    public native
+    public
     @ByVal
-    Block getBlock(@Cast("size_t") long index);
+    Block getBlock(@Cast("size_t") long index) {
+        Block block = block(index);
+        if (block.isInitialized()) {
+            return block;
+        }
+        return null;
+    }
 
     /**
      * Create an new block, that is immediately persisted in the file.
@@ -306,4 +318,11 @@ public class File extends Pointer {
     @Cast("bool")
     boolean isOpen();
 
+    @Override
+    public int compareTo(File file) {
+        if (this == file) {
+            return 0;
+        }
+        return this.getLocation().compareTo(file.getLocation());
+    }
 }

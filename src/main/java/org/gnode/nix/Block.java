@@ -1,8 +1,8 @@
 package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.NamedEntity;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
@@ -13,7 +13,7 @@ import java.util.Date;
         include = {"<nix/Block.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Block extends Pointer {
+public class Block extends NamedEntity {
 
     static {
         Loader.load();
@@ -34,18 +34,9 @@ public class Block extends Pointer {
     // Base class methods
     //--------------------------------------------------
 
-    private native
+    public native
     @Cast("bool")
     boolean isNone();
-
-    /**
-     * Checks if block is initialized
-     *
-     * @return true if initialized, False otherwise
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
 
     /**
      * Get id of the block
