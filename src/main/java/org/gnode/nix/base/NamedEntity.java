@@ -3,7 +3,7 @@ package org.gnode.nix.base;
 import org.bytedeco.javacpp.annotation.Platform;
 
 @Platform(value = "linux")
-public abstract class NamedEntity extends Entity {
+public abstract class NamedEntity extends Entity implements Comparable {
 
     /**
      * Setter for the type of the entity.
@@ -50,4 +50,12 @@ public abstract class NamedEntity extends Entity {
      * @return The definition of the entity.
      */
     abstract public String getDefinition();
+
+    @Override
+    public int compareTo(Object obj) {
+        if (this == obj) {
+            return 0;
+        }
+        return this.getName().compareTo(((NamedEntity) obj).getName());
+    }
 }

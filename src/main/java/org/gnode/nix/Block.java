@@ -13,7 +13,7 @@ import java.util.Date;
         include = {"<nix/Block.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Block extends NamedEntity implements Comparable<Block> {
+public class Block extends NamedEntity {
 
     static {
         Loader.load();
@@ -161,13 +161,5 @@ public class Block extends NamedEntity implements Comparable<Block> {
             return defintion.getString();
         }
         return null;
-    }
-
-    @Override
-    public int compareTo(Block block) {
-        if (this == block) {
-            return 0;
-        }
-        return this.getName().compareTo(block.getName());
     }
 }
