@@ -44,16 +44,6 @@ public class File extends ImplContainer implements Comparable<File> {
     boolean isNone();
 
     /**
-     * Checks if file is initialized
-     *
-     * @return true if initialized else false
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
-
-
-    /**
      * Opens a file.
      *
      * @param name The name/path of the file.

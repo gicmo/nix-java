@@ -18,5 +18,7 @@ public abstract class ImplContainer extends Pointer {
      *
      * @return true if initialized else false
      */
-    abstract public boolean isInitialized();
+    public boolean isInitialized() {
+        return !isNone();
+    }
 }

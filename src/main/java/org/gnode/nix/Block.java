@@ -39,15 +39,6 @@ public class Block extends NamedEntity implements Comparable<Block> {
     boolean isNone();
 
     /**
-     * Checks if block is initialized
-     *
-     * @return true if initialized, False otherwise
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
-
-    /**
      * Get id of the block
      *
      * @return id string
