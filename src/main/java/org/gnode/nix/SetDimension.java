@@ -9,7 +9,7 @@ import org.gnode.nix.internal.None;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class SetDimension extends ImplContainer {
+public class SetDimension extends ImplContainer implements Comparable<SetDimension> {
     static {
         Loader.load();
     }
@@ -79,5 +79,13 @@ public class SetDimension extends ImplContainer {
      */
     public void removeLabels() {
         labels(new None());
+    }
+
+    @Override
+    public int compareTo(SetDimension setDimension) {
+        if (this == setDimension) {
+            return 0;
+        }
+        return (int) (this.getIndex() - setDimension.getIndex());
     }
 }
