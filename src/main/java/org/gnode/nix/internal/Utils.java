@@ -51,7 +51,7 @@ public class Utils {
     public static ArrayList<String> convertStringVectorToList(StringVector sv) {
         ArrayList<String> stringList = new ArrayList<String>();
         if (sv != null) {
-            for (int i = 0; i < sv.capacity(); i++) {
+            for (int i = 0; i < sv.size(); i++) {
                 stringList.add(sv.get(i));
             }
         }
