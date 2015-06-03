@@ -6,6 +6,7 @@ import org.bytedeco.javacpp.Pointer;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Utils {
 
@@ -40,6 +41,38 @@ public class Utils {
         }
         return doubleList;
     }
+
+    /**
+     * Converts a {@link StringVector} to {@link String} {@link ArrayList}
+     *
+     * @param sv {@link StringVector} to be converted
+     * @return array list of strings
+     */
+    public static ArrayList<String> convertStringVectorToList(StringVector sv) {
+        ArrayList<String> stringList = new ArrayList<String>();
+        if (sv != null) {
+            for (int i = 0; i < sv.capacity(); i++) {
+                stringList.add(sv.get(i));
+            }
+        }
+        return stringList;
+    }
+
+    /**
+     * Convert a {@link String} {@link List} to {@link StringVector}
+     *
+     * @param stringList list
+     * @return string vector with list contents
+     */
+    public static StringVector convertListToStringVector(List<String> stringList) {
+        int size = stringList.size();
+        StringVector sv = new StringVector(size);
+        for (int i = 0; i < size; i++) {
+            sv.put(i, stringList.get(i));
+        }
+        return sv;
+    }
+
 
     /**
      * Converts a {@link Pointer} type object of particular class to an {@link ArrayList}
