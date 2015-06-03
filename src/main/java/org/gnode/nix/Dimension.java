@@ -8,7 +8,7 @@ import org.gnode.nix.base.ImplContainer;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Dimension extends ImplContainer implements Comparable<Dimension> {
+public class Dimension<T extends Dimension> extends ImplContainer implements Comparable<T> {
     static {
         Loader.load();
     }
@@ -95,7 +95,7 @@ public class Dimension extends ImplContainer implements Comparable<Dimension> {
     RangeDimension asRangeDimension();
 
     @Override
-    public int compareTo(Dimension dimension) {
+    public int compareTo(T dimension) {
         if (this == dimension) {
             return 0;
         }

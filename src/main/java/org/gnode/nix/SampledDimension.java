@@ -3,7 +3,6 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
-import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalDouble;
 import org.gnode.nix.internal.OptionalString;
@@ -15,7 +14,7 @@ import java.util.List;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class SampledDimension extends ImplContainer implements Comparable<SampledDimension> {
+public class SampledDimension extends Dimension {
     static {
         Loader.load();
     }
@@ -256,13 +255,5 @@ public class SampledDimension extends ImplContainer implements Comparable<Sample
      */
     public List<Double> getAxis(long count) {
         return Utils.convertPointerToList(axis(count));
-    }
-
-    @Override
-    public int compareTo(SampledDimension sampledDimension) {
-        if (this == sampledDimension) {
-            return 0;
-        }
-        return (int) (this.getIndex() - sampledDimension.getIndex());
     }
 }
