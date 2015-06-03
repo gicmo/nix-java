@@ -15,7 +15,7 @@ import java.util.List;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class SampledDimension extends ImplContainer {
+public class SampledDimension extends ImplContainer implements Comparable<SampledDimension> {
     static {
         Loader.load();
     }
@@ -258,4 +258,11 @@ public class SampledDimension extends ImplContainer {
         return Utils.convertPointerToList(axis(count));
     }
 
+    @Override
+    public int compareTo(SampledDimension sampledDimension) {
+        if (this == sampledDimension) {
+            return 0;
+        }
+        return (int) (this.getIndex() - sampledDimension.getIndex());
+    }
 }
