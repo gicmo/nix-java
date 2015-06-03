@@ -2,8 +2,8 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalDouble;
 import org.gnode.nix.internal.OptionalString;
@@ -15,7 +15,7 @@ import java.util.List;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class SampledDimension extends Pointer {
+public class SampledDimension extends ImplContainer {
     static {
         Loader.load();
     }
@@ -39,18 +39,9 @@ public class SampledDimension extends Pointer {
     // Base class methods
     //--------------------------------------------------
 
-    private native
+    public native
     @Cast("bool")
     boolean isNone();
-
-    /**
-     * Checks if dimension is initialized
-     *
-     * @return true if initialized else false
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
 
     //--------------------------------------------------
     // Methods concerning SampledDimension
