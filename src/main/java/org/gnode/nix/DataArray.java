@@ -270,6 +270,10 @@ public class DataArray extends NamedEntity {
     @Name("expansionOrigin")
     void setExpansionOrigin(double expansionOrigin);
 
+    private native void polynomCoefficients(@StdVector double[] polynomCoefficients);
+
+    private native void polynomCoefficients(@Const @ByVal None t);
+
     /**
      * Set the polynom coefficients for the calibration.
      * <p/>
@@ -277,10 +281,15 @@ public class DataArray extends NamedEntity {
      * with zero offset.
      *
      * @param polynomCoefficients The new polynom coefficients for the calibration.
+     *                            If {@link null}, deletes for the `polynomCoefficients` attribute.
      */
-    public native
-    @Name("polynomCoefficients")
-    void setPolynomCoefficients(@StdVector double[] polynomCoefficients);
+    public void setPolynomCoefficients(double[] polynomCoefficients) {
+        if (polynomCoefficients != null) {
+            polynomCoefficients(polynomCoefficients);
+        } else {
+            polynomCoefficients(new None());
+        }
+    }
 
     private native
     @StdVector
@@ -295,14 +304,6 @@ public class DataArray extends NamedEntity {
         return Utils.convertPointerToList(polynomCoefficients());
     }
 
-    private native void polynomCoefficients(@Const @ByVal None t);
-
-    /**
-     * Deleter for the polynomCoefficients attribute.
-     */
-    public void removePolynomCoefficients() {
-        polynomCoefficients(new None());
-    }
 
     //--------------------------------------------------
     // Methods concerning dimensions
