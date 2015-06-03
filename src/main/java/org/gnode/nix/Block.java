@@ -162,4 +162,11 @@ public class Block extends NamedEntity {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Block: {name = " + this.getName()
+                + ", type = " + this.getType()
+                + ", id = " + this.getId() + "}";
+    }
 }
