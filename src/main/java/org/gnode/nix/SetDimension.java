@@ -4,6 +4,10 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.StringVector;
+import org.gnode.nix.internal.Utils;
+
+import java.util.List;
 
 @Platform(value = "linux",
         include = {"<nix/Dimensions.hpp>"},
@@ -68,17 +72,37 @@ public class SetDimension extends ImplContainer implements Comparable<SetDimensi
     @Cast("nix::DimensionType")
     int getDimensionType();
 
-    // public native @StdString @StdVector BytePointer labels();
+    private native
+    @ByVal
+    StringVector labels();
 
-    // public native void labels(@StdString @StdVector BytePointer labels);
+    /**
+     * Get the labels of the range dimension.
+     * <p/>
+     * The labels serve as names for each index of the data at the respective
+     * dimension.
+     *
+     * @return The labels of the dimension as a list of strings.
+     */
+    public List<String> getLabels() {
+        return Utils.convertStringVectorToList(labels());
+    }
+
+    private native void labels(@Const @ByVal StringVector labels);
 
     private native void labels(@Const @ByVal None t);
 
     /**
-     * Remove the labels from the dimension.
+     * Set the labels for the dimension.
+     *
+     * @param labels A list containing all new labels. If {@link null} removes the labels from the dimension.
      */
-    public void removeLabels() {
-        labels(new None());
+    public void setLabels(List<String> labels) {
+        if (labels != null) {
+            labels(Utils.convertListToStringVector(labels));
+        } else {
+            labels(new None());
+        }
     }
 
     @Override
