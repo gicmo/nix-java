@@ -2,8 +2,8 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.NamedEntity;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalDouble;
 import org.gnode.nix.internal.OptionalString;
@@ -16,7 +16,7 @@ import java.util.List;
         include = {"<nix/DataArray.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class DataArray extends Pointer {
+public class DataArray extends NamedEntity {
     static {
         Loader.load();
     }
@@ -37,22 +37,13 @@ public class DataArray extends Pointer {
 
     private native void allocate();
 
-    private native
-    @Cast("bool")
-    boolean isNone();
-
     //--------------------------------------------------
     // Base class methods
     //--------------------------------------------------
 
-    /**
-     * Checks if data array is initialized
-     *
-     * @return true if initialized, False otherwise
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
+    public native
+    @Cast("bool")
+    boolean isNone();
 
     /**
      * Get id of the data array
