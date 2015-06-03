@@ -268,7 +268,7 @@ public class DataArray extends NamedEntity {
      */
     public native
     @Name("expansionOrigin")
-    void SetExpansionOrigin(double expansionOrigin);
+    void setExpansionOrigin(double expansionOrigin);
 
     /**
      * Set the polynom coefficients for the calibration.
