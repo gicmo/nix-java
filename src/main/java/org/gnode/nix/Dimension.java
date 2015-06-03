@@ -1,14 +1,14 @@
 package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.ImplContainer;
 
 @Platform(value = "linux",
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Dimension extends Pointer implements Comparable<Dimension> {
+public class Dimension extends ImplContainer implements Comparable<Dimension> {
     static {
         Loader.load();
     }
@@ -32,18 +32,9 @@ public class Dimension extends Pointer implements Comparable<Dimension> {
     // Base class methods
     //--------------------------------------------------
 
-    private native
+    public native
     @Cast("bool")
     boolean isNone();
-
-    /**
-     * Checks if dimension is initialized
-     *
-     * @return true if initialized else false
-     */
-    public boolean isInitialized() {
-        return !isNone();
-    }
 
     //--------------------------------------------------
     // Methods concerning Dimension
