@@ -14,7 +14,7 @@ import java.util.List;
         include = {"<nix/Dimensions.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class RangeDimension extends ImplContainer {
+public class RangeDimension extends ImplContainer implements Comparable<RangeDimension> {
     static {
         Loader.load();
     }
@@ -231,5 +231,13 @@ public class RangeDimension extends ImplContainer {
      */
     public List<Double> getAxis(long count) {
         return Utils.convertPointerToList(axis(count));
+    }
+
+    @Override
+    public int compareTo(RangeDimension rangeDimension) {
+        if (this == rangeDimension) {
+            return 0;
+        }
+        return (int) (this.getIndex() - rangeDimension.getIndex());
     }
 }
