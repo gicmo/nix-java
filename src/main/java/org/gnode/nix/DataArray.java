@@ -423,6 +423,44 @@ public class DataArray extends NamedEntity {
     @Cast("bool")
     boolean deleteDimension(@Cast("size_t") long id);
 
+    //--------------------------------------------------
+    // Methods concerning data access.
+    //--------------------------------------------------
+
+    /**
+     * Get the extent of the data of the DataArray entity.
+     *
+     * @return The data extent.
+     */
+    public native
+    @Name("dataExtent")
+    @ByVal
+    NDSize getDataExtent();
+
+    /**
+     * Set the data extent of the DataArray entity.
+     *
+     * @param extent The extent of the data.
+     */
+    public native
+    @Name("dataExtent")
+    void setDataExtent(@Const @ByRef NDSize extent);
+
+    /**
+     * Get the data type of the data stored in the DataArray entity.
+     *
+     * @return The data type of the DataArray.
+     */
+    public native
+    @Name("dataType")
+    @ByVal
+    @Cast("nix::DataType")
+    int getDataType();
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
+
     @Override
     public String toString() {
         return "DataArray: {name = " + this.getName()
