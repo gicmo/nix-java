@@ -421,4 +421,11 @@ public class DataArray extends NamedEntity {
     public native
     @Cast("bool")
     boolean deleteDimension(@Cast("size_t") long id);
+
+    @Override
+    public String toString() {
+        return "DataArray: {name = " + this.getName()
+                + ", type = " + this.getType()
+                + ", id = " + this.getId() + "}";
+    }
 }
