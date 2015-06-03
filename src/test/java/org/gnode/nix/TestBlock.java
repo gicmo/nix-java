@@ -18,7 +18,9 @@ public class TestBlock {
 
     @Before
     public void setUp() {
-        statup_time = new Date(System.currentTimeMillis() / 1000);
+        // precision of time_t is in seconds hence (millis / 1000) * 1000
+        statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
+
         file = File.open("test_block.h5", FileMode.Overwrite);
 
         block = file.createBlock("block_one", "dataset");
@@ -49,9 +51,14 @@ public class TestBlock {
     @Test
     public void testCreatedAt() {
         assertTrue(block.getCreatedAt().compareTo(statup_time) >= 0);
-        Date past_time = new Date(System.currentTimeMillis() / 1000 - 10000000);
+
+        long time = System.currentTimeMillis() - 10000000L * 1000;
+        // precision of time_t is in seconds hence (millis / 1000) * 1000
+        time = time / 1000 * 1000;
+
+        Date past_time = new Date(time);
         block.forceCreatedAt(past_time);
-        assertTrue(block.getCreatedAt().compareTo(statup_time) < 0);
+        assertTrue(block.getCreatedAt().equals(past_time));
     }
 
     @Test
