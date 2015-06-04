@@ -29,11 +29,11 @@ public class TestDataArray {
         array1 = block.createDataArray("array_one",
                 "testdata",
                 DataType.Double,
-                new NDSize(3, 3));
+                new NDSize(new int[]{0, 0, 0}));
         array2 = block.createDataArray("random",
                 "double",
                 DataType.Double,
-                new NDSize(2, 2));
+                new NDSize(new int[]{20, 20}));
     }
 
     @After

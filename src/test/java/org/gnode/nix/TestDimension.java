@@ -21,7 +21,7 @@ public class TestDimension {
 
         block = file.createBlock("dimensionTest", "test");
         data_array = block.createDataArray("dimensionTest", "Test",
-                DataType.Double, new NDSize(1));
+                DataType.Double, new NDSize(new int[]{0}));
     }
 
     @After

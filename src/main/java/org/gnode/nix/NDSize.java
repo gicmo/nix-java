@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.LongPointer;
 import org.bytedeco.javacpp.Pointer;
-import org.bytedeco.javacpp.annotation.Cast;
-import org.bytedeco.javacpp.annotation.Name;
-import org.bytedeco.javacpp.annotation.Namespace;
-import org.bytedeco.javacpp.annotation.Platform;
+import org.bytedeco.javacpp.annotation.*;
 
 @Platform(value = "linux",
         include = {"<nix/NDSize.hpp>"},
@@ -53,6 +50,17 @@ public class NDSize extends Pointer {
     }
 
     private native void allocate(@Cast("size_t") long rank, @Cast("nix::ndsize_t") long fillValue);
+
+    /**
+     * Specify dimensions as array.
+     *
+     * @param args dimensions.
+     */
+    public NDSize(@Cast({"", "std::vector<int>&"}) @StdVector int[] args) {
+        allocate(args);
+    }
+
+    private native void allocate(@Cast({"", "std::vector<int>&"}) @StdVector int[] args);
 
     /**
      * Get rank.

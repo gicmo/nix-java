@@ -82,7 +82,7 @@ public class TestBlock {
         ArrayList<String> ids = new ArrayList<String>();
         for (String name : names) {
             data_array = block.createDataArray(name, "channel",
-                    DataType.Double, new NDSize(1));
+                    DataType.Double, new NDSize(new int[]{0}));
             assertEquals(data_array.getName(), name);
             assertEquals(data_array.getType(), "channel");
 
@@ -90,7 +90,7 @@ public class TestBlock {
         }
 
         try {
-            block.createDataArray(names.get(0), "channel", DataType.Double, new NDSize(1));
+            block.createDataArray(names.get(0), "channel", DataType.Double, new NDSize(new int[]{0}));
             fail();
         } catch (RuntimeException re) {
         }
