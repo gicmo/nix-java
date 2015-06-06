@@ -21,7 +21,9 @@ public class TestFile {
 
     @Before
     public void setUp() {
-        statup_time = new Date(System.currentTimeMillis() / 1000);
+        // precision of time_t is in seconds hence (millis / 1000) * 1000
+        statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
+
         file_open = File.open("test_file.h5", FileMode.Overwrite);
         file_other = File.open("test_file_other.h5", FileMode.Overwrite);
         file_null = null;
@@ -55,9 +57,14 @@ public class TestFile {
     @Test
     public void testCreatedAt() {
         assertTrue(file_open.getCreatedAt().compareTo(statup_time) >= 0);
-        Date past_time = new Date(System.currentTimeMillis() / 1000 - 10000000);
+
+        long time = System.currentTimeMillis() - 10000000L * 1000;
+        // precision of time_t is in seconds hence (millis / 1000) * 1000
+        time = time / 1000 * 1000;
+
+        Date past_time = new Date(time);
         file_open.forceCreatedAt(past_time);
-        assertTrue(file_open.getCreatedAt().compareTo(statup_time) < 0);
+        assertTrue(file_open.getCreatedAt().equals(past_time));
     }
 
     @Test
