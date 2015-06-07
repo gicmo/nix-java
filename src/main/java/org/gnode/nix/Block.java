@@ -217,6 +217,140 @@ public class Block extends EntityWithMetadata {
         metadata(new None());
     }
 
+
+    //--------------------------------------------------
+    // Methods concerning sources
+    //--------------------------------------------------
+
+    /**
+     * Checks if this block has a specific root source.
+     *
+     * @param nameOrId Name or id of the source.
+     * @return True if a source with the given id exists at the root, false
+     * otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasSource(@StdString String nameOrId);
+
+    /**
+     * Checks if this block has a specific root source.
+     *
+     * @param source The source to check.
+     * @return True if the source exists at the root, false
+     * otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasSource(@Const @ByRef Source source);
+
+    private native
+    @Name("getSource")
+    @ByVal
+    Source fetchSource(@StdString String nameOrId);
+
+    /**
+     * Retrieves a specific root source by its id.
+     *
+     * @param nameOrId Name or id of the source.
+     * @return The source with the given id. If it doesn't exist an exception
+     * will be thrown.
+     */
+    public Source getSource(String nameOrId) {
+        Source source = fetchSource(nameOrId);
+        if (source.isInitialized()) {
+            return source;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getSource")
+    @ByVal
+    Source fetchSource(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific root source by index.
+     *
+     * @param index The index of the source.
+     * @return The source at the specified index.
+     */
+    public Source getSource(long index) {
+        Source source = fetchSource(index);
+        if (source.isInitialized()) {
+            return source;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the number of root sources in this block.
+     *
+     * @return The number of root sources.
+     */
+    public native
+    @Name("sourceCount")
+    long getSourceCount();
+
+    private native
+    @StdVector
+    Source sources();
+
+    /**
+     * Get all root sources associated with this block.
+     *
+     * @return list of source.
+     */
+    public List<Source> getSources() {
+        return Utils.convertPointerToList(sources(), Source.class);
+    }
+
+    private native
+    @Name("createSource")
+    @ByVal
+    Source makeSource(@StdString String name, @StdString String type);
+
+    /**
+     * Create a new root source.
+     *
+     * @param name The name of the source to create.
+     * @param type The type of the source.
+     * @return The created source object.
+     */
+    public Source createSource(String name, String type) {
+        Source source = makeSource(name, type);
+        if (source.isInitialized()) {
+            return source;
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a root source.
+     * <p/>
+     * This will also delete all child sources of this root source from the file.
+     * The deletion of a source can't be undone.
+     *
+     * @param nameOrId Name or id of the source to delete.
+     * @return True if the source was deleted, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteSource(@StdString String nameOrId);
+
+    /**
+     * Deletes a root source.
+     * <p/>
+     * This will also delete all child sources of this root source from the file.
+     * The deletion of a source can't be undone.
+     *
+     * @param source The source to delete.
+     * @return True if the source was deleted, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteSource(@Const @ByRef Source source);
+
     //--------------------------------------------------
     // Methods concerning data arrays
     //--------------------------------------------------
