@@ -29,7 +29,7 @@ public class Section extends NamedEntity {
     /**
      * Constructor that creates an uninitialized Section.
      * <p/>
-     * Calling any method on an uninitialized file will throw a {@link RuntimeException}.
+     * Calling any method on an uninitialized section will throw a {@link RuntimeException}.
      */
     public Section() {
         allocate();
