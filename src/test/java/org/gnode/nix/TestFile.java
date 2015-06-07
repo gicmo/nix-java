@@ -132,4 +132,57 @@ public class TestFile {
         assertEquals(file_open.getBlockCount(), 0);
         assertEquals(file_open.getBlocks().size(), 0);
     }
+
+    @Test
+    public void testSectionAccess() {
+
+        List<String> names = Arrays.asList("section_a", "section_b", "section_c", "section_d", "section_e");
+        Section s = null;
+        assertEquals(file_open.getSectionCount(), 0);
+        assertEquals(file_open.getSections().size(), 0);
+        assertFalse(file_open.hasSection("invalid_id"));
+        try {
+            file_open.hasSection(s);
+            fail();
+        } catch (NullPointerException npe) {
+        }
+
+        ArrayList<String> ids = new ArrayList<String>();
+        for (String name : names) {
+            Section sec = file_open.createSection(name, "dataset");
+            assertTrue(file_open.hasSection(sec));
+            assertTrue(file_open.hasSection(name));
+            assertEquals(sec.getName(), name);
+
+            ids.add(sec.getId());
+        }
+
+        try {
+            file_open.createSection(names.get(0), "root section");
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(file_open.getSectionCount(), names.size());
+        assertEquals(file_open.getSections().size(), names.size());
+
+        for (String id : ids) {
+            Section sec = file_open.getSection(id);
+            assertTrue(file_open.hasSection(id));
+            file_open.deleteSection(id);
+        }
+
+        try {
+            file_open.deleteSection(s);
+            fail();
+        } catch (NullPointerException npe) {
+        }
+
+        s = file_open.createSection("test", "test");
+        assertTrue(file_open.hasSection(s));
+        assertTrue(file_open.deleteSection(s));
+        assertEquals(file_open.getSectionCount(), 0);
+        assertEquals(file_open.getSections().size(), 0);
+        assertFalse(file_open.hasSection("invalid_id"));
+    }
 }
