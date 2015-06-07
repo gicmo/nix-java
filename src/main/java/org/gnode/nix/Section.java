@@ -626,4 +626,15 @@ public class Section extends NamedEntity {
     public native
     @Cast("bool")
     boolean deleteProperty(@Const @ByRef Property property);
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
+
+    @Override
+    public String toString() {
+        return "Section: {name = " + this.getName()
+                + ", type = " + this.getType()
+                + ", id = " + this.getId() + "}";
+    }
 }
