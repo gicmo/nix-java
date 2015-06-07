@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 public class TestBlock {
 
     private File file;
+    private Section section;
     private Block block, block_other, block_null;
 
     private Date statup_time;
@@ -24,6 +25,8 @@ public class TestBlock {
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
         file = File.open("test_block.h5", FileMode.Overwrite);
+
+        section = file.createSection("foo_section", "metadata");
 
         block = file.createBlock("block_one", "dataset");
         block_other = file.createBlock("block_two", "dataset");
@@ -68,6 +71,25 @@ public class TestBlock {
         assertTrue(block.getUpdatedAt().compareTo(statup_time) >= 0);
     }
 
+    @Test
+    public void testMetadataAccess() {
+        assertNull(block.getMetadata());
+
+        block.setMetadata(section);
+        assertNotNull(block.getMetadata());
+
+        // test none-unsetter
+        block.removeMetadata();
+        assertNull(block.getMetadata());
+
+        // test deleter removing link too
+        block.setMetadata(section);
+        file.deleteSection(section.getId());
+        assertNull(block.getMetadata());
+
+        // re-create section
+        section = file.createSection("foo_section", "metadata");
+    }
 
     @Test
     public void testDataArrayAccess() {
