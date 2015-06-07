@@ -15,7 +15,7 @@ import java.util.List;
         include = {"<nix/Property.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Property extends Entity {
+public class Property extends Entity implements Comparable<Property> {
     static {
         Loader.load();
     }
@@ -286,5 +286,22 @@ public class Property extends Entity {
     public List<Value> getValues() {
         ValueVector vv = values();
         return vv.getValues();
+    }
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
+
+    @Override
+    public int compareTo(Property property) {
+        if (this == property) {
+            return 0;
+        }
+        return this.getName().compareTo(property.getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Property: {name = " + this.getName() + "}";
     }
 }
