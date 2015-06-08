@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/G-Node/nix-java.svg?branch=master)](https://travis-ci.org/G-Node/nix-java)
+
+--
+
 Java bindigs for the NIX library
 ================================
 
