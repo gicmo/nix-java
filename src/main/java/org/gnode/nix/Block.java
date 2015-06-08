@@ -2,7 +2,7 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
-import org.gnode.nix.base.NamedEntity;
+import org.gnode.nix.base.EntityWithMetadata;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
@@ -14,7 +14,7 @@ import java.util.List;
         include = {"<nix/Block.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Block extends NamedEntity {
+public class Block extends EntityWithMetadata {
 
     static {
         Loader.load();
@@ -162,6 +162,59 @@ public class Block extends NamedEntity {
             return defintion.getString();
         }
         return null;
+    }
+
+    private native
+    @ByVal
+    Section metadata();
+
+    /**
+     * Get metadata associated with this entity.
+     *
+     * @return The associated section, if no such section exists {#link null} is returned.
+     */
+    public
+    @Name("metadata")
+    Section getMetadata() {
+        Section section = metadata();
+        if (section.isInitialized()) {
+            return section;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Associate the entity with some metadata.
+     * <p/>
+     * Calling this method will replace previously stored information.
+     *
+     * @param metadata The {@link Section} that should be associated
+     *                 with this entity.
+     */
+    public native
+    @Name("metadata")
+    void setMetadata(@Const @ByRef Section metadata);
+
+    /**
+     * Associate the entity with some metadata.
+     * <p/>
+     * Calling this method will replace previously stored information.
+     *
+     * @param id The id of the {@link Section} that should be associated
+     *           with this entity.
+     */
+    public native
+    @Name("metadata")
+    void setMetadata(@StdString String id);
+
+    private native void metadata(@Const @ByVal None t);
+
+    /**
+     * Removes metadata associated with the entity.
+     */
+    public void removeMetadata() {
+        metadata(new None());
     }
 
     //--------------------------------------------------

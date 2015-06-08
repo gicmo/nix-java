@@ -208,6 +208,135 @@ public class File extends ImplContainer implements Comparable<File> {
         return Utils.convertPointerToList(blocks(), Block.class);
     }
 
+
+    //--------------------------------------------------
+    // Methods concerning sections
+    //--------------------------------------------------
+
+    /**
+     * Check if a specific root section exists in the file.
+     *
+     * @param nameOrId Name or ID of the section.
+     * @return True if the section exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasSection(@StdString String nameOrId);
+
+    /**
+     * Check if a specific root section exists in the file.
+     *
+     * @param section The section to check.
+     * @return True if the section exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasSection(@Const @ByRef Section section);
+
+    private native
+    @Name("getSection")
+    @ByVal
+    Section fetchSection(@StdString String nameOrId);
+
+    /**
+     * Get a root section with the given name/id.
+     *
+     * @param nameOrId Name or id of the section.
+     * @return The section with the specified name/id.
+     */
+    public Section getSection(String nameOrId) {
+        Section section = fetchSection(nameOrId);
+        if (section.isInitialized()) {
+            return section;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getSection")
+    @ByVal
+    Section fetchSection(@Cast("size_t") long index);
+
+    /**
+     * Get root section with a given index/position.
+     *
+     * @param index The index of the section.
+     * @return The section with the specified index.
+     */
+    public Section getSection(long index) {
+        Section section = fetchSection(index);
+        if (section.isInitialized()) {
+            return section;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the number of root sections stored in the File.
+     *
+     * @return The number of sections.
+     */
+    public native
+    @Name("sectionCount")
+    long getSectionCount();
+
+    private native
+    @StdVector
+    Section sections();
+
+    /**
+     * Get all root sections within this file.
+     * <p/>
+     * The parameter filter can be used to filter sections by various
+     * criteria. By default a filter is used that accepts all sections.
+     *
+     * @return A vector of filtered Section entities.
+     */
+    public List<Section> getSections() {
+        return Utils.convertPointerToList(sections(), Section.class);
+    }
+
+    private native
+    @Name("createSection")
+    @ByVal
+    Section makeSection(@StdString String name, @StdString String type);
+
+    /**
+     * Creates a new Section with a given name and type. Both must not be empty.
+     *
+     * @param name The name of the section.
+     * @param type The type of the section.
+     * @return The created Section.
+     */
+    public Section createSection(String name, String type) {
+        Section section = makeSection(name, type);
+        if (section.isInitialized()) {
+            return section;
+        }
+        return null;
+    }
+
+    /**
+     * Deletes the Section that is specified with the id.
+     *
+     * @param nameOrId Name or id of the section to delete.
+     * @return True if the section was deleted, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteSection(@StdString String nameOrId);
+
+    /**
+     * Deletes the Section.
+     *
+     * @param section The section to delete.
+     * @return True if the section was deleted, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteSection(@Const @ByRef Section section);
+
+
     //------------------------------------------------------
     // Methods for file attribute access.
     //------------------------------------------------------
