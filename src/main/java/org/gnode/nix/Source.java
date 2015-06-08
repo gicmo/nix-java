@@ -346,4 +346,15 @@ public class Source extends EntityWithMetadata {
     public native
     @Cast("bool")
     boolean deleteSource(@Const @ByRef Source source);
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
+
+    @Override
+    public String toString() {
+        return "Source: {name = " + this.getName()
+                + ", type = " + this.getType()
+                + ", id = " + this.getId() + "}";
+    }
 }
