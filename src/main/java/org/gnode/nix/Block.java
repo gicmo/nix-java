@@ -5,6 +5,7 @@ import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithMetadata;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
+import org.gnode.nix.internal.SourceVector;
 import org.gnode.nix.internal.Utils;
 
 import java.util.Date;
@@ -293,8 +294,8 @@ public class Block extends EntityWithMetadata {
     long getSourceCount();
 
     private native
-    @StdVector
-    Source sources();
+    @ByVal
+    SourceVector sources();
 
     /**
      * Get all root sources associated with this block.
@@ -302,7 +303,7 @@ public class Block extends EntityWithMetadata {
      * @return list of source.
      */
     public List<Source> getSources() {
-        return Utils.convertPointerToList(sources(), Source.class);
+        return sources().getSources();
     }
 
     private native
