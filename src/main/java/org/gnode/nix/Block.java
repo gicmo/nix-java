@@ -625,6 +625,140 @@ public class Block extends EntityWithMetadata {
 
 
     //--------------------------------------------------
+    // Methods concerning multi tags.
+    //--------------------------------------------------
+
+    /**
+     * Checks if a specific multi tag exists in the block.
+     *
+     * @param nameOrId Name or id of a multi tag.
+     * @return True if the multi tag exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasMultiTag(@StdString String nameOrId);
+
+    /**
+     * Checks if a specific multi tag exists in the block.
+     *
+     * @param multiTag The multi tag to check.
+     * @return True if the multi tag exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasMultiTag(@Const @ByRef MultiTag multiTag);
+
+    private native
+    @Name("getMultiTag")
+    @ByVal
+    MultiTag fetchMultiTag(@StdString String nameOrId);
+
+    /**
+     * Retrieves a specific multi tag from the block by its id.
+     *
+     * @param nameOrId Name or id of the multi tag.
+     * @return The tag with the specified id. If this tag doesn't exist
+     * an exception will be thrown.
+     */
+    public MultiTag getMultiTag(String nameOrId) {
+        MultiTag multiTag = fetchMultiTag(nameOrId);
+        if (multiTag.isInitialized()) {
+            return multiTag;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getMultiTag")
+    @ByVal
+    MultiTag fetchMultiTag(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific multi tag by index.
+     *
+     * @param index The index of the tag.
+     * @return The multi tag at the specified index.
+     */
+    public MultiTag getMultiTag(long index) {
+        MultiTag multiTag = fetchMultiTag(index);
+        if (multiTag.isInitialized()) {
+            return multiTag;
+        }
+        return null;
+    }
+
+    private native
+    @StdVector
+    MultiTag multiTags();
+
+    /**
+     * Get multi tags within this block.
+     *
+     * @return A list that contains all filtered multi tags.
+     */
+    public List<MultiTag> getMultiTags() {
+        return Utils.convertPointerToList(multiTags(), MultiTag.class);
+    }
+
+    /**
+     * Returns the number of multi tags associated with this block.
+     *
+     * @return The number of multi tags.
+     */
+    public native
+    @Name("multiTagCount")
+    long getMultiTagCount();
+
+    private native
+    @Name("createMultiTag")
+    @ByVal
+    MultiTag makeMultiTag(@StdString String name, @StdString String type,
+                          @Const @ByRef DataArray positions);
+
+    /**
+     * Create a new multi tag associated with this block.
+     *
+     * @param name      The name of the multi tag to create.
+     * @param type      The type of the tag.
+     * @param positions The positions of the tag.
+     * @return The newly created tag.
+     */
+    public MultiTag createMultiTag(String name, String type, DataArray positions) {
+        MultiTag multiTag = makeMultiTag(name, type, positions);
+        if (multiTag.isInitialized()) {
+            return multiTag;
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a multi tag from the block.
+     * <p/>
+     * Deletes a multi tag and all its features from the block and the file.
+     * The deletion can't be undone.
+     *
+     * @param nameOrId Name or id of the tag to remove.
+     * @return True if the tag was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteMultiTag(@StdString String nameOrId);
+
+    /**
+     * Deletes a multi tag from the block.
+     * <p/>
+     * Deletes a multi tag and all its features from the block and the file.
+     * The deletion can't be undone.
+     *
+     * @param multiTag The tag to remove.
+     * @return True if the tag was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteMultiTag(@Const @ByRef MultiTag multiTag);
+
+
+    //--------------------------------------------------
     // Overrides
     //--------------------------------------------------
 
