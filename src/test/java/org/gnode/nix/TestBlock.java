@@ -92,6 +92,62 @@ public class TestBlock {
     }
 
     @Test
+    public void testSourceAccess() {
+        List<String> names = Arrays.asList("source_a", "source_b", "source_c", "source_d", "source_e");
+        Source s = null;
+
+        try {
+            block.hasSource(s);
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getSourceCount(), 0);
+        assertEquals(block.getSources().size(), 0);
+        assertFalse(block.hasSource("invalid_id"));
+
+        ArrayList<String> ids = new ArrayList<String>();
+        for (String name : names) {
+            Source src = block.createSource(name, "channel");
+            assertEquals(src.getName(), name);
+            assertTrue(block.hasSource(name));
+            assertTrue(block.hasSource(src));
+
+            ids.add(src.getId());
+        }
+
+        try {
+            block.createSource(names.get(0), "channel");
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getSourceCount(), names.size());
+        assertEquals(block.getSources().size(), names.size());
+
+
+        for (String id : ids) {
+            Source src = block.getSource(id);
+            assertTrue(block.hasSource(id));
+            assertEquals(src.getId(), id);
+            block.deleteSource(id);
+        }
+
+        s = block.createSource("test", "test");
+        assertTrue(block.getSourceCount() == 1);
+
+        try {
+            block.deleteSource(s);
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(block.getSourceCount(), 0);
+        assertEquals(block.getSources().size(), 0);
+        assertFalse(block.hasSource("invalid_id"));
+    }
+
+    @Test
     public void testDataArrayAccess() {
         List<String> names = Arrays.asList("data_array_a", "data_array_b", "data_array_c",
                 "data_array_d", "data_array_e");

@@ -12,21 +12,21 @@ import java.util.Date;
 import java.util.List;
 
 @Platform(value = "linux",
-        include = {"<nix/Block.hpp>"},
+        include = {"<nix/Source.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class Block extends EntityWithMetadata {
+public class Source extends EntityWithMetadata {
 
     static {
         Loader.load();
     }
 
     /**
-     * Constructor that creates an uninitialized Block.
+     * Constructor that creates an uninitialized Source.
      * <p/>
-     * Calling any method on an uninitialized block will throw a {@link java.lang.RuntimeException}.
+     * Calling any method on an uninitialized source will throw a {@link java.lang.RuntimeException}.
      */
-    public Block() {
+    public Source() {
         allocate();
     }
 
@@ -41,7 +41,7 @@ public class Block extends EntityWithMetadata {
     boolean isNone();
 
     /**
-     * Get id of the block
+     * Get id of the source.
      *
      * @return id string
      */
@@ -55,9 +55,9 @@ public class Block extends EntityWithMetadata {
     long createdAt();
 
     /**
-     * Get the creation date of the block.
+     * Get the creation date of the source.
      *
-     * @return The creation date of the block.
+     * @return The creation date of the source.
      */
     public Date getCreatedAt() {
         return Utils.convertSecondsToDate(createdAt());
@@ -103,18 +103,18 @@ public class Block extends EntityWithMetadata {
     }
 
     /**
-     * Setter for the type of the block
+     * Setter for the type of the source.
      *
-     * @param type The type of the block
+     * @param type The type of the source
      */
     public native
     @Name("type")
     void setType(@StdString String type);
 
     /**
-     * Getter for the type of the block
+     * Getter for the type of the source
      *
-     * @return The type of the block
+     * @return The type of the source
      */
     public native
     @Name("type")
@@ -122,9 +122,9 @@ public class Block extends EntityWithMetadata {
     String getType();
 
     /**
-     * Getter for the name of the block.
+     * Getter for the name of the source.
      *
-     * @return The name of the block.
+     * @return The name of the source.
      */
     public native
     @Name("name")
@@ -136,9 +136,9 @@ public class Block extends EntityWithMetadata {
     private native void definition(@StdString String definition);
 
     /**
-     * Setter for the definition of the block. If null is passed definition is removed.
+     * Setter for the definition of the source. If null is passed definition is removed.
      *
-     * @param definition definition of block
+     * @param definition definition of source
      */
     public void setDefinition(String definition) {
         if (definition != null) {
@@ -153,9 +153,9 @@ public class Block extends EntityWithMetadata {
     OptionalString definition();
 
     /**
-     * Getter for the definition of the block.
+     * Getter for the definition of the source.
      *
-     * @return The definition of the block.
+     * @return The definition of the source.
      */
     public String getDefinition() {
         OptionalString defintion = definition();
@@ -220,14 +220,14 @@ public class Block extends EntityWithMetadata {
 
 
     //--------------------------------------------------
-    // Methods concerning sources
+    // Methods concerning child sources
     //--------------------------------------------------
 
     /**
-     * Checks if this block has a specific root source.
+     * Checks if this source has a specific source as direct descendant.
      *
-     * @param nameOrId Name or id of the source.
-     * @return True if a source with the given id exists at the root, false
+     * @param nameOrId The name or id of the source.
+     * @return True if a source with the given name/id is a direct descendant, false
      * otherwise.
      */
     public native
@@ -235,11 +235,10 @@ public class Block extends EntityWithMetadata {
     boolean hasSource(@StdString String nameOrId);
 
     /**
-     * Checks if this block has a specific root source.
+     * Checks if this source has a specific source as direct descendant.
      *
-     * @param source The source to check.
-     * @return True if the source exists at the root, false
-     * otherwise.
+     * @param source The Source.
+     * @return True if a source is a direct descendant, false otherwise.
      */
     public native
     @Cast("bool")
@@ -251,10 +250,10 @@ public class Block extends EntityWithMetadata {
     Source fetchSource(@StdString String nameOrId);
 
     /**
-     * Retrieves a specific root source by its id.
+     * Retrieves a specific child source that is a direct descendant.
      *
-     * @param nameOrId Name or id of the source.
-     * @return The source with the given id. If it doesn't exist an exception
+     * @param nameOrId The name or id of the source.
+     * @return The source with the given name/id. If it doesn't exist an exception
      * will be thrown.
      */
     public Source getSource(String nameOrId) {
@@ -271,7 +270,7 @@ public class Block extends EntityWithMetadata {
     Source fetchSource(@Cast("size_t") long index);
 
     /**
-     * Retrieves a specific root source by index.
+     * Retrieves a specific source by index.
      *
      * @param index The index of the source.
      * @return The source at the specified index.
@@ -285,9 +284,9 @@ public class Block extends EntityWithMetadata {
     }
 
     /**
-     * Returns the number of root sources in this block.
+     * Returns the number of sources that are direct descendants of this source.
      *
-     * @return The number of root sources.
+     * @return The number of direct child sources.
      */
     public native
     @Name("sourceCount")
@@ -298,7 +297,7 @@ public class Block extends EntityWithMetadata {
     SourceVector sources();
 
     /**
-     * Get all root sources associated with this block.
+     * Get all direct child sources associated with this source.
      *
      * @return list of source.
      */
@@ -327,12 +326,10 @@ public class Block extends EntityWithMetadata {
     }
 
     /**
-     * Deletes a root source.
-     * <p/>
-     * This will also delete all child sources of this root source from the file.
-     * The deletion of a source can't be undone.
+     * Delete a root source and all its child sources from
+     * the source.
      *
-     * @param nameOrId Name or id of the source to delete.
+     * @param nameOrId The name or id of the source to remove.
      * @return True if the source was deleted, false otherwise.
      */
     public native
@@ -340,12 +337,10 @@ public class Block extends EntityWithMetadata {
     boolean deleteSource(@StdString String nameOrId);
 
     /**
-     * Deletes a root source.
-     * <p/>
-     * This will also delete all child sources of this root source from the file.
-     * The deletion of a source can't be undone.
+     * Delete a root source and all its child sources from
+     * the source.
      *
-     * @param source The source to delete.
+     * @param source The Source to delete.
      * @return True if the source was deleted, false otherwise.
      */
     public native
@@ -353,150 +348,12 @@ public class Block extends EntityWithMetadata {
     boolean deleteSource(@Const @ByRef Source source);
 
     //--------------------------------------------------
-    // Methods concerning data arrays
-    //--------------------------------------------------
-
-    /**
-     * Checks if a specific data array exists in this block.
-     *
-     * @param nameOrId Name or id of a data array.
-     * @return True if the data array exists, false otherwise.
-     */
-    public native
-    @Cast("bool")
-    boolean hasDataArray(@StdString String nameOrId);
-
-    /**
-     * Checks if a specific data array exists in this block.
-     *
-     * @param dataArray The data array to check.
-     * @return True if the data array exists, false otherwise.
-     */
-    public native
-    @Cast("bool")
-    boolean hasDataArray(@Const @ByRef DataArray dataArray);
-
-    private native
-    @Name("getDataArray")
-    @ByVal
-    DataArray fetchDataArray(@StdString String nameOrId);
-
-    /**
-     * Retrieves a specific data array from the block by name or id.
-     *
-     * @param nameOrId Name or id of an existing data array.
-     * @return The data array with the specified id. If this
-     * doesn't exist, an exception will be thrown.
-     */
-    public DataArray getDataArray(String nameOrId) {
-        DataArray da = fetchDataArray(nameOrId);
-        if (da.isInitialized()) {
-            return da;
-        }
-        return null;
-    }
-
-    private native
-    @Name("getDataArray")
-    @ByVal
-    DataArray fetchDataArray(@Cast("size_t") long index);
-
-    /**
-     * Retrieves a data array by index.
-     *
-     * @param index The index of the data array.
-     * @return The data array at the specified index.
-     */
-    public DataArray getDataArray(long index) {
-        DataArray da = fetchDataArray(index);
-        if (da.isInitialized()) {
-            return da;
-        }
-        return null;
-    }
-
-    private native
-    @Name("dataArrays")
-    @StdVector
-    DataArray getDataArrays();
-
-    /**
-     * Get data arrays within this block.
-     *
-     * @return list of data arrays
-     */
-    public List<DataArray> dataArrays() {
-        return Utils.convertPointerToList(getDataArrays(), DataArray.class);
-    }
-
-    /**
-     * Returns the number of all data arrays of the block.
-     *
-     * @return The number of data arrays of the block.
-     */
-    public native
-    @Name("dataArrayCount")
-    long getDataArrayCount();
-
-
-    private native
-    @Name("createDataArray")
-    @ByVal
-    DataArray makeDataArray(@StdString String name,
-                            @StdString String type, @Cast("nix::DataType")
-                            int dataType,
-                            @Const @ByRef NDSize shape);
-
-    /**
-     * Create a new data array associated with this block.
-     *
-     * @param name     The name of the data array to create.
-     * @param type     The type of the data array.
-     * @param dataType A {@link DataType} indicating the format to store values.
-     * @param shape    A NDSize holding the extent of the array to create.
-     * @return The newly created data array.
-     */
-    public DataArray createDataArray(String name, String type, int dataType, NDSize shape) {
-        DataArray da = makeDataArray(name, type, dataType, shape);
-        if (da.isInitialized()) {
-            return da;
-        }
-        return null;
-    }
-
-    /**
-     * Deletes a data array from this block.
-     * <p/>
-     * This deletes a data array and all its dimensions from the block and the file.
-     * The deletion can't be undone.
-     *
-     * @param nameOrId Name or id of the data array to delete.
-     * @return True if the data array was deleted, false otherwise.
-     */
-    public native
-    @Cast("bool")
-    boolean deleteDataArray(@StdString String nameOrId);
-
-    /**
-     * Deletes a data array from this block.
-     * <p/>
-     * This deletes a data array and all its dimensions from the block and the file.
-     * The deletion can't be undone.
-     *
-     * @param dataArray The data array to delete.
-     * @return True if the data array was deleted, false otherwise.
-     */
-    public native
-    @Cast("bool")
-    boolean deleteDataArray(@Const @ByRef DataArray dataArray);
-
-    //--------------------------------------------------
     // Overrides
     //--------------------------------------------------
 
     @Override
     public String toString() {
-        return "Block: {name = " + this.getName()
+        return "Source: {name = " + this.getName()
                 + ", type = " + this.getType()
                 + ", id = " + this.getId() + "}";
     }

@@ -3,11 +3,8 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
-import org.gnode.nix.base.EntityWithMetadata;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalDouble;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.base.EntityWithSources;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +13,7 @@ import java.util.List;
         include = {"<nix/DataArray.hpp>"},
         link = {"nix"})
 @Namespace("nix")
-public class DataArray extends EntityWithMetadata {
+public class DataArray extends EntityWithSources {
     static {
         Loader.load();
     }
@@ -222,6 +219,145 @@ public class DataArray extends EntityWithMetadata {
     public void removeMetadata() {
         metadata(new None());
     }
+
+    /**
+     * Get the number of sources associated with this entity.
+     *
+     * @return The number sources.
+     */
+    public native
+    @Name("sourceCount")
+    long getSourceCount();
+
+    /**
+     * Checks if a specific source is associated with this entity.
+     *
+     * @param id The source id to check.
+     * @return True if the source is associated with this entity, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasSource(@StdString String id);
+
+    /**
+     * Checks if a specific source is associated with this entity.
+     *
+     * @param source The source to check.
+     * @return True if the source is associated with this entity, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasSource(@Const @ByRef Source source);
+
+    private native
+    @Name("getSource")
+    @ByVal
+    Source fetchSource(@StdString String id);
+
+    /**
+     * Returns an associated source identified by its id.
+     *
+     * @param id The id of the associated source.
+     */
+    public Source getSource(String id) {
+        Source source = fetchSource(id);
+        if (source.isInitialized()) {
+            return source;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getSource")
+    @ByVal
+    Source fetchSource(@Cast("size_t") long index);
+
+    /**
+     * Retrieves an associated source identified by its index.
+     *
+     * @param index The index of the associated source.
+     * @return The source with the given id. If it doesn't exist an exception
+     * will be thrown.
+     */
+    public Source getSource(long index) {
+        Source source = fetchSource(index);
+        if (source.isInitialized()) {
+            return source;
+        }
+        return null;
+    }
+
+    private native
+    @ByVal
+    SourceVector sources();
+
+    /**
+     * Get all sources associated with this entity.
+     *
+     * @return All associated sources that match the given filter as a vector
+     */
+    public List<Source> getSources() {
+        return sources().getSources();
+    }
+
+    private native void sources(@Const @ByRef SourceVector sources);
+
+    /**
+     * Set all sources associations for this entity.
+     * <p/>
+     * All previously existing associations will be overwritten.
+     *
+     * @param sources A vector with all sources.
+     */
+    public void setSources(List<Source> sources) {
+        sources(new SourceVector(sources));
+    }
+
+    /**
+     * Associate a new source with the entity.
+     * <p/>
+     * If a source with the given id already is associated with the
+     * entity, the call will have no effect.
+     *
+     * @param id The id of the source.
+     */
+    public native void addSource(@StdString String id);
+
+    /**
+     * Associate a new source with the entity.
+     * <p/>
+     * Calling this method will have no effect if the source is already associated to this entity.
+     *
+     * @param source The source to add.
+     */
+    public native void addSource(@Const @ByRef Source source);
+
+    /**
+     * Remove a source from the list of associated sources.
+     * <p/>
+     * This method just removes the association between the entity and the source.
+     * The source itself will not be deleted from the file.
+     *
+     * @param id The id of the source to remove.
+     * @return True if the source was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean removeSource(@StdString String id);
+
+    /**
+     * Remove a source from the list of associated sources.
+     * <p/>
+     * This method just removes the association between the entity and the source.
+     * The source itself will not be deleted from the file.
+     *
+     * @param source The source to remove.
+     * @return True if the source was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean removeSource(@Const @ByRef Source source);
+
 
     //--------------------------------------------------
     // Element getters and setters
