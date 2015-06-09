@@ -212,4 +212,133 @@ public class TestBlock {
         assertFalse(block.hasDataArray("invalid_id"));
     }
 
+    @Test
+    public void testTagAccess() {
+        List<String> names = Arrays.asList("tag_a", "tag_b", "tag_c", "tag_d", "tag_e");
+        List<String> array_names = Arrays.asList("data_array_a", "data_array_b", "data_array_c",
+                "data_array_d", "data_array_e");
+        List<DataArray> refs = new ArrayList<DataArray>();
+        Tag tag, t = null;
+        for (String name : array_names) {
+            refs.add(block.createDataArray(name,
+                    "reference",
+                    DataType.Double,
+                    new NDSize(new int[]{0})));
+        }
+
+        assertEquals(block.getTagCount(), 0);
+        assertEquals(block.getTags().size(), 0);
+        assertFalse(block.hasTag("invalid_id"));
+
+        List<String> ids = new ArrayList<String>();
+        for (String name : names) {
+            tag = block.createTag(name, "segment", new double[]{0.0, 2.0, 3.4});
+            tag.setReferences(refs);
+            assertEquals(tag.getName(), name);
+            assertTrue(block.hasTag(tag));
+            ids.add(tag.getId());
+        }
+
+        try {
+            block.createTag(names.get(0), "segment", new double[]{0.0, 2.0, 3.4});
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getTagCount(), names.size());
+        assertEquals(block.getTags().size(), names.size());
+
+        for (String id : ids) {
+            tag = block.getTag(id);
+            assertTrue(block.hasTag(id));
+            assertEquals(tag.getId(), id);
+
+            block.deleteTag(id);
+        }
+
+        tag = block.createTag("test", "test", new double[]{0.0});
+        assertTrue(block.hasTag(tag));
+
+        try {
+            block.deleteTag(tag);
+        } catch (Exception e) {
+            fail();
+        }
+
+        try {
+            block.deleteTag(t);
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getTagCount(), 0);
+        assertEquals(block.getTags().size(), 0);
+        assertFalse(block.hasTag("invalid_id"));
+    }
+
+    @Test
+    public void testMultiTagAccess() {
+        List<String> names = Arrays.asList("tag_a", "tag_b", "tag_c", "tag_d", "tag_e");
+        MultiTag mtag, m = null;
+        // create a valid positions data array below
+        DataArray positions = block.createDataArray("array_one",
+                "testdata",
+                DataType.Double,
+                new NDSize(new int[]{3, 4, 2}));
+
+        assertEquals(block.getMultiTagCount(), 0);
+        assertEquals(block.getMultiTags().size(), 0);
+        assertNull(block.getMultiTag("invalid_id"));
+        assertFalse(block.hasMultiTag("invalid_id"));
+
+        try {
+            block.hasMultiTag(m);
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        List<String> ids = new ArrayList<String>();
+        for (String name : names) {
+            mtag = block.createMultiTag(name, "segment", positions);
+            assertEquals(mtag.getName(), name);
+            assertTrue(block.hasMultiTag(mtag));
+            ids.add(mtag.getId());
+        }
+
+        try {
+            block.createMultiTag(names.get(0), "segment", positions);
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getMultiTagCount(), names.size());
+        assertEquals(block.getMultiTags().size(), names.size());
+
+        for (String id : ids) {
+            mtag = block.getMultiTag(id);
+            assertTrue(block.hasMultiTag(id));
+            assertEquals(mtag.getId(), id);
+
+            block.deleteMultiTag(id);
+        }
+
+        mtag = block.createMultiTag("test", "test", positions);
+        assertTrue(block.hasMultiTag(mtag));
+
+        try {
+            block.deleteMultiTag(m);
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        try {
+            block.deleteMultiTag(mtag);
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(block.getMultiTagCount(), 0);
+        assertEquals(block.getMultiTags().size(), 0);
+        assertNull(block.getMultiTag("invalid_id"));
+    }
 }
