@@ -491,6 +491,274 @@ public class Block extends EntityWithMetadata {
     boolean deleteDataArray(@Const @ByRef DataArray dataArray);
 
     //--------------------------------------------------
+    // Methods concerning tags.
+    //--------------------------------------------------
+
+    /**
+     * Checks if a specific tag exists in the block.
+     *
+     * @param nameOrId Name or id of a tag.
+     * @return True if the tag exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasTag(@StdString String nameOrId);
+
+    /**
+     * Checks if a specific tag exists in the block.
+     *
+     * @param tag The tag to check.
+     * @return True if the tag exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasTag(@Const @ByRef Tag tag);
+
+    private native
+    @Name("getTag")
+    @ByVal
+    Tag fetchTag(@StdString String nameOrId);
+
+    /**
+     * Retrieves a specific tag from the block by its id.
+     *
+     * @param nameOrId Name or id of the tag.
+     * @return The tag with the specified id. If this tag doesn't exist
+     * an exception will be thrown.
+     */
+    public Tag getTag(String nameOrId) {
+        Tag tag = fetchTag(nameOrId);
+        if (tag.isInitialized()) {
+            return tag;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getTag")
+    @ByVal
+    Tag fetchTag(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific tag by index.
+     *
+     * @param index The index of the tag.
+     * @return The tag at the specified index.
+     */
+    public Tag getTag(long index) {
+        Tag tag = fetchTag(index);
+        if (tag.isInitialized()) {
+            return tag;
+        }
+        return null;
+    }
+
+    private native
+    @StdVector
+    Tag tags();
+
+    /**
+     * Get tags within this block.
+     *
+     * @return list of all tags.
+     */
+    public List<Tag> getTags() {
+        return Utils.convertPointerToList(tags(), Tag.class);
+    }
+
+    /**
+     * Returns the number of tags within this block.
+     *
+     * @return The number of tags.
+     */
+    public native
+    @Name("tagCount")
+    long getTagCount();
+
+    private native
+    @Name("createTag")
+    @ByVal
+    Tag makeTag(@StdString String name, @StdString String type,
+                @StdVector double[] position);
+
+    /**
+     * Create a new tag associated with this block.
+     *
+     * @param name     The name of the tag to create.
+     * @param type     The type of the tag.
+     * @param position The position of the tag.
+     * @return The newly created tag.
+     */
+    public Tag createTag(String name, String type, double[] position) {
+        Tag tag = makeTag(name, type, position);
+        if (tag.isInitialized()) {
+            return tag;
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a tag from the block.
+     * <p/>
+     * Deletes a tag with all its features from the block and the file.
+     * The deletion can't be undone.
+     *
+     * @param nameOrId Name or id of the tag to remove.
+     * @return True if the tag was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteTag(@StdString String nameOrId);
+
+    /**
+     * Deletes a tag from the block.
+     * <p/>
+     * Deletes a tag with all its features from the block and the file.
+     * The deletion can't be undone.
+     *
+     * @param tag The tag to remove.
+     * @return True if the tag was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteTag(@Const @ByRef Tag tag);
+
+
+    //--------------------------------------------------
+    // Methods concerning multi tags.
+    //--------------------------------------------------
+
+    /**
+     * Checks if a specific multi tag exists in the block.
+     *
+     * @param nameOrId Name or id of a multi tag.
+     * @return True if the multi tag exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasMultiTag(@StdString String nameOrId);
+
+    /**
+     * Checks if a specific multi tag exists in the block.
+     *
+     * @param multiTag The multi tag to check.
+     * @return True if the multi tag exists, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean hasMultiTag(@Const @ByRef MultiTag multiTag);
+
+    private native
+    @Name("getMultiTag")
+    @ByVal
+    MultiTag fetchMultiTag(@StdString String nameOrId);
+
+    /**
+     * Retrieves a specific multi tag from the block by its id.
+     *
+     * @param nameOrId Name or id of the multi tag.
+     * @return The tag with the specified id. If this tag doesn't exist
+     * an exception will be thrown.
+     */
+    public MultiTag getMultiTag(String nameOrId) {
+        MultiTag multiTag = fetchMultiTag(nameOrId);
+        if (multiTag.isInitialized()) {
+            return multiTag;
+        }
+        return null;
+    }
+
+    private native
+    @Name("getMultiTag")
+    @ByVal
+    MultiTag fetchMultiTag(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific multi tag by index.
+     *
+     * @param index The index of the tag.
+     * @return The multi tag at the specified index.
+     */
+    public MultiTag getMultiTag(long index) {
+        MultiTag multiTag = fetchMultiTag(index);
+        if (multiTag.isInitialized()) {
+            return multiTag;
+        }
+        return null;
+    }
+
+    private native
+    @StdVector
+    MultiTag multiTags();
+
+    /**
+     * Get multi tags within this block.
+     *
+     * @return A list that contains all filtered multi tags.
+     */
+    public List<MultiTag> getMultiTags() {
+        return Utils.convertPointerToList(multiTags(), MultiTag.class);
+    }
+
+    /**
+     * Returns the number of multi tags associated with this block.
+     *
+     * @return The number of multi tags.
+     */
+    public native
+    @Name("multiTagCount")
+    long getMultiTagCount();
+
+    private native
+    @Name("createMultiTag")
+    @ByVal
+    MultiTag makeMultiTag(@StdString String name, @StdString String type,
+                          @Const @ByRef DataArray positions);
+
+    /**
+     * Create a new multi tag associated with this block.
+     *
+     * @param name      The name of the multi tag to create.
+     * @param type      The type of the tag.
+     * @param positions The positions of the tag.
+     * @return The newly created tag.
+     */
+    public MultiTag createMultiTag(String name, String type, DataArray positions) {
+        MultiTag multiTag = makeMultiTag(name, type, positions);
+        if (multiTag.isInitialized()) {
+            return multiTag;
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a multi tag from the block.
+     * <p/>
+     * Deletes a multi tag and all its features from the block and the file.
+     * The deletion can't be undone.
+     *
+     * @param nameOrId Name or id of the tag to remove.
+     * @return True if the tag was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteMultiTag(@StdString String nameOrId);
+
+    /**
+     * Deletes a multi tag from the block.
+     * <p/>
+     * Deletes a multi tag and all its features from the block and the file.
+     * The deletion can't be undone.
+     *
+     * @param multiTag The tag to remove.
+     * @return True if the tag was removed, false otherwise.
+     */
+    public native
+    @Cast("bool")
+    boolean deleteMultiTag(@Const @ByRef MultiTag multiTag);
+
+
+    //--------------------------------------------------
     // Overrides
     //--------------------------------------------------
 
