@@ -5,8 +5,8 @@ import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithMetadata;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.SourceVector;
 import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -294,7 +294,7 @@ public class Source extends EntityWithMetadata {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all direct child sources associated with this source.

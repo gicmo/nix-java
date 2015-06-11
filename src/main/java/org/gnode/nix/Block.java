@@ -5,8 +5,8 @@ import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithMetadata;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.SourceVector;
 import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -295,7 +295,7 @@ public class Block extends EntityWithMetadata {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all root sources associated with this block.
@@ -416,17 +416,16 @@ public class Block extends EntityWithMetadata {
     }
 
     private native
-    @Name("dataArrays")
-    @StdVector
-    DataArray getDataArrays();
+    @ByVal
+    VectorUtils.DataArrayVector dataArrays();
 
     /**
      * Get data arrays within this block.
      *
      * @return list of data arrays
      */
-    public List<DataArray> dataArrays() {
-        return Utils.convertPointerToList(getDataArrays(), DataArray.class);
+    public List<DataArray> getDataArrays() {
+        return dataArrays().getDataArrays();
     }
 
     /**
@@ -554,8 +553,8 @@ public class Block extends EntityWithMetadata {
     }
 
     private native
-    @StdVector
-    Tag tags();
+    @ByVal
+    VectorUtils.TagVector tags();
 
     /**
      * Get tags within this block.
@@ -563,7 +562,7 @@ public class Block extends EntityWithMetadata {
      * @return list of all tags.
      */
     public List<Tag> getTags() {
-        return Utils.convertPointerToList(tags(), Tag.class);
+        return tags().getTags();
     }
 
     /**
@@ -688,8 +687,8 @@ public class Block extends EntityWithMetadata {
     }
 
     private native
-    @StdVector
-    MultiTag multiTags();
+    @ByVal
+    VectorUtils.MultiTagVector multiTags();
 
     /**
      * Get multi tags within this block.
@@ -697,7 +696,7 @@ public class Block extends EntityWithMetadata {
      * @return A list that contains all filtered multi tags.
      */
     public List<MultiTag> getMultiTags() {
-        return Utils.convertPointerToList(multiTags(), MultiTag.class);
+        return multiTags().getMultiTags();
     }
 
     /**

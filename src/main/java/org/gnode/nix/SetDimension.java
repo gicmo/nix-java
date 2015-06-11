@@ -3,8 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.StringVector;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class SetDimension extends Dimension {
 
     private native
     @ByVal
-    StringVector labels();
+    VectorUtils.StringVector labels();
 
     /**
      * Get the labels of the range dimension.
@@ -84,10 +83,10 @@ public class SetDimension extends Dimension {
      * @return The labels of the dimension as a list of strings.
      */
     public List<String> getLabels() {
-        return Utils.convertStringVectorToList(labels());
+        return labels().getStrings();
     }
 
-    private native void labels(@Const @ByVal StringVector labels);
+    private native void labels(@Const @ByRef VectorUtils.StringVector labels);
 
     private native void labels(@Const @ByVal None t);
 
@@ -98,7 +97,7 @@ public class SetDimension extends Dimension {
      */
     public void setLabels(List<String> labels) {
         if (labels != null) {
-            labels(Utils.convertListToStringVector(labels));
+            labels(new VectorUtils.StringVector(labels));
         } else {
             labels(new None());
         }

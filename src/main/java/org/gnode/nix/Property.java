@@ -6,7 +6,7 @@ import org.gnode.nix.base.Entity;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.ValueVector;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -263,7 +263,7 @@ public class Property extends Entity implements Comparable<Property> {
     @Name("valueCount")
     long getValueCount();
 
-    private native void values(@Const @ByRef ValueVector values);
+    private native void values(@Const @ByRef VectorUtils.ValueVector values);
 
     /**
      * Set the values of the property.
@@ -271,12 +271,12 @@ public class Property extends Entity implements Comparable<Property> {
      * @param values The values to set.
      */
     public void setValues(List<Value> values) {
-        values(new ValueVector(values));
+        values(new VectorUtils.ValueVector(values));
     }
 
     private native
     @ByVal
-    ValueVector values();
+    VectorUtils.ValueVector values();
 
     /**
      * Get all values of the property.
@@ -284,8 +284,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The values of the property.
      */
     public List<Value> getValues() {
-        ValueVector vv = values();
-        return vv.getValues();
+        return values().getValues();
     }
 
     //--------------------------------------------------

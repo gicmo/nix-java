@@ -6,9 +6,8 @@ import org.gnode.nix.base.NamedEntity;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
 import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.ValueVector;
+import org.gnode.nix.internal.VectorUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -397,8 +396,8 @@ public class Section extends NamedEntity {
     }
 
     private native
-    @StdVector
-    Section sections();
+    @ByVal
+    VectorUtils.SectionVector sections();
 
     /**
      * Get all direct child sections of the section.
@@ -406,7 +405,7 @@ public class Section extends NamedEntity {
      * @return list of child sections
      */
     public List<Section> getSections() {
-        return Utils.convertPointerToList(sections(), Section.class);
+        return sections().getSections();
     }
 
     private native
@@ -521,21 +520,21 @@ public class Section extends NamedEntity {
     }
 
     private native
-    @StdVector
-    Property properties();
+    @ByVal
+    VectorUtils.PropertyVector properties();
 
     /**
      * Get all properties of the section.
      *
      * @return list of properties.
      */
-    public ArrayList<Property> getProperties() {
-        return Utils.convertPointerToList(properties(), Property.class);
+    public List<Property> getProperties() {
+        return properties().getProperties();
     }
 
     private native
-    @StdVector
-    Property inheritedProperties();
+    @ByVal
+    VectorUtils.PropertyVector inheritedProperties();
 
     /**
      * Returns all Properties inherited from a linked section.
@@ -544,7 +543,7 @@ public class Section extends NamedEntity {
      * @return All inherited properties as a list.
      */
     public List<Property> getInheritedProperties() {
-        return Utils.convertPointerToList(inheritedProperties(), Property.class);
+        return inheritedProperties().getProperties();
     }
 
     private native
@@ -590,7 +589,7 @@ public class Section extends NamedEntity {
     private native
     @Name("createProperty")
     @ByVal
-    Property makeProperty(@StdString String name, @Const @ByVal ValueVector values);
+    Property makeProperty(@StdString String name, @Const @ByRef VectorUtils.ValueVector values);
 
     /**
      * Add a new Property with values to the Section.
@@ -600,7 +599,7 @@ public class Section extends NamedEntity {
      * @return The newly created property.
      */
     public Property createProperty(String name, List<Value> values) {
-        Property property = makeProperty(name, new ValueVector(values));
+        Property property = makeProperty(name, new VectorUtils.ValueVector(values));
         if (property.isInitialized()) {
             return property;
         }

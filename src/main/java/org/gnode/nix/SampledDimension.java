@@ -6,7 +6,7 @@ import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalDouble;
 import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
@@ -239,7 +239,7 @@ public class SampledDimension extends Dimension {
      * @return list containing the respective dimension.
      */
     public List<Double> getAxis(long count, long startIndex) {
-        return Utils.convertPointerToList(axis(count, startIndex));
+        return VectorUtils.convertPointerToList(axis(count, startIndex));
     }
 
     private native
@@ -254,6 +254,6 @@ public class SampledDimension extends Dimension {
      * @return list containing the respective dimension.
      */
     public List<Double> getAxis(long count) {
-        return Utils.convertPointerToList(axis(count));
+        return VectorUtils.convertPointerToList(axis(count));
     }
 }

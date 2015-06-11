@@ -5,7 +5,7 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
@@ -160,7 +160,7 @@ public class RangeDimension extends Dimension {
      * @return A list with all ticks for the dimension.
      */
     public List<Double> getTicks() {
-        return Utils.convertPointerToList(ticks());
+        return VectorUtils.convertPointerToList(ticks());
     }
 
     /**
@@ -212,7 +212,7 @@ public class RangeDimension extends Dimension {
      * @return list containing the ticks.
      */
     public List<Double> getAxis(long count, long startIndex) {
-        return Utils.convertPointerToList(axis(count, startIndex));
+        return VectorUtils.convertPointerToList(axis(count, startIndex));
     }
 
     private native
@@ -229,6 +229,6 @@ public class RangeDimension extends Dimension {
      * @return list containing the ticks.
      */
     public List<Double> getAxis(long count) {
-        return Utils.convertPointerToList(axis(count));
+        return VectorUtils.convertPointerToList(axis(count));
     }
 }

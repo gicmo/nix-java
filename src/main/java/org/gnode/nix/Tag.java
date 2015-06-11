@@ -4,7 +4,10 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithSources;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalString;
+import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -289,7 +292,7 @@ public class Tag extends EntityWithSources {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all sources associated with this entity.
@@ -300,7 +303,7 @@ public class Tag extends EntityWithSources {
         return sources().getSources();
     }
 
-    private native void sources(@Const @ByRef SourceVector sources);
+    private native void sources(@Const @ByRef VectorUtils.SourceVector sources);
 
     /**
      * Set all sources associations for this entity.
@@ -310,7 +313,7 @@ public class Tag extends EntityWithSources {
      * @param sources A vector with all sources.
      */
     public void setSources(List<Source> sources) {
-        sources(new SourceVector(sources));
+        sources(new VectorUtils.SourceVector(sources));
     }
 
     /**
@@ -365,7 +368,7 @@ public class Tag extends EntityWithSources {
 
     private native
     @ByVal
-    StringVector units();
+    VectorUtils.StringVector units();
 
     /**
      * Gets the units of the tag.
@@ -376,10 +379,10 @@ public class Tag extends EntityWithSources {
      * @return All units of the tag as a list.
      */
     public List<String> getUnits() {
-        return Utils.convertStringVectorToList(units());
+        return units().getStrings();
     }
 
-    private native void units(@Const @ByVal StringVector units);
+    private native void units(@Const @ByRef VectorUtils.StringVector units);
 
     private native void units(@Const @ByVal None t);
 
@@ -390,7 +393,7 @@ public class Tag extends EntityWithSources {
      */
     public void setUnits(List<String> units) {
         if (units != null) {
-            units(Utils.convertListToStringVector(units));
+            units(new VectorUtils.StringVector(units));
         } else {
             units(new None());
         }
@@ -409,7 +412,7 @@ public class Tag extends EntityWithSources {
      * @return The position vector list.
      */
     public List<Double> getPosition() {
-        return Utils.convertPointerToList(fetchPosition());
+        return VectorUtils.convertPointerToList(fetchPosition());
     }
 
     /**
@@ -434,7 +437,7 @@ public class Tag extends EntityWithSources {
      * @return The extent of the tag.
      */
     public List<Double> getExtent() {
-        return Utils.convertPointerToList(extent());
+        return VectorUtils.convertPointerToList(extent());
     }
 
     private native void extent(@StdVector double[] extent);
@@ -567,7 +570,7 @@ public class Tag extends EntityWithSources {
 
     private native
     @ByVal
-    DataArrayVector references();
+    VectorUtils.DataArrayVector references();
 
     /**
      * Get all referenced data arrays associated with this tag.
@@ -580,7 +583,7 @@ public class Tag extends EntityWithSources {
         return references().getDataArrays();
     }
 
-    private native void references(@Const @ByRef DataArrayVector references);
+    private native void references(@Const @ByRef VectorUtils.DataArrayVector references);
 
     /**
      * Sets all referenced DataArray entities.
@@ -591,7 +594,7 @@ public class Tag extends EntityWithSources {
      * @param references All referenced arrays.
      */
     public void setReferences(List<DataArray> references) {
-        references(new DataArrayVector(references));
+        references(new VectorUtils.DataArrayVector(references));
     }
 
     //--------------------------------------------------
@@ -667,8 +670,8 @@ public class Tag extends EntityWithSources {
     }
 
     private native
-    @StdVector
-    Feature features();
+    @ByVal
+    VectorUtils.FeatureVector features();
 
     /**
      * Get all Features of this tag.
@@ -676,7 +679,7 @@ public class Tag extends EntityWithSources {
      * @return A vector containing the matching features.
      */
     public List<Feature> getFeatures() {
-        return Utils.convertPointerToList(features(), Feature.class);
+        return features().getFeatures();
     }
 
     private native

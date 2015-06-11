@@ -289,7 +289,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all sources associated with this entity.
@@ -300,7 +300,7 @@ public class DataArray extends EntityWithSources {
         return sources().getSources();
     }
 
-    private native void sources(@Const @ByRef SourceVector sources);
+    private native void sources(@Const @ByVal VectorUtils.SourceVector sources);
 
     /**
      * Set all sources associations for this entity.
@@ -310,7 +310,7 @@ public class DataArray extends EntityWithSources {
      * @param sources A vector with all sources.
      */
     public void setSources(List<Source> sources) {
-        sources(new SourceVector(sources));
+        sources(new VectorUtils.SourceVector(sources));
     }
 
     /**
@@ -490,7 +490,7 @@ public class DataArray extends EntityWithSources {
      * @return The polynom coefficients for the calibration.
      */
     public List<Double> getPolynomCoefficients() {
-        return Utils.convertPointerToList(polynomCoefficients());
+        return VectorUtils.convertPointerToList(polynomCoefficients());
     }
 
 
@@ -499,8 +499,8 @@ public class DataArray extends EntityWithSources {
     //--------------------------------------------------
 
     private native
-    @StdVector
-    Dimension dimensions();
+    @ByVal
+    VectorUtils.DimensionVector dimensions();
 
     /**
      * Get all dimensions associated with this data array.
@@ -508,7 +508,7 @@ public class DataArray extends EntityWithSources {
      * @return The dimensions as a list
      */
     public List<Dimension> getDimensions() {
-        return Utils.convertPointerToList(dimensions(), Dimension.class);
+        return dimensions().getDimensions();
     }
 
     /**

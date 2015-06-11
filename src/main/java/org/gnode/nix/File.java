@@ -5,6 +5,7 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -195,8 +196,8 @@ public class File extends ImplContainer implements Comparable<File> {
     boolean deleteBlock(@Const @ByRef Block block);
 
     private native
-    @StdVector
-    Block blocks();
+    @ByVal
+    VectorUtils.BlockVector blocks();
 
     /**
      * Get all blocks within this file.
@@ -205,7 +206,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @see Block
      */
     public List<Block> getBlocks() {
-        return Utils.convertPointerToList(blocks(), Block.class);
+        return blocks().getBlocks();
     }
 
 
@@ -281,8 +282,8 @@ public class File extends ImplContainer implements Comparable<File> {
     long getSectionCount();
 
     private native
-    @StdVector
-    Section sections();
+    @ByVal
+    VectorUtils.SectionVector sections();
 
     /**
      * Get all root sections within this file.
@@ -293,7 +294,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return A vector of filtered Section entities.
      */
     public List<Section> getSections() {
-        return Utils.convertPointerToList(sections(), Section.class);
+        return sections().getSections();
     }
 
     private native
@@ -353,7 +354,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return The format version of the NIX file.
      */
     public ArrayList<Integer> getVersion() {
-        return Utils.convertPointerToList(version());
+        return VectorUtils.convertPointerToList(version());
     }
 
     /**
