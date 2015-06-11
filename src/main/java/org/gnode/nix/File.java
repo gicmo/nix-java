@@ -7,7 +7,6 @@ import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.DateUtils;
 import org.gnode.nix.internal.VectorUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -353,7 +352,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @return The format version of the NIX file.
      */
-    public ArrayList<Integer> getVersion() {
+    public List<Integer> getVersion() {
         return VectorUtils.convertPointerToList(version());
     }
 
