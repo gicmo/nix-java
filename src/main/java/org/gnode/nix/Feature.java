@@ -3,7 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.Entity;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.DateUtils;
 
 import java.util.Date;
 
@@ -59,7 +59,7 @@ public class Feature extends Entity {
      * @return The creation date of the property.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -72,7 +72,7 @@ public class Feature extends Entity {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -98,7 +98,7 @@ public class Feature extends Entity {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
     //--------------------------------------------------

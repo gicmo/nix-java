@@ -4,7 +4,7 @@ import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.DateUtils;
 import org.gnode.nix.internal.VectorUtils;
 
 import java.util.ArrayList;
@@ -387,7 +387,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return The creation date of the file.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -400,7 +400,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -426,7 +426,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
 

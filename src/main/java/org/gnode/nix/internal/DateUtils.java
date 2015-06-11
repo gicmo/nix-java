@@ -2,7 +2,7 @@ package org.gnode.nix.internal;
 
 import java.util.Date;
 
-public class Utils {
+public class DateUtils {
 
     /**
      * Convert seconds to appropriate date
