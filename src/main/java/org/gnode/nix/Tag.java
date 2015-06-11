@@ -4,10 +4,7 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithSources;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -155,7 +152,7 @@ public class Tag extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the tag.
@@ -163,7 +160,7 @@ public class Tag extends EntityWithSources {
      * @return The definition of the tag.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }

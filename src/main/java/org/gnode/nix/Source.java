@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithMetadata;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -150,7 +147,7 @@ public class Source extends EntityWithMetadata {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the source.
@@ -158,7 +155,7 @@ public class Source extends EntityWithMetadata {
      * @return The definition of the source.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }

@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalDouble;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.internal.*;
 
 import java.util.List;
 
@@ -75,7 +72,7 @@ public class SampledDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalString label();
+    OptionalUtils.OptionalString label();
 
     /**
      * Getter for the label of the dimension.
@@ -86,7 +83,7 @@ public class SampledDimension extends Dimension {
      * @return The label of the dimension. {#link null} if not present.
      */
     public String getLabel() {
-        OptionalString label = label();
+        OptionalUtils.OptionalString label = label();
         if (label.isPresent()) {
             return label.getString();
         }
@@ -112,7 +109,7 @@ public class SampledDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Gets the unit of a dimension.
@@ -123,7 +120,7 @@ public class SampledDimension extends Dimension {
      * @return The unit of the dimension.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }
@@ -167,7 +164,7 @@ public class SampledDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalDouble offset();
+    OptionalUtils.OptionalDouble offset();
 
     /**
      * Gets the offset of the dimension.
@@ -180,7 +177,7 @@ public class SampledDimension extends Dimension {
      * @return The offset of the SampledDimension.
      */
     public double getOffset() {
-        OptionalDouble offset = offset();
+        OptionalUtils.OptionalDouble offset = offset();
         if (offset.isPresent()) {
             return offset.getDouble();
         }

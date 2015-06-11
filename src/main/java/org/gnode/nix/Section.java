@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.NamedEntity;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -154,7 +151,7 @@ public class Section extends NamedEntity {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the section.
@@ -162,7 +159,7 @@ public class Section extends NamedEntity {
      * @return The definition of the section. {#link null} if not present.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -195,7 +192,7 @@ public class Section extends NamedEntity {
 
     private native
     @ByVal
-    OptionalString repository();
+    OptionalUtils.OptionalString repository();
 
     /**
      * Gets the repository URL.
@@ -203,7 +200,7 @@ public class Section extends NamedEntity {
      * @return The URL to the repository. {#link null} if not present.
      */
     public String getRepository() {
-        OptionalString repository = repository();
+        OptionalUtils.OptionalString repository = repository();
         if (repository.isPresent()) {
             return repository.getString();
         }
@@ -285,7 +282,7 @@ public class Section extends NamedEntity {
 
     private native
     @ByVal
-    OptionalString mapping();
+    OptionalUtils.OptionalString mapping();
 
     /**
      * Gets the mapping information.
@@ -293,7 +290,7 @@ public class Section extends NamedEntity {
      * @return The mapping information. {#link null} if not present.
      */
     public String getMapping() {
-        OptionalString mapping = mapping();
+        OptionalUtils.OptionalString mapping = mapping();
         if (mapping.isPresent()) {
             return mapping.getString();
         }

@@ -152,7 +152,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the data array.
@@ -160,7 +160,7 @@ public class DataArray extends EntityWithSources {
      * @return The definition of the data array.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -365,7 +365,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString label();
+    OptionalUtils.OptionalString label();
 
     /**
      * Get the label for the values stored in the DataArray.
@@ -373,7 +373,7 @@ public class DataArray extends EntityWithSources {
      * @return The label of the data array. {#link null} if not present.
      */
     public String getLabel() {
-        OptionalString label = label();
+        OptionalUtils.OptionalString label = label();
         if (label.isPresent()) {
             return label.getString();
         }
@@ -399,7 +399,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Get the unit of the data stored in this data array.
@@ -407,7 +407,7 @@ public class DataArray extends EntityWithSources {
      * @return The unit of the data array. {#link null} if not present.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }
@@ -433,7 +433,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalDouble expansionOrigin();
+    OptionalUtils.OptionalDouble expansionOrigin();
 
     /**
      * Returns the expansion origin of the calibration polynom.
@@ -443,7 +443,7 @@ public class DataArray extends EntityWithSources {
      * @return The expansion origin.
      */
     public double getExpansionOrigin() {
-        OptionalDouble expansionOrigin = expansionOrigin();
+        OptionalUtils.OptionalDouble expansionOrigin = expansionOrigin();
         if (expansionOrigin.isPresent()) {
             return expansionOrigin.getDouble();
         }

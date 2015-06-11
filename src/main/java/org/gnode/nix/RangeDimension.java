@@ -4,7 +4,7 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
+import org.gnode.nix.internal.OptionalUtils;
 import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class RangeDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalString label();
+    OptionalUtils.OptionalString label();
 
     /**
      * Getter for the label of the dimension.
@@ -85,7 +85,7 @@ public class RangeDimension extends Dimension {
      * @return The label of the dimension. {#link null} if not present.
      */
     public String getLabel() {
-        OptionalString label = label();
+        OptionalUtils.OptionalString label = label();
         if (label.isPresent()) {
             return label.getString();
         }
@@ -111,7 +111,7 @@ public class RangeDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Gets the unit of a dimension.
@@ -122,7 +122,7 @@ public class RangeDimension extends Dimension {
      * @return The unit of the dimension.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }

@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.Entity;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -143,7 +140,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the property.
@@ -154,7 +151,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The definition of the property. {#link null} if not present.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -164,7 +161,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     private native
     @ByVal
-    OptionalString mapping();
+    OptionalUtils.OptionalString mapping();
 
     /**
      * Retrieve Getter for the mapping information stored in this Property.
@@ -172,7 +169,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The mapping for the Property. {#link null} if not present.
      */
     public String getMapping() {
-        OptionalString mapping = mapping();
+        OptionalUtils.OptionalString mapping = mapping();
         if (mapping.isPresent()) {
             return mapping.getString();
         }
@@ -213,7 +210,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Returns the unit for all stored values.
@@ -221,7 +218,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The unit for all values. {#link null} if not present.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }
