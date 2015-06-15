@@ -100,9 +100,7 @@
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>./ javacpp.jar ${project.artifactId}-linux-arm.jar
-                                        ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar
-                                    </Class-Path>
+                                    <Class-Path>./</Class-Path>
                                     <Name>org/gnode/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
@@ -114,23 +112,6 @@
                                 <include>org/gnode/nix/*</include>
                                 <include>org/gnode/nix/internal/*</include>
                                 <include>org/gnode/nix/base/*</include>
-                            </includes>
-                            <excludes>
-                                <exclude>org/gnode/nix/*.h</exclude>
-                                <exclude>org/gnode/nix/linux-*/</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>${platform}</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>${platform}</classifier>
-                            <skipIfEmpty>true</skipIfEmpty>
-                            <includes>
                                 <include>org/gnode/nix/${platform}/</include>
                                 <include>org/gnode/nix/internal/${platform}/</include>
                                 <include>org/gnode/nix/base/${platform}/</include>
@@ -152,6 +133,24 @@
                         <configuration>
                             <detectLinks>true</detectLinks>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <finalName>${artifactId}-${version}-${platform}</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

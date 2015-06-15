@@ -4,8 +4,8 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
@@ -74,7 +74,7 @@ public class RangeDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalString label();
+    OptionalUtils.OptionalString label();
 
     /**
      * Getter for the label of the dimension.
@@ -85,7 +85,7 @@ public class RangeDimension extends Dimension {
      * @return The label of the dimension. {#link null} if not present.
      */
     public String getLabel() {
-        OptionalString label = label();
+        OptionalUtils.OptionalString label = label();
         if (label.isPresent()) {
             return label.getString();
         }
@@ -111,7 +111,7 @@ public class RangeDimension extends Dimension {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Gets the unit of a dimension.
@@ -122,7 +122,7 @@ public class RangeDimension extends Dimension {
      * @return The unit of the dimension.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }
@@ -160,7 +160,7 @@ public class RangeDimension extends Dimension {
      * @return A list with all ticks for the dimension.
      */
     public List<Double> getTicks() {
-        return Utils.convertPointerToList(ticks());
+        return VectorUtils.convertPointerToList(ticks());
     }
 
     /**
@@ -212,7 +212,7 @@ public class RangeDimension extends Dimension {
      * @return list containing the ticks.
      */
     public List<Double> getAxis(long count, long startIndex) {
-        return Utils.convertPointerToList(axis(count, startIndex));
+        return VectorUtils.convertPointerToList(axis(count, startIndex));
     }
 
     private native
@@ -229,6 +229,6 @@ public class RangeDimension extends Dimension {
      * @return list containing the ticks.
      */
     public List<Double> getAxis(long count) {
-        return Utils.convertPointerToList(axis(count));
+        return VectorUtils.convertPointerToList(axis(count));
     }
 }

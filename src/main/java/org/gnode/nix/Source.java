@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithMetadata;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.SourceVector;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -60,7 +57,7 @@ public class Source extends EntityWithMetadata {
      * @return The creation date of the source.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -73,7 +70,7 @@ public class Source extends EntityWithMetadata {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -99,7 +96,7 @@ public class Source extends EntityWithMetadata {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
     /**
@@ -150,7 +147,7 @@ public class Source extends EntityWithMetadata {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the source.
@@ -158,7 +155,7 @@ public class Source extends EntityWithMetadata {
      * @return The definition of the source.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -294,7 +291,7 @@ public class Source extends EntityWithMetadata {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all direct child sources associated with this source.

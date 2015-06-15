@@ -154,7 +154,7 @@ public class TestBlock {
         DataArray data_array = null, a = null;
 
         assertEquals(block.getDataArrayCount(), 0);
-        assertEquals(block.dataArrays().size(), 0);
+        assertEquals(block.getDataArrays().size(), 0);
         assertFalse(block.hasDataArray("invalid_id"));
 
         ArrayList<String> ids = new ArrayList<String>();
@@ -182,7 +182,7 @@ public class TestBlock {
         }
 
         assertEquals(block.getDataArrayCount(), names.size());
-        assertEquals(block.dataArrays().size(), names.size());
+        assertEquals(block.getDataArrays().size(), names.size());
 
         for (String name : names) {
             DataArray da_name = block.getDataArray(name);
@@ -208,7 +208,7 @@ public class TestBlock {
         }
 
         assertEquals(block.getDataArrayCount(), 0);
-        assertEquals(block.dataArrays().size(), 0);
+        assertEquals(block.getDataArrays().size(), 0);
         assertFalse(block.hasDataArray("invalid_id"));
     }
 

@@ -4,9 +4,9 @@ import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
-import org.gnode.nix.internal.Utils;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.VectorUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -195,8 +195,8 @@ public class File extends ImplContainer implements Comparable<File> {
     boolean deleteBlock(@Const @ByRef Block block);
 
     private native
-    @StdVector
-    Block blocks();
+    @ByVal
+    VectorUtils.BlockVector blocks();
 
     /**
      * Get all blocks within this file.
@@ -205,7 +205,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @see Block
      */
     public List<Block> getBlocks() {
-        return Utils.convertPointerToList(blocks(), Block.class);
+        return blocks().getBlocks();
     }
 
 
@@ -281,8 +281,8 @@ public class File extends ImplContainer implements Comparable<File> {
     long getSectionCount();
 
     private native
-    @StdVector
-    Section sections();
+    @ByVal
+    VectorUtils.SectionVector sections();
 
     /**
      * Get all root sections within this file.
@@ -293,7 +293,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return A vector of filtered Section entities.
      */
     public List<Section> getSections() {
-        return Utils.convertPointerToList(sections(), Section.class);
+        return sections().getSections();
     }
 
     private native
@@ -352,8 +352,8 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @return The format version of the NIX file.
      */
-    public ArrayList<Integer> getVersion() {
-        return Utils.convertPointerToList(version());
+    public List<Integer> getVersion() {
+        return VectorUtils.convertPointerToList(version());
     }
 
     /**
@@ -386,7 +386,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return The creation date of the file.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -399,7 +399,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -425,7 +425,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
 

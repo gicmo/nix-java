@@ -62,7 +62,7 @@ public class DataArray extends EntityWithSources {
      * @return The creation date of the data array.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -75,7 +75,7 @@ public class DataArray extends EntityWithSources {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -101,7 +101,7 @@ public class DataArray extends EntityWithSources {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
     /**
@@ -152,7 +152,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the data array.
@@ -160,7 +160,7 @@ public class DataArray extends EntityWithSources {
      * @return The definition of the data array.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -289,7 +289,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all sources associated with this entity.
@@ -300,7 +300,7 @@ public class DataArray extends EntityWithSources {
         return sources().getSources();
     }
 
-    private native void sources(@Const @ByRef SourceVector sources);
+    private native void sources(@Const @ByVal VectorUtils.SourceVector sources);
 
     /**
      * Set all sources associations for this entity.
@@ -310,7 +310,7 @@ public class DataArray extends EntityWithSources {
      * @param sources A vector with all sources.
      */
     public void setSources(List<Source> sources) {
-        sources(new SourceVector(sources));
+        sources(new VectorUtils.SourceVector(sources));
     }
 
     /**
@@ -365,7 +365,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString label();
+    OptionalUtils.OptionalString label();
 
     /**
      * Get the label for the values stored in the DataArray.
@@ -373,7 +373,7 @@ public class DataArray extends EntityWithSources {
      * @return The label of the data array. {#link null} if not present.
      */
     public String getLabel() {
-        OptionalString label = label();
+        OptionalUtils.OptionalString label = label();
         if (label.isPresent()) {
             return label.getString();
         }
@@ -399,7 +399,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Get the unit of the data stored in this data array.
@@ -407,7 +407,7 @@ public class DataArray extends EntityWithSources {
      * @return The unit of the data array. {#link null} if not present.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }
@@ -433,7 +433,7 @@ public class DataArray extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalDouble expansionOrigin();
+    OptionalUtils.OptionalDouble expansionOrigin();
 
     /**
      * Returns the expansion origin of the calibration polynom.
@@ -443,7 +443,7 @@ public class DataArray extends EntityWithSources {
      * @return The expansion origin.
      */
     public double getExpansionOrigin() {
-        OptionalDouble expansionOrigin = expansionOrigin();
+        OptionalUtils.OptionalDouble expansionOrigin = expansionOrigin();
         if (expansionOrigin.isPresent()) {
             return expansionOrigin.getDouble();
         }
@@ -490,7 +490,7 @@ public class DataArray extends EntityWithSources {
      * @return The polynom coefficients for the calibration.
      */
     public List<Double> getPolynomCoefficients() {
-        return Utils.convertPointerToList(polynomCoefficients());
+        return VectorUtils.convertPointerToList(polynomCoefficients());
     }
 
 
@@ -499,8 +499,8 @@ public class DataArray extends EntityWithSources {
     //--------------------------------------------------
 
     private native
-    @StdVector
-    Dimension dimensions();
+    @ByVal
+    VectorUtils.DimensionVector dimensions();
 
     /**
      * Get all dimensions associated with this data array.
@@ -508,7 +508,7 @@ public class DataArray extends EntityWithSources {
      * @return The dimensions as a list
      */
     public List<Dimension> getDimensions() {
-        return Utils.convertPointerToList(dimensions(), Dimension.class);
+        return dimensions().getDimensions();
     }
 
     /**

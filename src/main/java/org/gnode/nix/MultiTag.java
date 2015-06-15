@@ -61,7 +61,7 @@ public class MultiTag extends EntityWithSources {
      * @return The creation date of the multitag.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -74,7 +74,7 @@ public class MultiTag extends EntityWithSources {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -100,7 +100,7 @@ public class MultiTag extends EntityWithSources {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
     /**
@@ -151,7 +151,7 @@ public class MultiTag extends EntityWithSources {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the multitag.
@@ -159,7 +159,7 @@ public class MultiTag extends EntityWithSources {
      * @return The definition of the multitag.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -288,7 +288,7 @@ public class MultiTag extends EntityWithSources {
 
     private native
     @ByVal
-    SourceVector sources();
+    VectorUtils.SourceVector sources();
 
     /**
      * Get all sources associated with this entity.
@@ -299,7 +299,7 @@ public class MultiTag extends EntityWithSources {
         return sources().getSources();
     }
 
-    private native void sources(@Const @ByRef SourceVector sources);
+    private native void sources(@Const @ByRef VectorUtils.SourceVector sources);
 
     /**
      * Set all sources associations for this entity.
@@ -309,7 +309,7 @@ public class MultiTag extends EntityWithSources {
      * @param sources A vector with all sources.
      */
     public void setSources(List<Source> sources) {
-        sources(new SourceVector(sources));
+        sources(new VectorUtils.SourceVector(sources));
     }
 
     /**
@@ -463,7 +463,7 @@ public class MultiTag extends EntityWithSources {
 
     private native
     @ByVal
-    StringVector units();
+    VectorUtils.StringVector units();
 
     /**
      * Gets for the units of the tag.
@@ -474,10 +474,10 @@ public class MultiTag extends EntityWithSources {
      * @return All units of the tag as a list.
      */
     public List<String> getUnits() {
-        return Utils.convertStringVectorToList(units());
+        return units().getStrings();
     }
 
-    private native void units(@Const @ByVal StringVector units);
+    private native void units(@Const @ByRef VectorUtils.StringVector units);
 
     private native void units(@Const @ByVal None t);
 
@@ -491,7 +491,7 @@ public class MultiTag extends EntityWithSources {
      */
     public void setUnits(List<String> units) {
         if (units != null) {
-            units(Utils.convertListToStringVector(units));
+            units(new VectorUtils.StringVector(units));
         } else {
             units(new None());
         }
@@ -612,7 +612,7 @@ public class MultiTag extends EntityWithSources {
 
     private native
     @ByVal
-    DataArrayVector references();
+    VectorUtils.DataArrayVector references();
 
     /**
      * Get all referenced data arrays associated with the tag.
@@ -625,7 +625,7 @@ public class MultiTag extends EntityWithSources {
         return references().getDataArrays();
     }
 
-    private native void references(@Const @ByRef DataArrayVector references);
+    private native void references(@Const @ByRef VectorUtils.DataArrayVector references);
 
     /**
      * Setter for all referenced DataArrays.
@@ -636,7 +636,7 @@ public class MultiTag extends EntityWithSources {
      * @param references All referenced arrays.
      */
     public void setReferences(List<DataArray> references) {
-        references(new DataArrayVector(references));
+        references(new VectorUtils.DataArrayVector(references));
     }
 
 
@@ -713,8 +713,8 @@ public class MultiTag extends EntityWithSources {
     }
 
     private native
-    @StdVector
-    Feature features();
+    @ByVal
+    VectorUtils.FeatureVector features();
 
     /**
      * Get all Feature entities contained in the tag.
@@ -722,7 +722,7 @@ public class MultiTag extends EntityWithSources {
      * @return A vector containing all filtered Feature entities.
      */
     public List<Feature> getFeatures() {
-        return Utils.convertPointerToList(features(), Feature.class);
+        return features().getFeatures();
     }
 
     private native

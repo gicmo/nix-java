@@ -3,12 +3,8 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.NamedEntity;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.ValueVector;
+import org.gnode.nix.internal.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +61,7 @@ public class Section extends NamedEntity {
      * @return The creation date of the section.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -78,7 +74,7 @@ public class Section extends NamedEntity {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -104,7 +100,7 @@ public class Section extends NamedEntity {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
     /**
@@ -155,7 +151,7 @@ public class Section extends NamedEntity {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the section.
@@ -163,7 +159,7 @@ public class Section extends NamedEntity {
      * @return The definition of the section. {#link null} if not present.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -196,7 +192,7 @@ public class Section extends NamedEntity {
 
     private native
     @ByVal
-    OptionalString repository();
+    OptionalUtils.OptionalString repository();
 
     /**
      * Gets the repository URL.
@@ -204,7 +200,7 @@ public class Section extends NamedEntity {
      * @return The URL to the repository. {#link null} if not present.
      */
     public String getRepository() {
-        OptionalString repository = repository();
+        OptionalUtils.OptionalString repository = repository();
         if (repository.isPresent()) {
             return repository.getString();
         }
@@ -286,7 +282,7 @@ public class Section extends NamedEntity {
 
     private native
     @ByVal
-    OptionalString mapping();
+    OptionalUtils.OptionalString mapping();
 
     /**
      * Gets the mapping information.
@@ -294,7 +290,7 @@ public class Section extends NamedEntity {
      * @return The mapping information. {#link null} if not present.
      */
     public String getMapping() {
-        OptionalString mapping = mapping();
+        OptionalUtils.OptionalString mapping = mapping();
         if (mapping.isPresent()) {
             return mapping.getString();
         }
@@ -397,8 +393,8 @@ public class Section extends NamedEntity {
     }
 
     private native
-    @StdVector
-    Section sections();
+    @ByVal
+    VectorUtils.SectionVector sections();
 
     /**
      * Get all direct child sections of the section.
@@ -406,7 +402,7 @@ public class Section extends NamedEntity {
      * @return list of child sections
      */
     public List<Section> getSections() {
-        return Utils.convertPointerToList(sections(), Section.class);
+        return sections().getSections();
     }
 
     private native
@@ -521,21 +517,21 @@ public class Section extends NamedEntity {
     }
 
     private native
-    @StdVector
-    Property properties();
+    @ByVal
+    VectorUtils.PropertyVector properties();
 
     /**
      * Get all properties of the section.
      *
      * @return list of properties.
      */
-    public ArrayList<Property> getProperties() {
-        return Utils.convertPointerToList(properties(), Property.class);
+    public List<Property> getProperties() {
+        return properties().getProperties();
     }
 
     private native
-    @StdVector
-    Property inheritedProperties();
+    @ByVal
+    VectorUtils.PropertyVector inheritedProperties();
 
     /**
      * Returns all Properties inherited from a linked section.
@@ -544,7 +540,7 @@ public class Section extends NamedEntity {
      * @return All inherited properties as a list.
      */
     public List<Property> getInheritedProperties() {
-        return Utils.convertPointerToList(inheritedProperties(), Property.class);
+        return inheritedProperties().getProperties();
     }
 
     private native
@@ -590,7 +586,7 @@ public class Section extends NamedEntity {
     private native
     @Name("createProperty")
     @ByVal
-    Property makeProperty(@StdString String name, @Const @ByVal ValueVector values);
+    Property makeProperty(@StdString String name, @Const @ByRef VectorUtils.ValueVector values);
 
     /**
      * Add a new Property with values to the Section.
@@ -600,7 +596,7 @@ public class Section extends NamedEntity {
      * @return The newly created property.
      */
     public Property createProperty(String name, List<Value> values) {
-        Property property = makeProperty(name, new ValueVector(values));
+        Property property = makeProperty(name, new VectorUtils.ValueVector(values));
         if (property.isInitialized()) {
             return property;
         }

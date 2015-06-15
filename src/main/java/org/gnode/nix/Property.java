@@ -3,10 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.Entity;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalString;
-import org.gnode.nix.internal.Utils;
-import org.gnode.nix.internal.ValueVector;
+import org.gnode.nix.internal.*;
 
 import java.util.Date;
 import java.util.List;
@@ -63,7 +60,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The creation date of the property.
      */
     public Date getCreatedAt() {
-        return Utils.convertSecondsToDate(createdAt());
+        return DateUtils.convertSecondsToDate(createdAt());
     }
 
     private native
@@ -76,7 +73,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The date of the last update.
      */
     public Date getUpdatedAt() {
-        return Utils.convertSecondsToDate(updatedAt());
+        return DateUtils.convertSecondsToDate(updatedAt());
     }
 
     /**
@@ -102,7 +99,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @param date The creation date to set.
      */
     public void forceCreatedAt(Date date) {
-        forceCreatedAt(Utils.convertDateToSeconds(date));
+        forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
 
@@ -143,7 +140,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     private native
     @ByVal
-    OptionalString definition();
+    OptionalUtils.OptionalString definition();
 
     /**
      * Getter for the definition of the property.
@@ -154,7 +151,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The definition of the property. {#link null} if not present.
      */
     public String getDefinition() {
-        OptionalString defintion = definition();
+        OptionalUtils.OptionalString defintion = definition();
         if (defintion.isPresent()) {
             return defintion.getString();
         }
@@ -164,7 +161,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     private native
     @ByVal
-    OptionalString mapping();
+    OptionalUtils.OptionalString mapping();
 
     /**
      * Retrieve Getter for the mapping information stored in this Property.
@@ -172,7 +169,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The mapping for the Property. {#link null} if not present.
      */
     public String getMapping() {
-        OptionalString mapping = mapping();
+        OptionalUtils.OptionalString mapping = mapping();
         if (mapping.isPresent()) {
             return mapping.getString();
         }
@@ -213,7 +210,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     private native
     @ByVal
-    OptionalString unit();
+    OptionalUtils.OptionalString unit();
 
     /**
      * Returns the unit for all stored values.
@@ -221,7 +218,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The unit for all values. {#link null} if not present.
      */
     public String getUnit() {
-        OptionalString unit = unit();
+        OptionalUtils.OptionalString unit = unit();
         if (unit.isPresent()) {
             return unit.getString();
         }
@@ -263,7 +260,7 @@ public class Property extends Entity implements Comparable<Property> {
     @Name("valueCount")
     long getValueCount();
 
-    private native void values(@Const @ByRef ValueVector values);
+    private native void values(@Const @ByRef VectorUtils.ValueVector values);
 
     /**
      * Set the values of the property.
@@ -271,12 +268,12 @@ public class Property extends Entity implements Comparable<Property> {
      * @param values The values to set.
      */
     public void setValues(List<Value> values) {
-        values(new ValueVector(values));
+        values(new VectorUtils.ValueVector(values));
     }
 
     private native
     @ByVal
-    ValueVector values();
+    VectorUtils.ValueVector values();
 
     /**
      * Get all values of the property.
@@ -284,8 +281,7 @@ public class Property extends Entity implements Comparable<Property> {
      * @return The values of the property.
      */
     public List<Value> getValues() {
-        ValueVector vv = values();
-        return vv.getValues();
+        return values().getValues();
     }
 
     //--------------------------------------------------
