@@ -1,11 +1,12 @@
 package org.gnode.nix;
 
+import org.gnode.nix.valid.Result;
+import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TestFeature {
 
@@ -31,6 +32,16 @@ public class TestFeature {
         file.deleteBlock(block.getId());
         file.close();
     }
+
+    @Test
+    public void testValidate() {
+        Feature rp = tag.createFeature(data_array, LinkType.Tagged);
+
+        Result result = Validator.validate(rp);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getWarnings().size() == 0);
+    }
+
 
     @Test
     public void testId() {
