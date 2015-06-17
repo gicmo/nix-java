@@ -1,0 +1,199 @@
+package org.gnode.nix.valid;
+
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.Pointer;
+import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.VectorUtils;
+
+import java.util.List;
+
+@Platform(value = "linux",
+        include = {"<nix/valid/result.hpp>"},
+        link = {"nix"})
+@Namespace("nix::valid")
+@NoOffset
+public class Result extends Pointer {
+    static {
+        Loader.load();
+    }
+
+    //--------------------------------------------------
+    // Constructors
+    //--------------------------------------------------
+
+    private native void allocate();
+
+    private native void allocate(@Const @ByRef VectorUtils.MessageVector errs,
+                                 @Const @ByRef VectorUtils.MessageVector warns);
+
+    private native void allocate(@Const @ByVal None none,
+                                 @Const @ByRef VectorUtils.MessageVector warns);
+
+    private native void allocate(@Const @ByRef VectorUtils.MessageVector errs,
+                                 @Const @ByVal None none);
+
+    private native void allocate(@Const @ByRef Message err,
+                                 @Const @ByRef Message warn);
+
+    private native void allocate(@Const @ByVal None none,
+                                 @Const @ByRef Message warn);
+
+    private native void allocate(@Const @ByRef Message err,
+                                 @Const @ByVal None none);
+
+    /**
+     * Constructor
+     */
+    public Result() {
+        allocate();
+    }
+
+    /**
+     * Standard constructor.
+     * <p/>
+     * Standard constructor that expects a list of error msgs and a list
+     * of warning msgs. Pass null if not present.
+     *
+     * @param errs  List of error messages
+     * @param warns List of warning messages
+     */
+    public Result(List<Message> errs, List<Message> warns) {
+        if (errs == null && warns == null) {
+            allocate();
+        } else if (errs == null) {
+            allocate(new None(), new VectorUtils.MessageVector(warns));
+        } else if (warns == null) {
+            allocate(new VectorUtils.MessageVector(errs), new None());
+        } else {
+            allocate(new VectorUtils.MessageVector(errs), new VectorUtils.MessageVector(warns));
+        }
+    }
+
+    /**
+     * Standard constructor.
+     * <p/>
+     * Standard constructor that expects an error msg and a warning msg.
+     * Pass null if not present.
+     *
+     * @param err  error message
+     * @param warn warning message
+     */
+    public Result(Message err, Message warn) {
+        if (err == null && warn == null) {
+            allocate();
+        } else if (err == null) {
+            allocate(new None(), warn);
+        } else if (warn == null) {
+            allocate(err, new None());
+        } else {
+            allocate(err, warn);
+        }
+    }
+
+    //--------------------------------------------------
+    // Error and warning functions
+    //--------------------------------------------------
+
+    private native
+    @Name("getWarnings")
+    @ByVal
+    VectorUtils.MessageVector fetchWarnings();
+
+    /**
+     * Returns the warnings list.
+     *
+     * @return list of warning msgs
+     */
+    public List<Message> getWarnings() {
+        return fetchWarnings().getMessages();
+    }
+
+    private native
+    @Name("getErrors")
+    @ByVal
+    VectorUtils.MessageVector fetchErrors();
+
+    /**
+     * Returns the errors list.
+     *
+     * @return list of error msgs
+     */
+    public List<Message> getErrors() {
+        return fetchErrors().getMessages();
+    }
+
+    /**
+     * Appends the warnings & errors of given Result to this one
+     * <p/>
+     * Concatenates the errors and warnings lists
+     * of the given {@link Result} object to those if this {@link Result}
+     * object and returns a reference to this object.
+     *
+     * @return reference to this Result
+     */
+    public native
+    @ByVal
+    Result concat(@Const @ByRef Result result);
+
+    /**
+     * Adds an error message
+     * <p/>
+     * Adds an error message to this {@link Result}
+     * object and returns a reference to this object.
+     *
+     * @return reference to this Result
+     */
+    public native
+    @ByVal
+    Result addError(@Const @ByRef Message error);
+
+    /**
+     * Adds a warning message
+     * <p/>
+     * Adds a warning message to this {@link Result}
+     * object and returns a reference to this object.
+     *
+     * @return reference to this Result
+     */
+    public native
+    @ByVal
+    Result addWarning(@Const @ByRef Message warning);
+
+    /**
+     * Returns true if no msgs added at all
+     * <p/>
+     * Returns true if neither errors nor warnings have been added,
+     * thus both lists are empty. Returns false otherwise.
+     *
+     * @return bool indicating whether no msgs added at all
+     */
+    public native
+    @Name("ok")
+    @Cast("bool")
+    boolean isOK();
+
+    /**
+     * Returns true if no error msgs added at all
+     * <p/>
+     * Returns false if no errors have been added, thus list is empty.
+     * Returns true otherwise.
+     *
+     * @return bool indicating whether error msgs added
+     */
+    public native
+    @Cast("bool")
+    boolean hasErrors();
+
+    /**
+     * Returns true if no warning msgs added at all
+     * <p/>
+     * Returns false if no warnings have been added, thus list is empty.
+     * Returns true otherwise.
+     *
+     * @return bool indicating whether warning msgs added
+     */
+    public native
+    @Cast("bool")
+    boolean hasWarnings();
+}
