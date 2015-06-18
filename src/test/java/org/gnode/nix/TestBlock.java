@@ -1,5 +1,7 @@
 package org.gnode.nix;
 
+import org.gnode.nix.valid.Result;
+import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +38,13 @@ public class TestBlock {
     @After
     public void tearDown() {
         file.close();
+    }
+
+    @Test
+    public void testValidate() {
+        Result result = Validator.validate(block);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getWarnings().size() == 0);
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.DateUtils;
 import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.valid.Result;
 
 import java.util.Date;
 import java.util.List;
@@ -427,6 +428,19 @@ public class File extends ImplContainer implements Comparable<File> {
     public void forceCreatedAt(Date date) {
         forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
+
+    //------------------------------------------------------
+    // Validator
+    //------------------------------------------------------
+
+    /**
+     * Validator.
+     *
+     * @return result
+     */
+    public native
+    @ByVal
+    Result validate();
 
 
     //------------------------------------------------------

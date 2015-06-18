@@ -6,6 +6,7 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.*;
+import org.gnode.nix.valid.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ import java.util.List;
                 "<nix/Section.hpp>",
                 "<nix/Source.hpp>",
                 "<nix/Tag.hpp>",
-                "<nix/Value.hpp>"},
+                "<nix/Value.hpp>",
+                "<nix/valid/helper.hpp>"},
         link = {"nix"})
 public class VectorUtils {
 
@@ -397,6 +399,43 @@ public class VectorUtils {
                 values.add(get(i));
             }
             return values;
+        }
+    }
+
+    //--------------------------------------------------
+    // Message vector
+    //--------------------------------------------------
+
+    @Name("std::vector<nix::valid::Message>")
+    public static class MessageVector extends Pointer {
+        static {
+            Loader.load();
+        }
+
+        public MessageVector(List<Message> lst) {
+            allocate(lst.size());
+
+            for (int i = 0; i < lst.size(); i++) {
+                put(i, lst.get(i));
+            }
+        }
+
+        private native void allocate(@Cast("size_t") long n);
+
+        private native long size();
+
+        @Index
+        @ByRef
+        private native Message get(@Cast("size_t") long i);
+
+        private native MessageVector put(@Cast("size_t") long i, Message message);
+
+        public List<Message> getMessages() {
+            ArrayList<Message> messages = new ArrayList<Message>();
+            for (int i = 0; i < size(); i++) {
+                messages.add(get(i));
+            }
+            return messages;
         }
     }
 

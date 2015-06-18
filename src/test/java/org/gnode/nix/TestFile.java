@@ -1,5 +1,7 @@
 package org.gnode.nix;
 
+import org.gnode.nix.valid.Result;
+import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +35,13 @@ public class TestFile {
     public void tearDown() {
         file_open.close();
         file_other.close();
+    }
+
+    @Test
+    public void testValidate() {
+        Result result = Validator.validate(file_open);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getErrors().size() == 0);
     }
 
     @Test

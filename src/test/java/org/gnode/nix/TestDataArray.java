@@ -1,5 +1,7 @@
 package org.gnode.nix;
 
+import org.gnode.nix.valid.Result;
+import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +41,14 @@ public class TestDataArray {
     @After
     public void tearDown() {
         file.close();
+    }
+
+    @Test
+    public void testValidate() {
+        // dims are not equal data dims: 1 warning
+        Result result = Validator.validate(array1);
+        assertTrue(result.getErrors().size() == 1);
+        assertTrue(result.getWarnings().size() == 0);
     }
 
     @Test

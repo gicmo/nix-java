@@ -1,5 +1,7 @@
 package org.gnode.nix;
 
+import org.gnode.nix.valid.Result;
+import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +35,19 @@ public class TestDimension {
     @Test
     public void testValidate() {
         Dimension d = data_array.appendSetDimension();
-    }
 
+        Result result = Validator.validate(d);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getWarnings().size() == 0);
+    }
 
     @Test
     public void testSetValidate() {
         SetDimension d = data_array.appendSetDimension();
+
+        Result result = Validator.validate(d);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getWarnings().size() == 0);
     }
 
     @Test
@@ -49,13 +58,22 @@ public class TestDimension {
         }
 
         RangeDimension d = data_array.appendRangeDimension(ticks);
+
+        Result result = Validator.validate(d);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getWarnings().size() == 0);
     }
 
     @Test
     public void testSampleValidate() {
+
         double samplingInterval = Math.PI;
 
         SampledDimension d = data_array.appendSampledDimension(samplingInterval);
+
+        Result result = Validator.validate(d);
+        assertTrue(result.getErrors().size() == 0);
+        assertTrue(result.getWarnings().size() == 0);
     }
 
     @Test
