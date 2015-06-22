@@ -89,12 +89,12 @@ public class NDSize extends Pointer {
      *
      * @return dimensions array
      */
-    public long[] getData() {
+    public int[] getData() {
         LongPointer lp = data();
         int len = (int) getSize();
-        long[] data = new long[len];
+        int[] data = new int[len];
         for (int i = 0; i < len; i++) {
-            data[i] = lp.get(i);
+            data[i] = (int) lp.get(i);
         }
         return data;
     }
