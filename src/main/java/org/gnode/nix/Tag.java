@@ -4,7 +4,10 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithSources;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -738,6 +741,31 @@ public class Tag extends EntityWithSources {
     public native
     @Cast("bool")
     boolean deleteFeature(@Const @ByRef Feature feature);
+
+    //--------------------------------------------------
+    // Methods for data retrieval
+    //--------------------------------------------------
+
+    /**
+     * Returns the data associated with a certain reference.
+     *
+     * @param referenceIndex The index of the reference of which
+     *                       the data should be returned.
+     * @return the data
+     */
+    public native
+    @ByVal
+    DataView retrieveData(@Cast("size_t") long referenceIndex);
+
+    /**
+     * Returns the data stored in the selected Feature.
+     *
+     * @param featureIndex The index of the requested feature.
+     * @return The data stored in the Feature.
+     */
+    public native
+    @ByVal
+    DataView retrieveFeatureData(@Cast("size_t") long featureIndex);
 
     //--------------------------------------------------
     // Overrides
