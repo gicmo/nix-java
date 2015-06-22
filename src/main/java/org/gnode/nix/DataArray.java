@@ -4,7 +4,10 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithSources;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -645,6 +648,218 @@ public class DataArray extends EntityWithSources {
     @ByVal
     @Cast("nix::DataType")
     int getDataType();
+
+    private native void getDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("void*") byte[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void getDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("void*") short[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void getDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("void*") int[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void getDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("void*") long[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void getDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("void*") float[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void getDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("void*") double[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void setDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("const void*") byte[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void setDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("const void*") short[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void setDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("const void*") int[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void setDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("const void*") long[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void setDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("const void*") float[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    private native void setDataDirect(@Cast("nix::DataType") int dtype,
+                                      @Cast("const void*") double[] data,
+                                      @Const @ByRef NDSize count,
+                                      @Const @ByRef NDSize offset);
+
+    //--------------------------------------------------
+    // public getData methods
+    //--------------------------------------------------
+
+    /**
+     * Get stored data as byte array.
+     *
+     * @param count  dimensions
+     * @param offset offset
+     * @return byte array
+     */
+    public byte[] getDataAsByteArray(NDSize count, NDSize offset) {
+        byte[] data = new byte[(int) count.getElementsProduct()];
+        getDataDirect(DataType.Int8, data, count, offset);
+        return data;
+    }
+
+    /**
+     * Get stored data as short array.
+     *
+     * @param count  dimensions
+     * @param offset offset
+     * @return short array
+     */
+    public short[] getDataAsShortArray(NDSize count, NDSize offset) {
+        short[] data = new short[(int) count.getElementsProduct()];
+        getDataDirect(DataType.Int16, data, count, offset);
+        return data;
+    }
+
+    /**
+     * Get stored data as int array.
+     *
+     * @param count  dimensions
+     * @param offset offset
+     * @return int array
+     */
+    public int[] getDataAsIntArray(NDSize count, NDSize offset) {
+        int[] data = new int[(int) count.getElementsProduct()];
+        getDataDirect(DataType.Int32, data, count, offset);
+        return data;
+    }
+
+    /**
+     * Get stored data as long array.
+     *
+     * @param count  dimensions
+     * @param offset offset
+     * @return long array
+     */
+    public long[] getDataAsLongArray(NDSize count, NDSize offset) {
+        long[] data = new long[(int) count.getElementsProduct()];
+        getDataDirect(DataType.Int64, data, count, offset);
+        return data;
+    }
+
+    /**
+     * Get stored data as float array.
+     *
+     * @param count  dimensions
+     * @param offset offset
+     * @return float array
+     */
+    public float[] getDataAsFloatArray(NDSize count, NDSize offset) {
+        float[] data = new float[(int) count.getElementsProduct()];
+        getDataDirect(DataType.Float, data, count, offset);
+        return data;
+    }
+
+    /**
+     * Get stored data as double array.
+     *
+     * @param count  dimensions
+     * @param offset offset
+     * @return double array
+     */
+    public double[] getDataAsDoubleArray(NDSize count, NDSize offset) {
+        double[] data = new double[(int) count.getElementsProduct()];
+        getDataDirect(DataType.Double, data, count, offset);
+        return data;
+    }
+
+    //--------------------------------------------------
+    // public setData methods
+    //--------------------------------------------------
+
+    /**
+     * Set byte array data.
+     *
+     * @param data   data
+     * @param count  dimensions
+     * @param offset offset
+     */
+    public void setData(byte[] data, NDSize count, NDSize offset) {
+        setDataDirect(DataType.Int8, data, count, offset);
+    }
+
+    /**
+     * Set short array data.
+     *
+     * @param data   data
+     * @param count  dimensions
+     * @param offset offset
+     */
+    public void setData(short[] data, NDSize count, NDSize offset) {
+        setDataDirect(DataType.Int16, data, count, offset);
+    }
+
+    /**
+     * Set integer array data.
+     *
+     * @param data   data
+     * @param count  dimensions
+     * @param offset offset
+     */
+    public void setData(int[] data, NDSize count, NDSize offset) {
+        setDataDirect(DataType.Int32, data, count, offset);
+    }
+
+    /**
+     * Set long array data.
+     *
+     * @param data   data
+     * @param count  dimensions
+     * @param offset offset
+     */
+    public void setData(long[] data, NDSize count, NDSize offset) {
+        setDataDirect(DataType.Int64, data, count, offset);
+    }
+
+    /**
+     * Set float array data.
+     *
+     * @param data   data
+     * @param count  dimensions
+     * @param offset offset
+     */
+    public void setData(float[] data, NDSize count, NDSize offset) {
+        setDataDirect(DataType.Float, data, count, offset);
+    }
+
+    /**
+     * Set double array data.
+     *
+     * @param data   data
+     * @param count  dimensions
+     * @param offset offset
+     */
+    public void setData(double[] data, NDSize count, NDSize offset) {
+        setDataDirect(DataType.Double, data, count, offset);
+    }
 
     //--------------------------------------------------
     // Overrides
