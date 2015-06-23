@@ -714,81 +714,69 @@ public class DataArray extends EntityWithSources {
     //--------------------------------------------------
 
     /**
-     * Get stored data as byte array.
+     * Get stored data. Data is stored in the array passed.
      *
+     * @param data   byte array
      * @param count  dimensions
      * @param offset offset
-     * @return byte array
      */
-    public byte[] getDataAsByteArray(NDSize count, NDSize offset) {
-        byte[] data = new byte[(int) count.getElementsProduct()];
+    public void getData(byte[] data, NDSize count, NDSize offset) {
         getDataDirect(DataType.Int8, data, count, offset);
-        return data;
     }
 
     /**
-     * Get stored data as short array.
+     * Get stored data. Data is stored in the array passed.
      *
+     * @param data   short array
      * @param count  dimensions
      * @param offset offset
-     * @return short array
      */
-    public short[] getDataAsShortArray(NDSize count, NDSize offset) {
-        short[] data = new short[(int) count.getElementsProduct()];
+    public void getData(short[] data, NDSize count, NDSize offset) {
         getDataDirect(DataType.Int16, data, count, offset);
-        return data;
     }
 
     /**
-     * Get stored data as int array.
+     * Get stored data. Data is stored in the array passed.
      *
+     * @param data   int array
      * @param count  dimensions
      * @param offset offset
-     * @return int array
      */
-    public int[] getDataAsIntArray(NDSize count, NDSize offset) {
-        int[] data = new int[(int) count.getElementsProduct()];
+    public void getData(int[] data, NDSize count, NDSize offset) {
         getDataDirect(DataType.Int32, data, count, offset);
-        return data;
     }
 
     /**
-     * Get stored data as long array.
+     * Get stored data. Data is stored in the array passed.
      *
+     * @param data   long array
      * @param count  dimensions
      * @param offset offset
-     * @return long array
      */
-    public long[] getDataAsLongArray(NDSize count, NDSize offset) {
-        long[] data = new long[(int) count.getElementsProduct()];
+    public void getData(long[] data, NDSize count, NDSize offset) {
         getDataDirect(DataType.Int64, data, count, offset);
-        return data;
     }
 
     /**
-     * Get stored data as float array.
+     * Get stored data. Data is stored in the array passed.
      *
+     * @param data   float array
      * @param count  dimensions
      * @param offset offset
-     * @return float array
      */
-    public float[] getDataAsFloatArray(NDSize count, NDSize offset) {
-        float[] data = new float[(int) count.getElementsProduct()];
+    public void getData(float[] data, NDSize count, NDSize offset) {
         getDataDirect(DataType.Float, data, count, offset);
-        return data;
     }
 
     /**
-     * Get stored data as double array.
+     * Get stored data. Data is stored in the array passed.
      *
+     * @param data   double array
      * @param count  dimensions
      * @param offset offset
-     * @return double array
      */
-    public double[] getDataAsDoubleArray(NDSize count, NDSize offset) {
-        double[] data = new double[(int) count.getElementsProduct()];
+    public void getData(double[] data, NDSize count, NDSize offset) {
         getDataDirect(DataType.Double, data, count, offset);
-        return data;
     }
 
     //--------------------------------------------------
