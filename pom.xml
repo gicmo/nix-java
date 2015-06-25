@@ -78,6 +78,7 @@
                                 <classOrPackageName>org.gnode.nix.internal.*</classOrPackageName>
                                 <classOrPackageName>org.gnode.nix.base.*</classOrPackageName>
                                 <classOrPackageName>org.gnode.nix.valid.*</classOrPackageName>
+                                <classOrPackageName>org.gnode.nix.util.*</classOrPackageName>
                             </classOrPackageNames>
                             <copyLibs>true</copyLibs>
                         </configuration>
@@ -114,10 +115,12 @@
                                 <include>org/gnode/nix/internal/*</include>
                                 <include>org/gnode/nix/base/*</include>
                                 <include>org/gnode/nix/valid/*</include>
+                                <include>org/gnode/nix/util/*</include>
                                 <include>org/gnode/nix/${platform}/</include>
                                 <include>org/gnode/nix/internal/${platform}/</include>
                                 <include>org/gnode/nix/base/${platform}/</include>
                                 <include>org/gnode/nix/valid/${platform}/</include>
+                                <include>org/gnode/nix/util/${platform}/</include>
                             </includes>
                         </configuration>
                     </execution>
