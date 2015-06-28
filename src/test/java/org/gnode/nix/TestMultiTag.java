@@ -36,6 +36,20 @@ public class TestMultiTag {
         extents = block.createDataArray("extents_DataArray", "dataArray",
                 DataType.Double, new NDSize(new int[]{0, 0}));
 
+        double[] A = new double[5 * 5];
+        for (int i = 0; i < 5; i++) {
+            A[i * 5 + i] = 100.0 * i;
+        }
+        positions.setDataExtent(new NDSize(new int[]{5, 5}));
+        positions.setData(A, new NDSize(new int[]{5, 5}), new NDSize());
+
+        double[] B = new double[5 * 5];
+        for (int i = 0; i < 5; i++) {
+            B[i * 5 + i] = 100.0 * i;
+        }
+        extents.setDataExtent(new NDSize(new int[]{5, 5}));
+        extents.setData(B, new NDSize(new int[]{5, 5}), new NDSize());
+
         tag = block.createMultiTag("tag_one", "test_tag", positions);
         tag_other = block.createMultiTag("tag_two", "test_tag", positions);
         tag_null = null;
@@ -347,11 +361,25 @@ public class TestMultiTag {
         extents = block.createDataArray("extents_DataArray", "dataArray",
                 DataType.Double, new NDSize(new int[]{0, 0}));
 
+        double[] B = new double[5 * 5];
+        for (int i = 0; i < 5; ++i) {
+            B[i * 5 + i] = 100.0 * i;
+        }
+        extents.setDataExtent(new NDSize(new int[]{5, 5}));
+        extents.setData(B, extents.getDataExtent(), new NDSize());
+
+        double[] A = new double[10 * 10];
+        for (int i = 0; i < 10; ++i) {
+            A[i * 10 + i] = 100.0 * i;
+        }
+        positions.setDataExtent(new NDSize(new int[]{10, 10}));
+        positions.setData(A, positions.getDataExtent(), new NDSize());
+
         tag.setPositions(positions);
         try {
             tag.setExtents(extents);
-        } catch (Exception e) {
             fail();
+        } catch (RuntimeException re) {
         }
 
         tag.removeExtents();
@@ -368,6 +396,19 @@ public class TestMultiTag {
         double[] ticks = {1.2, 2.3, 3.4, 4.5, 6.7};
         String unit = "ms";
 
+        int[] data = new int[2 * 10 * 5];
+        int value;
+        for (int i = 0; i != 2; ++i) {
+            value = 0;
+            for (int j = 0; j != 10; ++j) {
+                for (int k = 0; k != 5; ++k) {
+                    data[i * 10 * 5 + j * 5 + k] = value++;
+                }
+            }
+        }
+        data_array.setDataExtent(new NDSize(new int[]{2, 10, 5}));
+        data_array.setData(data, data_array.getDataExtent(), new NDSize());
+
         SetDimension setDim = data_array.appendSetDimension();
         List<String> labels = Arrays.asList("label_a", "label_b");
         setDim.setLabels(labels);
@@ -378,12 +419,16 @@ public class TestMultiTag {
         RangeDimension rangeDim = data_array.appendRangeDimension(ticks);
         rangeDim.setUnit(unit);
 
+        double[] event_positions = {0.0, 3.0, 3.4, 0.0, 8.0, 2.3};
+        double[] event_extents = {0.0, 6.0, 2.3, 0.0, 3.0, 2.0};
+
         List<String> event_labels = Arrays.asList("event 1", "event 2");
         List<String> dim_labels = Arrays.asList("dim 0", "dim 1", "dim 2");
 
         DataArray event_array = block.createDataArray("positions", "test",
-                DataType.Double, new NDSize(new int[]{0, 0}));
-        //event_array.setData(event_positions);
+                DataType.Double, new NDSize(new int[]{2, 3}));
+        event_array.setData(event_positions, event_array.getDataExtent(), new NDSize());
+
         SetDimension event_set_dim;
         event_set_dim = event_array.appendSetDimension();
         event_set_dim.setLabels(event_labels);
@@ -391,8 +436,9 @@ public class TestMultiTag {
         event_set_dim.setLabels(dim_labels);
 
         DataArray extent_array = block.createDataArray("extents", "test",
-                DataType.Double, new NDSize(new int[]{0, 0}));
-        //extent_array.setData(event_extents);
+                DataType.Double, new NDSize(new int[]{2, 3}));
+        extent_array.setData(event_extents, extent_array.getDataExtent(), new NDSize());
+
         SetDimension extent_set_dim;
         extent_set_dim = extent_array.appendSetDimension();
         extent_set_dim.setLabels(event_labels);
@@ -403,17 +449,17 @@ public class TestMultiTag {
         multi_tag.setExtents(extent_array);
         multi_tag.addReference(data_array);
 
-//        DataView ret_data = multi_tag.retrieveData(0, 0);
-//        NDSize data_size = ret_data.getDataExtent();
-//        assertEquals(data_size.getSize(), 3);
-//        int[] data_size_arr = data_size.getData();
-//        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
-//
-//        try {
-//            multi_tag.retrieveData(1, 0);
-//            fail();
-//        } catch (RuntimeException re) {
-//        }
+        DataView ret_data = multi_tag.retrieveData(0, 0);
+        NDSize data_size = ret_data.getDataExtent();
+        assertEquals(data_size.getSize(), 3);
+        int[] data_size_arr = data_size.getData();
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+
+        try {
+            multi_tag.retrieveData(1, 0);
+            fail();
+        } catch (RuntimeException re) {
+        }
 
         block.deleteMultiTag(multi_tag);
         block.deleteDataArray(data_array);
