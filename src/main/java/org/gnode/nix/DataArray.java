@@ -526,15 +526,24 @@ public class DataArray extends EntityWithSources {
     @Cast("size_t")
     long getDimensionCount();
 
+    private native
+    @Name("getDimension")
+    @ByVal
+    Dimension fetchDimension(@Cast("size_t") long id);
+
     /**
      * Returns the Dimension object for the specified dimension of the data.
      *
      * @param id The index of the respective dimension.
      * @return The dimension object.
      */
-    public native
-    @ByVal
-    Dimension getDimension(@Cast("size_t") long id);
+    public Dimension getDimension(long id) {
+        Dimension dimension = fetchDimension(id);
+        if (dimension.isInitialized()) {
+            return dimension;
+        }
+        return null;
+    }
 
     /**
      * Append a new SetDimension to the list of existing dimension descriptors.
