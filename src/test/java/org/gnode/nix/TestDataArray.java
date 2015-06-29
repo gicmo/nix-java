@@ -111,6 +111,93 @@ public class TestDataArray {
     }
 
     @Test
+    public void testData() {
+
+        double[] A = new double[3 * 4 * 2];
+
+        int values = 0;
+        for (int i = 0; i != 3; ++i)
+            for (int j = 0; j != 4; ++j)
+                for (int k = 0; k != 2; ++k)
+                    A[i * 4 * 2 + j * 2 + k] = values++;
+
+        assertEquals(array1.getDataType(), DataType.Double);
+
+        assertTrue(array1.getDataExtent().equals(new NDSize(new int[]{0, 0, 0})));
+        assertNull(array1.getDimension(1));
+
+        array1.setDataExtent(new NDSize(new int[]{3, 4, 2}));
+        array1.setData(A, array1.getDataExtent(), new NDSize());
+
+        double[] B = new double[(int) array1.getDataExtent().getElementsProduct()];
+        array1.getData(B, array1.getDataExtent(), new NDSize());
+
+        int verify = 0;
+        int errors = 0;
+        for (int i = 0; i != 3; ++i) {
+            for (int j = 0; j != 4; ++j) {
+                for (int k = 0; k != 2; ++k) {
+                    int v = verify++;
+                    if (B[i * 4 * 2 + j * 2 + k] != v) {
+                        errors += 1;
+                    }
+                }
+            }
+        }
+        assertEquals(errors, 0);
+
+        double[] C = new double[5 * 5];
+        for (int i = 0; i != 5; ++i)
+            for (int j = 0; j != 5; ++j)
+                C[i * 5 + j] = 42.0;
+
+        assertTrue(array2.getDataExtent().equals(new NDSize(new int[]{20, 20})));
+
+        array2.setData(C, new NDSize(new int[]{5, 5}), new NDSize());
+        array2.setDataExtent(new NDSize(new int[]{40, 40}));
+        assertTrue(array2.getDataExtent().equals(new NDSize(new int[]{40, 40})));
+
+        double[] D = new double[5 * 5];
+        for (int i = 0; i != 5; ++i)
+            for (int j = 0; j != 5; ++j)
+                D[i * 5 + j] = 42.0;
+
+        array2.setData(D, new NDSize(new int[]{3, 4, 2}), new NDSize());
+
+        double[] E = new double[(int) array2.getDataExtent().getElementsProduct()];
+        array2.getData(E, array2.getDataExtent(), new NDSize());
+
+        for (int i = 0; i != 5; ++i)
+            for (int j = 0; j != 5; ++j)
+                assertTrue(D[i * 5 + j] == E[i * 5 + j]);
+
+        double[] F = new double[(int) array2.getDataExtent().getElementsProduct()];
+        array2.getData(F, array2.getDataExtent(), new NDSize());
+
+        for (int i = 0; i != 5; ++i)
+            for (int j = 0; j != 5; ++j)
+                assertTrue(D[i * 5 + j] == F[i * 5 + j]);
+
+        DataArray da3 = block.createDataArray("direct-vector",
+                "double",
+                DataType.Double,
+                new NDSize(new int[]{5}));
+
+        assertTrue(da3.getDataExtent().equals(new NDSize(new int[]{5})));
+        assertNull(da3.getDimension(1));
+
+        double[] dv = {1.0, 2.0, 3.0, 4.0, 5.0};
+        da3.setData(dv, new NDSize(new int[]{5}), new NDSize());
+
+        double[] dvin = new double[5];
+        da3.getData(dvin, da3.getDataExtent(), new NDSize());
+
+        for (int i = 0; i < 5; i++) {
+            assertTrue(dv[i] == dvin[i]);
+        }
+    }
+
+    @Test
     public void testDimension() {
         List<Dimension> dims = new ArrayList<Dimension>();
         double[] ticks = new double[5];
