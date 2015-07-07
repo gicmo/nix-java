@@ -2,6 +2,7 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.base.ImplContainer;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.VectorUtils;
 
@@ -12,7 +13,7 @@ import java.util.List;
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix")
-public class SetDimension extends Dimension {
+public class SetDimension<T extends SetDimension> extends ImplContainer implements Comparable<T> {
     static {
         Loader.load();
     }
@@ -102,5 +103,17 @@ public class SetDimension extends Dimension {
         } else {
             labels(new None());
         }
+    }
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
+
+    @Override
+    public int compareTo(T dimension) {
+        if (this == dimension) {
+            return 0;
+        }
+        return (int) (this.getIndex() - dimension.getIndex());
     }
 }
