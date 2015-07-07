@@ -6,9 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -31,11 +29,11 @@ public class TestDataArray {
         array1 = block.createDataArray("array_one",
                 "testdata",
                 DataType.Double,
-                new NDSize(new int[]{0, 0, 0}));
+                new NDSize(new int[]{3 * 4 * 2}));
         array2 = block.createDataArray("random",
                 "double",
                 DataType.Double,
-                new NDSize(new int[]{20, 20}));
+                new NDSize(new int[]{5 * 5}));
     }
 
     @After
@@ -100,7 +98,6 @@ public class TestDataArray {
 
         assertEquals(array1.getUnit(), validUnit);
 
-
         try {
             array1.setUnit(null);
         } catch (Exception e) {
@@ -123,14 +120,12 @@ public class TestDataArray {
 
         assertEquals(array1.getDataType(), DataType.Double);
 
-        assertTrue(array1.getDataExtent().equals(new NDSize(new int[]{0, 0, 0})));
         assertNull(array1.getDimension(1));
 
-        array1.setDataExtent(new NDSize(new int[]{3, 4, 2}));
-        array1.setData(A, array1.getDataExtent(), new NDSize());
+        array1.setData(A, new NDSize(new int[]{3 * 4 * 2}), new NDSize());
 
-        double[] B = new double[(int) array1.getDataExtent().getElementsProduct()];
-        array1.getData(B, array1.getDataExtent(), new NDSize());
+        double[] B = new double[3 * 4 * 2];
+        array1.getData(B, new NDSize(new int[]{3 * 4 * 2}), new NDSize());
 
         int verify = 0;
         int errors = 0;
@@ -146,51 +141,30 @@ public class TestDataArray {
         }
         assertEquals(errors, 0);
 
-        double[] C = new double[5 * 5];
-        for (int i = 0; i != 5; ++i)
-            for (int j = 0; j != 5; ++j)
-                C[i * 5 + j] = 42.0;
-
-        assertTrue(array2.getDataExtent().equals(new NDSize(new int[]{20, 20})));
-
-        array2.setData(C, new NDSize(new int[]{5, 5}), new NDSize());
-        array2.setDataExtent(new NDSize(new int[]{40, 40}));
-        assertTrue(array2.getDataExtent().equals(new NDSize(new int[]{40, 40})));
-
         double[] D = new double[5 * 5];
         for (int i = 0; i != 5; ++i)
             for (int j = 0; j != 5; ++j)
                 D[i * 5 + j] = 42.0;
 
-        array2.setData(D, new NDSize(new int[]{3, 4, 2}), new NDSize());
+        array2.setData(D, new NDSize(new int[]{5 * 5}), new NDSize());
 
-        double[] E = new double[(int) array2.getDataExtent().getElementsProduct()];
-        array2.getData(E, array2.getDataExtent(), new NDSize());
+        double[] E = new double[5 * 5];
+        array2.getData(E, new NDSize(new int[]{5 * 5}), new NDSize());
 
         for (int i = 0; i != 5; ++i)
             for (int j = 0; j != 5; ++j)
                 assertTrue(D[i * 5 + j] == E[i * 5 + j]);
-
-        double[] F = new double[(int) array2.getDataExtent().getElementsProduct()];
-        array2.getData(F, array2.getDataExtent(), new NDSize());
-
-        for (int i = 0; i != 5; ++i)
-            for (int j = 0; j != 5; ++j)
-                assertTrue(D[i * 5 + j] == F[i * 5 + j]);
 
         DataArray da3 = block.createDataArray("direct-vector",
                 "double",
                 DataType.Double,
                 new NDSize(new int[]{5}));
 
-        assertTrue(da3.getDataExtent().equals(new NDSize(new int[]{5})));
-        assertNull(da3.getDimension(1));
-
         double[] dv = {1.0, 2.0, 3.0, 4.0, 5.0};
         da3.setData(dv, new NDSize(new int[]{5}), new NDSize());
 
         double[] dvin = new double[5];
-        da3.getData(dvin, da3.getDataExtent(), new NDSize());
+        da3.getData(dvin, new NDSize(new int[]{5}), new NDSize());
 
         for (int i = 0; i < 5; i++) {
             assertTrue(dv[i] == dvin[i]);
@@ -199,7 +173,6 @@ public class TestDataArray {
 
     @Test
     public void testDimension() {
-        List<Dimension> dims = new ArrayList<Dimension>();
         double[] ticks = new double[5];
         double samplingInterval = Math.PI;
 
@@ -219,23 +192,17 @@ public class TestDataArray {
         } catch (RuntimeException re) {
         }
 
-        dims.add(array2.createSampledDimension(1, samplingInterval));
-        dims.add(array2.createSetDimension(2));
-        dims.add(array2.createRangeDimension(3, ticks));
-        dims.add(array2.appendSampledDimension(samplingInterval));
-        dims.add(array2.appendSetDimension());
-        dims.set(3, array2.createRangeDimension(4, ticks));
+        array2.createSampledDimension(1, samplingInterval);
+        array2.createSetDimension(2);
+        array2.createRangeDimension(3, ticks);
+        array2.appendSampledDimension(samplingInterval);
+        array2.appendSetDimension();
+        array2.createRangeDimension(4, ticks);
 
         // have some explicit dimension types
         RangeDimension dim_range = array1.appendRangeDimension(ticks);
         SampledDimension dim_sampled = array1.appendSampledDimension(samplingInterval);
         SetDimension dim_set = array1.appendSetDimension();
-
-        assertTrue(array2.getDimension(dims.get(0).getIndex()).getDimensionType() == DimensionType.Sample);
-        assertTrue(array2.getDimension(dims.get(1).getIndex()).getDimensionType() == DimensionType.Set);
-        assertTrue(array2.getDimension(dims.get(2).getIndex()).getDimensionType() == DimensionType.Range);
-        assertTrue(array2.getDimension(dims.get(3).getIndex()).getDimensionType() == DimensionType.Range);
-        assertTrue(array2.getDimension(dims.get(4).getIndex()).getDimensionType() == DimensionType.Set);
 
         assertTrue(array2.getDimensionCount() == 5);
 
@@ -246,9 +213,7 @@ public class TestDataArray {
         array2.deleteDimension(1);
         array2.deleteDimension(1);
 
-        dims = array2.getDimensions();
         assertTrue(array2.getDimensionCount() == 0);
-        assertTrue(dims.size() == 0);
     }
 
     @Test
