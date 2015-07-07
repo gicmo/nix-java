@@ -249,5 +249,4 @@ public class Util {
                                               double[] output,
                                               @Cast("size_t") long n);
 
-    public static native boolean looksLikeUUID(@StdString String id);
 }
