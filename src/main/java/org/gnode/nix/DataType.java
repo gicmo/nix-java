@@ -1,18 +1,6 @@
 package org.gnode.nix;
 
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.annotation.Namespace;
-import org.bytedeco.javacpp.annotation.Platform;
-
-@Platform(value = "linux",
-        include = {"<nix/DataType.hpp>"},
-        link = {"nix"})
-@Namespace("nix")
 public class DataType {
-
-    static {
-        Loader.load();
-    }
 
     public static final int Bool = 0;
     public static final int Char = 1;
