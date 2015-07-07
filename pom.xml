@@ -219,6 +219,18 @@
                     <version>${project.version}</version>
                     <classifier>linux-x86_64</classifier>
                 </dependency>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
+                    <classifier>windows-x86</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
+                    <classifier>windows-x86_64</classifier>
+                </dependency>
             </dependencies>
         </profile>
 
@@ -233,6 +245,18 @@
                 <os.name>linux</os.name>
             </properties>
         </profile>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <os.name>windows</os.name>
+            </properties>
+        </profile>
+
         <profile>
             <id>amd64</id>
             <activation>
