@@ -95,6 +95,10 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
     @ByVal
     RangeDimension asRangeDimension();
 
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
+
     @Override
     public int compareTo(T dimension) {
         if (this == dimension) {
