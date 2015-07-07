@@ -11,9 +11,10 @@ import org.gnode.nix.internal.VectorUtils;
 import java.util.Date;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/MultiTag.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/MultiTag.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class MultiTag extends EntityWithSources {
     static {
@@ -26,7 +27,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Constructor that creates an uninitialized MultiTag.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized MultiTag will throw a {@link java.lang.RuntimeException}
      * exception.
      */
@@ -191,7 +192,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param metadata The {@link Section} that should be associated
@@ -203,7 +204,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param id The id of the {@link Section} that should be associated
@@ -306,7 +307,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Set all sources associations for this entity.
-     * <p/>
+     * <p>
      * All previously existing associations will be overwritten.
      *
      * @param sources A vector with all sources.
@@ -317,7 +318,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Associate a new source with the entity.
-     * <p/>
+     * <p>
      * If a source with the given id already is associated with the
      * entity, the call will have no effect.
      *
@@ -327,7 +328,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Associate a new source with the entity.
-     * <p/>
+     * <p>
      * Calling this method will have no effect if the source is already associated to this entity.
      *
      * @param source The source to add.
@@ -336,7 +337,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Remove a source from the list of associated sources.
-     * <p/>
+     * <p>
      * This method just removes the association between the entity and the source.
      * The source itself will not be deleted from the file.
      *
@@ -349,7 +350,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Remove a source from the list of associated sources.
-     * <p/>
+     * <p>
      * This method just removes the association between the entity and the source.
      * The source itself will not be deleted from the file.
      *
@@ -371,7 +372,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Getter for the positions of a tag.
-     * <p/>
+     * <p>
      * The positions of a multi tag are defined in a DataArray. This array has to define a set of
      * origin vectors, each defining a point inside the referenced data or the beginning of a
      * region of interest.
@@ -420,7 +421,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Getter for the extents of a tag.
-     * <p/>
+     * <p>
      * The extents of a multi tag are defined in an associated DataArray. This array has to define a set of
      * extent vectors, each defining the size of the corresponding region of interest.
      *
@@ -456,7 +457,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Deleter for the reference to the extents DataArray.
-     * <p/>
+     * <p>
      * This function only removes the association between the tag and the data array,
      * but does not delete the data array itself.
      */
@@ -470,7 +471,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Gets for the units of the tag.
-     * <p/>
+     * <p>
      * The units are applied to all values for position and extent in order to calculate the right
      * position vectors in referenced data arrays.
      *
@@ -486,7 +487,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Setter for the units of a tag.
-     * <p/>
+     * <p>
      * All previously defined units will be replaced by the ones passed
      * to the units parameter.
      *
@@ -588,7 +589,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Remove a DataArray from the list of referenced data.
-     * <p/>
+     * <p>
      * This function only removes the association between the tag and the data array,
      * but does not delete the data array itself.
      *
@@ -601,7 +602,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Remove a DataArray from the list of referenced data.
-     * <p/>
+     * <p>
      * This function only removes the association between the tag and the data array,
      * but does not delete the data array itself.
      *
@@ -619,7 +620,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Get all referenced data arrays associated with the tag.
-     * <p/>
+     * <p>
      * Always uses filter that accepts all sources.
      *
      * @return A vector containing all filtered DataArray entities.
@@ -632,7 +633,7 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Setter for all referenced DataArrays.
-     * <p/>
+     * <p>
      * Previously referenced data will be replaced.
      * removed.
      *

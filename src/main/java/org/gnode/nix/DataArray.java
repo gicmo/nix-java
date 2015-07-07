@@ -12,9 +12,10 @@ import org.gnode.nix.internal.VectorUtils;
 import java.util.Date;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/DataArray.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/DataArray.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class DataArray extends EntityWithSources {
     static {
@@ -27,7 +28,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Constructor that creates an uninitialized DataArray.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized data array will throw a {@link java.lang.RuntimeException}
      * exception. The following code illustrates how to check if a data array is initialized:
      */
@@ -192,7 +193,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param metadata The {@link Section} that should be associated
@@ -204,7 +205,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param id The id of the {@link Section} that should be associated
@@ -307,7 +308,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Set all sources associations for this entity.
-     * <p/>
+     * <p>
      * All previously existing associations will be overwritten.
      *
      * @param sources A vector with all sources.
@@ -318,7 +319,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Associate a new source with the entity.
-     * <p/>
+     * <p>
      * If a source with the given id already is associated with the
      * entity, the call will have no effect.
      *
@@ -328,7 +329,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Associate a new source with the entity.
-     * <p/>
+     * <p>
      * Calling this method will have no effect if the source is already associated to this entity.
      *
      * @param source The source to add.
@@ -337,7 +338,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Remove a source from the list of associated sources.
-     * <p/>
+     * <p>
      * This method just removes the association between the entity and the source.
      * The source itself will not be deleted from the file.
      *
@@ -350,7 +351,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Remove a source from the list of associated sources.
-     * <p/>
+     * <p>
      * This method just removes the association between the entity and the source.
      * The source itself will not be deleted from the file.
      *
@@ -440,7 +441,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Returns the expansion origin of the calibration polynom.
-     * <p/>
+     * <p>
      * The expansion origin is 0.0 by default.
      *
      * @return The expansion origin.
@@ -468,7 +469,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Set the polynom coefficients for the calibration.
-     * <p/>
+     * <p>
      * By default this is set to a two element vector of [0.0, 1.0] for a linear calibration
      * with zero offset.
      *
@@ -516,7 +517,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Returns the number of dimensions stored in the DataArray.
-     * <p/>
+     * <p>
      * This matches the dimensionality of the data stored in this property.
      *
      * @return The number of dimensions.
@@ -576,7 +577,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Create a new SetDimension at a specified dimension index.
-     * <p/>
+     * <p>
      * This adds a new dimension descriptor of the type {@link SetDimension} that describes the dimension
      * of the data at the specified index.
      *
@@ -589,7 +590,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Create a new RangeDimension at a specified dimension index.
-     * <p/>
+     * <p>
      * This adds a new dimension descriptor of the type {@link RangeDimension} that describes the dimension
      * of the data at the specified index.
      *
@@ -603,7 +604,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Create a new SampledDimension at a specified dimension index.
-     * <p/>
+     * <p>
      * This adds a new dimension descriptor of the type {@link SampledDimension} that describes the dimension
      * of the data at the specified index.
      *

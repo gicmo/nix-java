@@ -11,9 +11,10 @@ import org.gnode.nix.valid.Result;
 import java.util.Date;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/File.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/File.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class File extends ImplContainer implements Comparable<File> {
 
@@ -27,7 +28,7 @@ public class File extends ImplContainer implements Comparable<File> {
 
     /**
      * Constructor that creates an uninitialized File.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized file will throw a {@link java.lang.RuntimeException}.
      */
     public File() {
@@ -287,7 +288,7 @@ public class File extends ImplContainer implements Comparable<File> {
 
     /**
      * Get all root sections within this file.
-     * <p/>
+     * <p>
      * The parameter filter can be used to filter sections by various
      * criteria. By default a filter is used that accepts all sections.
      *
@@ -348,7 +349,7 @@ public class File extends ImplContainer implements Comparable<File> {
 
     /**
      * Read the NIX format version from the file.
-     * <p/>
+     * <p>
      * The version consist of three integers standing for the major, minor and patch version of the nix format.
      *
      * @return The format version of the NIX file.

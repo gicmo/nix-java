@@ -7,9 +7,10 @@ import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/Dimensions.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class SetDimension extends Dimension {
     static {

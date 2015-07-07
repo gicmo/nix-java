@@ -10,9 +10,10 @@ import org.gnode.nix.internal.VectorUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/util/util.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/util/util.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix::util")
 public class Util {
     static {
@@ -109,7 +110,7 @@ public class Util {
 
     /**
      * Checks if the passed string is a valid combination of SI units.
-     * <p/>
+     * <p>
      * For example mV^2*Hz^-1. Method accepts only the * notation.
      *
      * @param unit A string that should be tested

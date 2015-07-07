@@ -5,9 +5,10 @@ import org.bytedeco.javacpp.LongPointer;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
-@Platform(value = "linux",
-        include = {"<nix/NDSize.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/NDSize.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 @Name("NDSizeBase<nix::ndsize_t>")
 public class NDSize extends Pointer {

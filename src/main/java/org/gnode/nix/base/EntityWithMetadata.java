@@ -1,9 +1,12 @@
 package org.gnode.nix.base;
 
 import org.bytedeco.javacpp.annotation.Platform;
+import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.Section;
 
-@Platform(value = "linux")
+@Properties(value = {
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 public abstract class EntityWithMetadata extends NamedEntity {
 
     /**

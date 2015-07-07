@@ -4,8 +4,8 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.*;
 
-@Platform(value = "linux",
-        include = {"<nix/valid/validate.hpp>",
+@Properties(value = {
+        @Platform(include = {"<nix/valid/validate.hpp>",
                 "<nix/Block.hpp>",
                 "<nix/DataArray.hpp>",
                 "<nix/Dimensions.hpp>",
@@ -15,8 +15,9 @@ import org.gnode.nix.*;
                 "<nix/Property.hpp>",
                 "<nix/Section.hpp>",
                 "<nix/Source.hpp>",
-                "<nix/Tag.hpp>"},
-        link = {"nix"})
+                "<nix/Tag.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix::valid")
 public class Validator {
     static {
@@ -25,7 +26,7 @@ public class Validator {
 
     /**
      * Block entity validator
-     * <p/>
+     * <p>
      * Function taking a Block entity and returning {@link Result} object
      *
      * @param block Block entity
@@ -38,7 +39,7 @@ public class Validator {
 
     /**
      * DataArray entity validator
-     * <p/>
+     * <p>
      * Function taking a DataArray entity and returning {@link Result}
      * object
      *
@@ -52,7 +53,7 @@ public class Validator {
 
     /**
      * Tag entity validator
-     * <p/>
+     * <p>
      * Function taking a Tag entity and returning {@link Result}
      * object
      *
@@ -66,7 +67,7 @@ public class Validator {
 
     /**
      * Property entity validator
-     * <p/>
+     * <p>
      * Function taking a Property entity and returning {@link Result}
      * object
      *
@@ -80,7 +81,7 @@ public class Validator {
 
     /**
      * MultiTag entity validator
-     * <p/>
+     * <p>
      * Function taking a MultiTag entity and returning {@link Result} object
      *
      * @param multiTag MultiTag entity
@@ -93,7 +94,7 @@ public class Validator {
 
     /**
      * Dimension entity validator
-     * <p/>
+     * <p>
      * Function taking a Dimension entity and returning {@link Result}
      * object
      *
@@ -107,7 +108,7 @@ public class Validator {
 
     /**
      * RangeDimension entity validator
-     * <p/>
+     * <p>
      * Function taking a RangeDimension entity and returning {@link Result}
      * object
      *
@@ -121,7 +122,7 @@ public class Validator {
 
     /**
      * SampledDimension entity validator
-     * <p/>
+     * <p>
      * Function taking a SampledDimension entity and returning
      * {@link Result} object
      *
@@ -135,7 +136,7 @@ public class Validator {
 
     /**
      * SetDimension entity validator
-     * <p/>
+     * <p>
      * Function taking a SetDimension entity and returning {@link Result}
      * object
      *
@@ -149,7 +150,7 @@ public class Validator {
 
     /**
      * Feature entity validator
-     * <p/>
+     * <p>
      * Function taking a Feature entity and returning {@link Result} object
      *
      * @param feature Feature entity
@@ -162,7 +163,7 @@ public class Validator {
 
     /**
      * Section entity validator
-     * <p/>
+     * <p>
      * Function taking a Section entity and returning {@link Result} object
      *
      * @param section Section entity
@@ -175,7 +176,7 @@ public class Validator {
 
     /**
      * Source entity validator
-     * <p/>
+     * <p>
      * Function taking a Source entity and returning {@link Result} object
      *
      * @param source Source entity
@@ -188,7 +189,7 @@ public class Validator {
 
     /**
      * File entity validator
-     * <p/>
+     * <p>
      * Function taking a File entity and returning {@link Result} object
      *
      * @param file File entity

@@ -8,9 +8,10 @@ import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/valid/result.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/valid/result.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix::valid")
 @NoOffset
 public class Result extends Pointer {

@@ -3,14 +3,18 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.EntityWithMetadata;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/Block.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/Block.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class Block extends EntityWithMetadata {
 
@@ -20,7 +24,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Constructor that creates an uninitialized Block.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized block will throw a {@link java.lang.RuntimeException}.
      */
     public Block() {
@@ -184,7 +188,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param metadata The {@link Section} that should be associated
@@ -196,7 +200,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param id The id of the {@link Section} that should be associated
@@ -325,7 +329,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a root source.
-     * <p/>
+     * <p>
      * This will also delete all child sources of this root source from the file.
      * The deletion of a source can't be undone.
      *
@@ -338,7 +342,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a root source.
-     * <p/>
+     * <p>
      * This will also delete all child sources of this root source from the file.
      * The deletion of a source can't be undone.
      *
@@ -462,7 +466,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a data array from this block.
-     * <p/>
+     * <p>
      * This deletes a data array and all its dimensions from the block and the file.
      * The deletion can't be undone.
      *
@@ -475,7 +479,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a data array from this block.
-     * <p/>
+     * <p>
      * This deletes a data array and all its dimensions from the block and the file.
      * The deletion can't be undone.
      *
@@ -595,7 +599,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a tag from the block.
-     * <p/>
+     * <p>
      * Deletes a tag with all its features from the block and the file.
      * The deletion can't be undone.
      *
@@ -608,7 +612,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a tag from the block.
-     * <p/>
+     * <p>
      * Deletes a tag with all its features from the block and the file.
      * The deletion can't be undone.
      *
@@ -729,7 +733,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a multi tag from the block.
-     * <p/>
+     * <p>
      * Deletes a multi tag and all its features from the block and the file.
      * The deletion can't be undone.
      *
@@ -742,7 +746,7 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Deletes a multi tag from the block.
-     * <p/>
+     * <p>
      * Deletes a multi tag and all its features from the block and the file.
      * The deletion can't be undone.
      *

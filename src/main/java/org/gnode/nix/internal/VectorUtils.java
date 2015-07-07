@@ -11,8 +11,8 @@ import org.gnode.nix.valid.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {
+@Properties(value = {
+        @Platform(include = {
                 "<vector>",
                 "<nix/Block.hpp>",
                 "<nix/DataArray.hpp>",
@@ -25,7 +25,9 @@ import java.util.List;
                 "<nix/Tag.hpp>",
                 "<nix/Value.hpp>",
                 "<nix/valid/helper.hpp>"},
-        link = {"nix"})
+                link = {"nix"}),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 public class VectorUtils {
 
     static {
