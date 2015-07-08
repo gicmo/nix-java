@@ -28,7 +28,7 @@ public class TestTag {
         // precision of time_t is in seconds hence (millis / 1000) * 1000
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
-        file = File.open("test_multiTag.h5", FileMode.Overwrite);
+        file = File.open("test_tag.h5", FileMode.Overwrite);
         block = file.createBlock("block", "dataset");
 
         List<String> array_names = Arrays.asList("data_array_a", "data_array_b", "data_array_c",
