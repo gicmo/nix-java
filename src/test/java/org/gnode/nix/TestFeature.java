@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 public class TestFeature {
@@ -17,8 +19,7 @@ public class TestFeature {
 
     @Before
     public void setUp() {
-
-        file = File.open("test_feature.h5", FileMode.Overwrite);
+        file = File.open("test_Feature_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
         block = file.createBlock("featureTest", "test");
 
         data_array = block.createDataArray("featureTest", "Test",
@@ -29,8 +30,14 @@ public class TestFeature {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.deleteBlock(block.getId());
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test

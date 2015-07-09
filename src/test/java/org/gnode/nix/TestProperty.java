@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -26,7 +27,7 @@ public class TestProperty {
         // precision of time_t is in seconds hence (millis / 1000) * 1000
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
-        file = File.open("test_property.h5", FileMode.Overwrite);
+        file = File.open("test_Property_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
 
         section = file.createSection("cool section", "metadata");
         int_dummy = new Value(10);
@@ -38,7 +39,13 @@ public class TestProperty {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test

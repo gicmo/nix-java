@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +26,7 @@ public class TestDataAccess {
 
     @Before
     public void setUp() {
-        file = File.open("test_dataAccess.h5", FileMode.Overwrite);
+        file = File.open("test_DataAccess_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
         block = file.createBlock("dimensionTest", "test");
         data_array = block.createDataArray("dimensionTest",
                 "test",
@@ -105,7 +106,13 @@ public class TestDataAccess {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test

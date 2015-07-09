@@ -6,10 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +25,7 @@ public class TestMultiTag {
         // precision of time_t is in seconds hence (millis / 1000) * 1000
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
-        file = File.open("test_multiTag.h5", FileMode.Overwrite);
+        file = File.open("test_MultiTag_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
         block = file.createBlock("block", "dataset");
 
         positions = block.createDataArray("positions_DataArray", "dataArray",
@@ -59,9 +56,15 @@ public class TestMultiTag {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.deleteBlock(block.getId());
         file.deleteSection(section.getId());
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test

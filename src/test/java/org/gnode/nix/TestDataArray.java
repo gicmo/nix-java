@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +24,7 @@ public class TestDataArray {
         // precision of time_t is in seconds hence (millis / 1000) * 1000
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
-        file = File.open("test_DataArray.h5", FileMode.Overwrite);
+        file = File.open("test_DataArray_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
 
         block = file.createBlock("block_one", "dataset");
         array1 = block.createDataArray("array_one",
@@ -38,7 +39,13 @@ public class TestDataArray {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test

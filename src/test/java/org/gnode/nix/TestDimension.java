@@ -4,11 +4,11 @@ import org.gnode.nix.valid.Result;
 import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -20,7 +20,7 @@ public class TestDimension {
 
     @Before
     public void setUp() {
-        file = File.open("test_dimension.h5", FileMode.Overwrite);
+        file = File.open("test_Dimension_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
 
         block = file.createBlock("dimensionTest", "test");
         data_array = block.createDataArray("dimensionTest", "Test",
@@ -29,8 +29,14 @@ public class TestDimension {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.deleteBlock(block.getId());
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test
