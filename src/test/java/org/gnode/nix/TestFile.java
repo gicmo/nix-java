@@ -24,23 +24,19 @@ public class TestFile {
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
         file_open = File.open("test_File_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
-        file_other = File.open("test_file_other.h5", FileMode.Overwrite);
         file_null = null;
     }
 
     @After
     public void tearDown() {
         String location1 = file_open.getLocation();
-        String location2 = file_other.getLocation();
 
         file_open.close();
-        file_other.close();
 
         // delete file
         java.io.File f1 = new java.io.File(location1);
         f1.delete();
-        java.io.File f2 = new java.io.File(location2);
-        f2.delete();
+
     }
 
     @Test
@@ -57,7 +53,10 @@ public class TestFile {
 
     @Test
     public void testLocation() {
+        file_other = File.open("test_file_other.h5", FileMode.Overwrite);
         assertEquals(file_other.getLocation(), "test_file_other.h5");
+        java.io.File f2 = new java.io.File(file_other.getLocation());
+        f2.delete();
     }
 
     @Test
