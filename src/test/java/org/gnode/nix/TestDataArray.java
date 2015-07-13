@@ -1,5 +1,6 @@
 package org.gnode.nix;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.gnode.nix.valid.Result;
 import org.gnode.nix.valid.Validator;
 import org.junit.After;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestDataArray {
 
     private File file;

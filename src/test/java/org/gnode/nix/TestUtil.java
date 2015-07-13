@@ -1,5 +1,6 @@
 package org.gnode.nix;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.gnode.nix.util.Util;
 import org.junit.After;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestUtil {
 
     @Before

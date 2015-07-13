@@ -1,5 +1,6 @@
 package org.gnode.nix;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.gnode.nix.valid.Result;
 import org.gnode.nix.valid.Validator;
 import org.junit.After;
@@ -10,6 +11,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestSection {
 
     private File file;

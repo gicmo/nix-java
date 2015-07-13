@@ -1,6 +1,7 @@
 package org.gnode.nix;
 
 
+import net.jcip.annotations.NotThreadSafe;
 import org.gnode.nix.util.DataAccess;
 import org.junit.After;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestDataAccess {
 
     private File file;
