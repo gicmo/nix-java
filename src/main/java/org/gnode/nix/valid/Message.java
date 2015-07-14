@@ -4,9 +4,10 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
-@Platform(value = "linux",
-        include = {"<nix/valid/helper.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/valid/helper.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix::valid")
 public class Message extends Pointer {
     static {

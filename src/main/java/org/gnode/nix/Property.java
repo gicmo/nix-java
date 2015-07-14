@@ -8,9 +8,10 @@ import org.gnode.nix.internal.*;
 import java.util.Date;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/Property.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/Property.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class Property extends Entity implements Comparable<Property> {
     static {

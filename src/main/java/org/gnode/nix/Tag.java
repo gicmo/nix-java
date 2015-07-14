@@ -12,9 +12,10 @@ import org.gnode.nix.internal.VectorUtils;
 import java.util.Date;
 import java.util.List;
 
-@Platform(value = "linux",
-        include = {"<nix/Tag.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/Tag.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class Tag extends EntityWithSources {
     static {
@@ -27,7 +28,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Constructor that creates an uninitialized Tag.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized Tag will throw a {@link RuntimeException}
      * exception.
      */
@@ -192,7 +193,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param metadata The {@link Section} that should be associated
@@ -204,7 +205,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param id The id of the {@link Section} that should be associated
@@ -307,7 +308,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Set all sources associations for this entity.
-     * <p/>
+     * <p>
      * All previously existing associations will be overwritten.
      *
      * @param sources A vector with all sources.
@@ -318,7 +319,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Associate a new source with the entity.
-     * <p/>
+     * <p>
      * If a source with the given id already is associated with the
      * entity, the call will have no effect.
      *
@@ -328,7 +329,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Associate a new source with the entity.
-     * <p/>
+     * <p>
      * Calling this method will have no effect if the source is already associated to this entity.
      *
      * @param source The source to add.
@@ -337,7 +338,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Remove a source from the list of associated sources.
-     * <p/>
+     * <p>
      * This method just removes the association between the entity and the source.
      * The source itself will not be deleted from the file.
      *
@@ -350,7 +351,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Remove a source from the list of associated sources.
-     * <p/>
+     * <p>
      * This method just removes the association between the entity and the source.
      * The source itself will not be deleted from the file.
      *
@@ -372,7 +373,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Gets the units of the tag.
-     * <p/>
+     * <p>
      * The units are applied to all values for position and extent in order to calculate the
      * right position vectors in referenced data arrays.
      *
@@ -406,7 +407,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Gets the position of a tag.
-     * <p/>
+     * <p>
      * The position is a vector that points into referenced DataArrays.
      *
      * @return The position vector list.
@@ -430,7 +431,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Gets the extent of a tag.
-     * <p/>
+     * <p>
      * Given a specified position vector, the extent vector defined the size
      * of a region of interest in the referenced DataArray entities.
      *
@@ -544,7 +545,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Remove a DataArray from the list of referenced data of the tag.
-     * <p/>
+     * <p>
      * This method just removes the association between the data array and the
      * tag, the data array itself will not be removed from the file.
      *
@@ -557,7 +558,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Remove a DataArray from the list of referenced data of the tag.
-     * <p/>
+     * <p>
      * This method just removes the association between the data array and the
      * tag, the data array itself will not be removed from the file.
      *
@@ -574,7 +575,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Get all referenced data arrays associated with this tag.
-     * <p/>
+     * <p>
      * Always uses filter that accepts all sources.
      *
      * @return The filtered dimensions as a vector
@@ -587,7 +588,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Sets all referenced DataArray entities.
-     * <p/>
+     * <p>
      * Previously referenced data arrays, that are not in the references vector
      * will be removed.
      *

@@ -1,11 +1,13 @@
 package org.gnode.nix;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestValue {
 
     @Before

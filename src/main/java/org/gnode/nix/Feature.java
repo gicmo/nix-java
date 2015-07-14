@@ -7,9 +7,10 @@ import org.gnode.nix.internal.DateUtils;
 
 import java.util.Date;
 
-@Platform(value = "linux",
-        include = {"<nix/Feature.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/Feature.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class Feature extends Entity {
     static {
@@ -22,7 +23,7 @@ public class Feature extends Entity {
 
     /**
      * Constructor that creates an uninitialized Feature.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized feature will throw a {@link RuntimeException}.
      */
     public Feature() {

@@ -1,15 +1,18 @@
 package org.gnode.nix.base;
 
 import org.bytedeco.javacpp.annotation.Platform;
+import org.bytedeco.javacpp.annotation.Properties;
 
 import java.util.Date;
 
-@Platform(value = "linux")
+@Properties(value = {
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 public abstract class Entity extends ImplContainer {
 
     /**
      * Getter for the id of the entity.
-     * <p/>
+     * <p>
      * The id is generated at creation time of an entity. It contains
      * a randomly generated sequence of characters with low collision
      * probability.

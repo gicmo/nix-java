@@ -1,5 +1,6 @@
 package org.gnode.nix;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.gnode.nix.valid.Result;
 import org.gnode.nix.valid.Validator;
 import org.junit.After;
@@ -8,9 +9,11 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestDimension {
 
     private File file;
@@ -19,7 +22,7 @@ public class TestDimension {
 
     @Before
     public void setUp() {
-        file = File.open("test_dimension.h5", FileMode.Overwrite);
+        file = File.open("test_Dimension_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
 
         block = file.createBlock("dimensionTest", "test");
         data_array = block.createDataArray("dimensionTest", "Test",
@@ -28,13 +31,19 @@ public class TestDimension {
 
     @After
     public void tearDown() {
+        String location = file.getLocation();
+
         file.deleteBlock(block.getId());
         file.close();
+
+        // delete file
+        java.io.File f = new java.io.File(location);
+        f.delete();
     }
 
     @Test
     public void testValidate() {
-        Dimension d = data_array.appendSetDimension();
+        SetDimension d = data_array.appendSetDimension();
 
         Result result = Validator.validate(d);
         assertTrue(result.getErrors().size() == 0);
@@ -78,7 +87,7 @@ public class TestDimension {
 
     @Test
     public void testIndex() {
-        Dimension sd = data_array.appendSetDimension();
+        SetDimension sd = data_array.appendSetDimension();
         assertTrue(data_array.getDimensionCount() == 1 && sd.getIndex() == 1);
         data_array.deleteDimension(sd.getIndex());
         assertEquals(data_array.getDimensionCount(), 0);
@@ -90,11 +99,9 @@ public class TestDimension {
         String other_label = "anotherLabel";
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
 
-        SampledDimension sd;
-        sd = d.asSampledDimension();
         sd.setLabel(label);
         assertEquals(sd.getLabel(), label);
         sd.setLabel(other_label);
@@ -108,7 +115,7 @@ public class TestDimension {
 
         assertNull(sd.getLabel());
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -117,11 +124,8 @@ public class TestDimension {
         String validUnit = "mV^2";
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
-
-        SampledDimension sd;
-        sd = d.asSampledDimension();
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
 
         try {
             sd.setUnit(invalidUnit);
@@ -144,7 +148,7 @@ public class TestDimension {
         }
 
         assertNull(sd.getUnit());
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -153,11 +157,9 @@ public class TestDimension {
         double invalid_sampling_interval = 0.0;
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
 
-        SampledDimension sd;
-        sd = d.asSampledDimension();
         assertTrue(sd.getSamplingInterval() == Math.PI);
 
         try {
@@ -179,7 +181,7 @@ public class TestDimension {
 
         assertTrue(sd.getSamplingInterval() == samplingInterval);
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -187,11 +189,8 @@ public class TestDimension {
         double offset = 1.0;
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
-
-        SampledDimension sd;
-        sd = d.asSampledDimension();
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
 
         try {
             sd.setOffset(offset);
@@ -209,7 +208,7 @@ public class TestDimension {
 
         assertTrue(sd.getOffset() == 0.0);
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -217,11 +216,8 @@ public class TestDimension {
         double offset = 1.0;
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
-
-        SampledDimension sd;
-        sd = d.asSampledDimension();
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
 
         try {
             sd.getIndexOf(-3.14);
@@ -255,7 +251,7 @@ public class TestDimension {
         assertTrue(sd.getIndexOf(4.28) == 1);
         assertTrue(sd.getIndexOf(7.28) == 2);
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -263,12 +259,8 @@ public class TestDimension {
         double offset = 1.0;
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
-
-        SampledDimension sd;
-        sd = d.asSampledDimension();
-
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
         sd.setOffset(offset);
         assertTrue(sd.getPositionAt(0) == offset);
         assertTrue(200 * samplingInterval + offset ==
@@ -281,7 +273,7 @@ public class TestDimension {
                         sd.getPositionAt(200)
         );
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -289,11 +281,8 @@ public class TestDimension {
         double offset = 1.0;
         double samplingInterval = Math.PI;
 
-        Dimension d = data_array.appendSampledDimension(samplingInterval);
-        assertEquals(d.getDimensionType(), DimensionType.Sample);
-
-        SampledDimension sd;
-        sd = d.asSampledDimension();
+        SampledDimension sd = data_array.appendSampledDimension(samplingInterval);
+        assertEquals(sd.getDimensionType(), DimensionType.Sample);
         sd.setOffset(offset);
 
         List<Double> axis = sd.getAxis(100);
@@ -308,7 +297,7 @@ public class TestDimension {
         assertTrue(109 * samplingInterval + offset ==
                 axis.get(axis.size() - 1));
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -316,11 +305,8 @@ public class TestDimension {
         List<String> labels = Arrays.asList("label_a", "label_b", "label_c", "label_d", "label_e");
         List<String> new_labels = Arrays.asList("new label_a", "new label_b", "new label_c");
 
-        Dimension d = data_array.appendSetDimension();
-        assertEquals(d.getDimensionType(), DimensionType.Set);
-
-        SetDimension sd;
-        sd = d.asSetDimension();
+        SetDimension sd = data_array.appendSetDimension();
+        assertEquals(sd.getDimensionType(), DimensionType.Set);
 
         assertNotNull(sd);
 
@@ -342,7 +328,7 @@ public class TestDimension {
         retrieved_labels = sd.getLabels();
         assertEquals(0, retrieved_labels.size());
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(sd.getIndex());
     }
 
     @Test
@@ -354,11 +340,9 @@ public class TestDimension {
             ticks[i] = Math.PI;
         }
 
-        Dimension d = data_array.appendRangeDimension(ticks);
-        assertEquals(d.getDimensionType(), DimensionType.Range);
+        RangeDimension rd = data_array.appendRangeDimension(ticks);
+        assertEquals(rd.getDimensionType(), DimensionType.Range);
 
-        RangeDimension rd;
-        rd = d.asRangeDimension();
         rd.setLabel(label);
         assertEquals(rd.getLabel(), label);
         rd.setLabel(other_label);
@@ -366,7 +350,7 @@ public class TestDimension {
         rd.setLabel(null);
         assertNull(rd.getLabel());
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(rd.getIndex());
     }
 
     @Test
@@ -378,11 +362,8 @@ public class TestDimension {
         for (int i = 0; i < 5; i++) {
             ticks[i] = Math.PI;
         }
-        Dimension d = data_array.appendRangeDimension(ticks);
-        assertEquals(d.getDimensionType(), DimensionType.Range);
-
-        RangeDimension rd;
-        rd = d.asRangeDimension();
+        RangeDimension rd = data_array.appendRangeDimension(ticks);
+        assertEquals(rd.getDimensionType(), DimensionType.Range);
 
         try {
             rd.setUnit(invalidUnit);
@@ -406,7 +387,7 @@ public class TestDimension {
 
         assertNull(rd.getUnit());
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(rd.getIndex());
     }
 
     @Test
@@ -415,11 +396,8 @@ public class TestDimension {
         double[] new_ticks = {-100.0, -10.0, 0.0, 10.0, 100.0};
         double[] unordered_ticks = {-20.0, -100.0, 10.0, -10.0, 0.0};
         double[] double_ticks = {-20.0, -10.0, 10.0, -10.0, -20.0};
-        Dimension d = data_array.appendRangeDimension(ticks);
-        assertEquals(d.getDimensionType(), DimensionType.Range);
-
-        RangeDimension rd;
-        rd = d.asRangeDimension();
+        RangeDimension rd = data_array.appendRangeDimension(ticks);
+        assertEquals(rd.getDimensionType(), DimensionType.Range);
 
         assertTrue(rd.getTicks().size() == ticks.length);
         List<Double> retrieved_ticks = rd.getTicks();
@@ -445,17 +423,14 @@ public class TestDimension {
             assertTrue(new_ticks[i] == retrieved_ticks.get(i));
         }
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(rd.getIndex());
     }
 
     @Test
     public void testRangeDimIndexOf() {
         double[] ticks = {-100.0, -10.0, 0.0, 10.0, 100.0};
-        Dimension d = data_array.appendRangeDimension(ticks);
-        assertEquals(d.getDimensionType(), DimensionType.Range);
-
-        RangeDimension rd;
-        rd = d.asRangeDimension();
+        RangeDimension rd = data_array.appendRangeDimension(ticks);
+        assertEquals(rd.getDimensionType(), DimensionType.Range);
 
         assertTrue(rd.getIndexOf(-100.) == 0);
         assertTrue(rd.getIndexOf(-50.) == 1);
@@ -464,17 +439,14 @@ public class TestDimension {
         assertTrue(rd.getIndexOf(257.28) == 4);
         assertTrue(rd.getIndexOf(-257.28) == 0);
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(rd.getIndex());
     }
 
     @Test
     public void testRangeDimTickAt() {
         double[] ticks = {-100.0, -10.0, 0.0, 10.0, 100.0};
-        Dimension d = data_array.appendRangeDimension(ticks);
-        assertEquals(d.getDimensionType(), DimensionType.Range);
-
-        RangeDimension rd;
-        rd = d.asRangeDimension();
+        RangeDimension rd = data_array.appendRangeDimension(ticks);
+        assertEquals(rd.getDimensionType(), DimensionType.Range);
 
         assertTrue(rd.getTickAt(0) == -100.);
         assertTrue(rd.getTickAt(4) == 100.);
@@ -494,17 +466,14 @@ public class TestDimension {
         } catch (RuntimeException re) {
         }
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(rd.getIndex());
     }
 
     @Test
     public void testRangeDimAxis() {
         double[] ticks = {-100.0, -10.0, 0.0, 10.0, 100.0};
-        Dimension d = data_array.appendRangeDimension(ticks);
-        assertEquals(d.getDimensionType(), DimensionType.Range);
-
-        RangeDimension rd;
-        rd = d.asRangeDimension();
+        RangeDimension rd = data_array.appendRangeDimension(ticks);
+        assertEquals(rd.getDimensionType(), DimensionType.Range);
 
         List<Double> axis = rd.getAxis(2);
         assertTrue(axis.size() == 2);
@@ -528,7 +497,6 @@ public class TestDimension {
         } catch (RuntimeException re) {
         }
 
-        data_array.deleteDimension(d.getIndex());
+        data_array.deleteDimension(rd.getIndex());
     }
-
 }

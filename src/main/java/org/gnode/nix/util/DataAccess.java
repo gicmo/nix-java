@@ -4,8 +4,8 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.*;
 
-@Platform(value = "linux",
-        include = {"<nix/util/dataAccess.hpp>",
+@Properties(value = {
+        @Platform(include = {"<nix/util/dataAccess.hpp>",
                 "<nix/Block.hpp>",
                 "<nix/DataArray.hpp>",
                 "<nix/Dimensions.hpp>",
@@ -15,8 +15,9 @@ import org.gnode.nix.*;
                 "<nix/Property.hpp>",
                 "<nix/Section.hpp>",
                 "<nix/Source.hpp>",
-                "<nix/Tag.hpp>"},
-        link = {"nix"})
+                "<nix/Tag.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix::util")
 public class DataAccess {
     static {

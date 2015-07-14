@@ -5,9 +5,12 @@ import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.Name;
 import org.bytedeco.javacpp.annotation.Namespace;
 import org.bytedeco.javacpp.annotation.Platform;
+import org.bytedeco.javacpp.annotation.Properties;
 
-@Platform(value = "linux",
-        include = {"<nix/None.hpp>"})
+@Properties(value = {
+        @Platform(include = {"<nix/None.hpp>"}),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 @Name("none_t")
 public class None extends Pointer {

@@ -4,9 +4,10 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
 
-@Platform(value = "linux",
-        include = {"<nix/Dimensions.hpp>"},
-        link = {"nix"})
+@Properties(value = {
+        @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 @Namespace("nix")
 public class Dimension<T extends Dimension> extends ImplContainer implements Comparable<T> {
     static {
@@ -19,7 +20,7 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
 
     /**
      * Constructor that creates an uninitialized Dimension.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized dimension will throw a {@link java.lang.RuntimeException}.
      */
     public Dimension() {
@@ -42,7 +43,7 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
 
     /**
      * The actual dimension that is described by the dimension descriptor.
-     * <p/>
+     * <p>
      * The index of the dimension entity representing the dimension of the actual
      * data that is defined by this descriptor.
      *
@@ -55,7 +56,7 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
 
     /**
      * The type of the dimension.
-     * <p/>
+     * <p>
      * This field indicates whether the dimension is a SampledDimension, SetDimension or
      * RangeDimension.
      *
@@ -93,6 +94,10 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
     public native
     @ByVal
     RangeDimension asRangeDimension();
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
 
     @Override
     public int compareTo(T dimension) {

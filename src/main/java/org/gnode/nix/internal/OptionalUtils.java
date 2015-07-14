@@ -2,13 +2,12 @@ package org.gnode.nix.internal;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
-import org.bytedeco.javacpp.annotation.Cast;
-import org.bytedeco.javacpp.annotation.Name;
-import org.bytedeco.javacpp.annotation.Platform;
-import org.bytedeco.javacpp.annotation.StdString;
+import org.bytedeco.javacpp.annotation.*;
 
-@Platform(value = "linux",
-        include = {"<boost/optional.hpp>"})
+@Properties(value = {
+        @Platform(include = {"<boost/optional.hpp>"}),
+        @Platform(value = "linux"),
+        @Platform(value = "windows")})
 public class OptionalUtils {
     static {
         Loader.load();

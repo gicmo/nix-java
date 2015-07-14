@@ -1,18 +1,17 @@
 package org.gnode.nix;
 
+import net.jcip.annotations.NotThreadSafe;
 import org.gnode.nix.valid.Result;
 import org.gnode.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
+@NotThreadSafe
 public class TestFile {
 
     private File file_open;
@@ -26,15 +25,20 @@ public class TestFile {
         // precision of time_t is in seconds hence (millis / 1000) * 1000
         statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
 
-        file_open = File.open("test_file.h5", FileMode.Overwrite);
-        file_other = File.open("test_file_other.h5", FileMode.Overwrite);
+        file_open = File.open("test_File_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
         file_null = null;
     }
 
     @After
     public void tearDown() {
+        String location1 = file_open.getLocation();
+
         file_open.close();
-        file_other.close();
+
+        // delete file
+        java.io.File f1 = new java.io.File(location1);
+        f1.delete();
+
     }
 
     @Test
@@ -51,8 +55,10 @@ public class TestFile {
 
     @Test
     public void testLocation() {
-        assertEquals(file_open.getLocation(), "test_file.h5");
+        file_other = File.open("test_file_other.h5", FileMode.Overwrite);
         assertEquals(file_other.getLocation(), "test_file_other.h5");
+        java.io.File f2 = new java.io.File(file_other.getLocation());
+        f2.delete();
     }
 
     @Test
