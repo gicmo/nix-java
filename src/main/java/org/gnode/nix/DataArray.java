@@ -9,8 +9,10 @@ import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalUtils;
 import org.gnode.nix.internal.VectorUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Properties(value = {
         @Platform(include = {"<nix/DataArray.hpp>"}, link = "nix"),
@@ -513,6 +515,25 @@ public class DataArray extends EntityWithSources {
      */
     public List<Dimension> getDimensions() {
         return dimensions().getDimensions();
+    }
+
+    /**
+     * Get all dimensions associated with this data array.
+     * <p>
+     * The parameter filter can be used to filter sources by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return The filtered dimensions as a list
+     */
+    public List<Dimension> getDimensions(Predicate<Dimension> filter) {
+        List<Dimension> result = new ArrayList<>();
+        for (Dimension dimension : getDimensions()) {
+            if (filter.test(dimension)) {
+                result.add(dimension);
+            }
+        }
+        return result;
     }
 
     /**
