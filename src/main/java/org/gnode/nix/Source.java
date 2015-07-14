@@ -2,11 +2,12 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
+import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.base.EntityWithMetadata;
 import org.gnode.nix.internal.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 
 @Properties(value = {
         @Platform(include = {"<nix/Source.hpp>"}, link = "nix"),
@@ -301,6 +302,119 @@ public class Source extends EntityWithMetadata {
      */
     public List<Source> getSources() {
         return sources().getSources();
+    }
+
+    /**
+     * Get all direct child sources associated with this source.
+     * <p>
+     * The parameter filter can be used to filter sources by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching child sources.
+     */
+    public List<Source> getSources(Predicate<Source> filter) {
+        List<Source> result = new ArrayList<>();
+        for (Source source : getSources()) {
+            if (filter.test(source)) {
+                result.add(source);
+            }
+        }
+        return result;
+    }
+
+    private static class SourceCont {
+        private final Source entity;
+        private final int depth;
+
+        public SourceCont(Source entity, int depth) {
+            this.entity = entity;
+            this.depth = depth;
+        }
+    }
+
+    /**
+     * Get all descendant sources of the source recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sources of the source. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     *
+     * @param filter   A filter function.
+     * @param maxDepth The maximum depth of traversal.
+     * @return A list containing the matching descendant sources.
+     */
+    public List<Source> findSources(Predicate<Source> filter, int maxDepth) {
+        List<Source> results = new ArrayList<>();
+        Queue<SourceCont> todo = new LinkedList<>();
+        int level = 0;
+
+        todo.add(new SourceCont(this, level));
+
+        while (todo.size() > 0) {
+            SourceCont current = todo.remove();
+
+            if (filter.test(current.entity)) {
+                results.add(current.entity);
+            }
+            if (current.depth < maxDepth) {
+                List<Source> children = current.entity.getSources();
+                int next_depth = current.depth + 1;
+
+                for (Source child : children) {
+                    todo.add(new SourceCont(child, next_depth));
+                }
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Get all descendant sources of the source recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sources of the source. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default nodes at all depths are considered.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching descendant sources.
+     */
+    public List<Source> findSources(Predicate<Source> filter) {
+        return findSources(filter, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Get all descendant sources of the source recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sources of the source. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default a filter is used that accepts all sources.
+     *
+     * @param maxDepth The maximum depth of traversal.
+     * @return A list containing the matching descendant sources.
+     */
+    public List<Source> findSources(int maxDepth) {
+        return findSources((Source s) -> true, maxDepth);
+    }
+
+    /**
+     * Get all descendant sources of the source recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sources of the source. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default a filter is used that accepts all sources at all depths.
+     *
+     * @return A list containing the matching descendant sources.
+     */
+    public List<Source> findSources() {
+        return findSources((Source s) -> true, Integer.MAX_VALUE);
     }
 
     private native
