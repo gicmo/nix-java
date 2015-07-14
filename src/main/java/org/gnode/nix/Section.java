@@ -2,11 +2,12 @@ package org.gnode.nix;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
+import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.base.NamedEntity;
 import org.gnode.nix.internal.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 
 @Properties(value = {
         @Platform(include = {"<nix/Section.hpp>"}, link = "nix"),
@@ -406,6 +407,156 @@ public class Section extends NamedEntity {
         return sections().getSections();
     }
 
+    /**
+     * Get all direct child sections of the section.
+     * <p>
+     * The parameter filter can be used to filter sections by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching child sections.
+     */
+    public List<Section> getSections(Predicate<Section> filter) {
+        List<Section> result = new ArrayList<>();
+        for (Section section : getSections()) {
+            if (filter.test(section)) {
+                result.add(section);
+            }
+        }
+        return result;
+    }
+
+    private static class SectionCont {
+        final Section entity;
+        final int depth;
+
+        public SectionCont(Section entity, int depth) {
+            this.entity = entity;
+            this.depth = depth;
+        }
+    }
+
+    /**
+     * Get all descendant sections of the section recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sections of the section. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * section a filter is applied. If the filter returns true the respective section
+     * will be added to the result list.
+     *
+     * @param filter   A filter function.
+     * @param maxDepth The maximum depth of traversal.
+     * @return A list containing the matching descendant sections.
+     */
+    public List<Section> findSections(Predicate<Section> filter, int maxDepth) {
+        List<Section> results = new ArrayList<>();
+        Queue<SectionCont> todo = new LinkedList<>();
+        int level = 0;
+
+        todo.add(new SectionCont(this, level));
+
+        while (todo.size() > 0) {
+            SectionCont current = todo.remove();
+
+            if (filter.test(current.entity)) {
+                results.add(current.entity);
+            }
+
+            if (current.depth < maxDepth) {
+                List<Section> children = current.entity.getSections();
+                int next_depth = current.depth + 1;
+
+                for (Section child : children) {
+                    todo.add(new SectionCont(child, next_depth));
+                }
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Get all descendant sections of the section recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sections of the section. The traversal
+     * is accomplished via breadth first. On each node or section a filter is applied.
+     * If the filter returns true the respective section will be added to the result list.
+     * By default nodes at all depths are considered.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching descendant sections.
+     */
+    public List<Section> findSections(Predicate<Section> filter) {
+        return findSections(filter, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Get all descendant sections of the section recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sections of the section. The traversal
+     * is accomplished via breadth first. On each node or section a filter is applied.
+     * If the filter returns true the respective section will be added to the result list.
+     * By default a filter is used that accepts all sections.
+     *
+     * @param maxDepth The maximum depth of traversal.
+     * @return A list containing the matching descendant sections.
+     */
+    public List<Section> findSections(int maxDepth) {
+        return findSections((Section s) -> true, maxDepth);
+    }
+
+    /**
+     * Get all descendant sections of the section recursively.
+     * <p>
+     * This method traverses the sub-tree of all child sections of the section. The traversal
+     * is accomplished via breadth first. On each node or section a filter is applied.
+     * If the filter returns true the respective section will be added to the result list.
+     * By default a filter is used that accepts all sections at all depths.
+     *
+     * @return A list containing the matching descendant sections.
+     */
+    public List<Section> findSections() {
+        return findSections((Section s) -> true, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Find all related sections of the section.
+     *
+     * @param filter A filter function.
+     * @return A list containing all filtered related sections.
+     */
+    public List<Section> findRelated(Predicate<Section> filter) {
+        List<Section> results = findDownstream(filter);
+
+        String myId = getId();
+
+        //This checking of results can be removed if we decide not to include this in findSection
+        results.removeIf(s -> s.getId().equals(myId));
+        int resultsSize = results.size();
+
+        if (resultsSize == 0) {
+            results = findUpstream(filter);
+        }
+
+        //This checking of results can be removed if we decide not to include this in findSection
+        results.removeIf(s -> s.getId().equals(myId));
+        resultsSize = results.size();
+
+        if (resultsSize == 0) {
+            results = findSideways(filter, getId());
+        }
+        return results;
+    }
+
+    /**
+     * Find all related sections of the section.
+     *
+     * @return A list containing all filtered related sections.
+     */
+    public List<Section> findRelated() {
+        return findRelated((Section s) -> true);
+    }
+
     private native
     @Name("createSection")
     @ByVal
@@ -623,6 +774,65 @@ public class Section extends NamedEntity {
     public native
     @Cast("bool")
     boolean deleteProperty(@Const @ByRef Property property);
+
+    //------------------------------------------------------
+    // Other functions
+    //------------------------------------------------------
+
+    private int treeDepth() {
+        List<Section> children = getSections();
+        int depth = 0;
+        if (children.size() > 0) {
+            for (Section child : children) {
+                depth = Math.max(depth, child.treeDepth());
+            }
+            depth += 1;
+        }
+        return depth;
+    }
+
+    private List<Section> findDownstream(Predicate<Section> filter) {
+        List<Section> results = new ArrayList<>();
+        int max_depth = treeDepth();
+        int actual_depth = 1;
+        while (results.size() == 0 && actual_depth <= max_depth) {
+            results = findSections(filter, actual_depth);
+            actual_depth += 1;
+        }
+        return results;
+    }
+
+    private List<Section> findUpstream(Predicate<Section> filter) {
+        List<Section> results = new ArrayList<>();
+        Section p = parent();
+
+        if (p != null) {
+            results = p.findSections(filter, 1);
+            if (results.size() > 0) {
+                return results;
+            }
+            return p.findUpstream(filter);
+        }
+        return results;
+    }
+
+    private List<Section> findSideways(Predicate<Section> filter, String callerId) {
+        List<Section> results = new ArrayList<>();
+        Section p = parent();
+        if (p != null) {
+            results = p.findSections(filter, 1);
+            if (results.size() > 0) {
+                results.removeIf(s -> s.getId().equals(callerId));
+                return results;
+            }
+            return p.findSideways(filter, callerId);
+        }
+        return results;
+    }
+
+    //--------------------------------------------------
+    // Overrides
+    //--------------------------------------------------
 
     //--------------------------------------------------
     // Overrides
