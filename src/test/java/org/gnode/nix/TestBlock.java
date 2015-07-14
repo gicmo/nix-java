@@ -207,6 +207,15 @@ public class TestBlock {
             assertEquals(da_name.getName(), da_id.getName());
         }
 
+        List<DataArray> filteredArrays = block.getDataArrays((DataArray d) -> d.getType().equals("channel"));
+        assertEquals(names.size(), filteredArrays.size());
+
+        filteredArrays = block.getDataArrays((DataArray d) -> d.getName().equals("data_array_c"));
+        assertEquals(1, filteredArrays.size());
+        if (filteredArrays.size() > 0) {
+            assertEquals(filteredArrays.get(0).getName(), "data_array_c");
+        }
+
         for (String id : ids) {
             data_array = block.getDataArray(id);
             assertTrue(block.hasDataArray(id));
