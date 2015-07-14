@@ -8,8 +8,10 @@ import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalUtils;
 import org.gnode.nix.internal.VectorUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Properties(value = {
         @Platform(include = {"<nix/Block.hpp>"}, link = "nix"),
@@ -307,6 +309,93 @@ public class Block extends EntityWithMetadata {
         return sources().getSources();
     }
 
+    /**
+     * Get all root sources associated with this block.
+     * <p>
+     * The parameter filter can be used to filter sources by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching root sources.
+     */
+    public List<Source> getSources(Predicate<Source> filter) {
+        List<Source> result = new ArrayList<>();
+        for (Source source : getSources()) {
+            if (filter.test(source)) {
+                result.add(source);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Get all sources in this block recursively.
+     * <p>
+     * This method traverses the tree of all sources in the block. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default a filter is used that accepts all sources.
+     *
+     * @param filter   A filter function.
+     * @param maxDepth The maximum depth of traversal.
+     * @return A list containing the matching sources.
+     */
+    public List<Source> findSources(Predicate<Source> filter, int maxDepth) {
+        List<Source> result = new ArrayList<>();
+        for (Source source : getSources()) {
+            result.addAll(source.findSources(filter, maxDepth));
+        }
+        return result;
+    }
+
+    /**
+     * Get all sources in this block recursively.
+     * <p>
+     * This method traverses the tree of all sources in the block. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default a sources at all depths are considered.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching sources.
+     */
+    public List<Source> findSources(Predicate<Source> filter) {
+        return findSources(filter, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Get all sources in this block recursively.
+     * <p>
+     * This method traverses the tree of all sources in the block. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default a filter is used that accepts all sources.
+     *
+     * @param maxDepth The maximum depth of traversal.
+     * @return A list containing the matching sources.
+     */
+    public List<Source> findSources(int maxDepth) {
+        return findSources((Source s) -> true, maxDepth);
+    }
+
+    /**
+     * Get all sources in this block recursively.
+     * <p>
+     * This method traverses the tree of all sources in the block. The traversal
+     * is accomplished via breadth first and can be limited in depth. On each node or
+     * source a filter is applied. If the filter returns true the respective source
+     * will be added to the result list.
+     * By default a filter is used that accepts all sources at all depths.
+     *
+     * @return A list containing the matching sources.
+     */
+    public List<Source> findSources() {
+        return findSources((Source s) -> true, Integer.MAX_VALUE);
+    }
+
     private native
     @Name("createSource")
     @ByVal
@@ -427,6 +516,25 @@ public class Block extends EntityWithMetadata {
      */
     public List<DataArray> getDataArrays() {
         return dataArrays().getDataArrays();
+    }
+
+    /**
+     * Get data arrays within this block.
+     * <p>
+     * The parameter filter can be used to filter data arrays by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list that contains all filtered data arrays.
+     */
+    public List<DataArray> getDataArrays(Predicate<DataArray> filter) {
+        List<DataArray> result = new ArrayList<>();
+        for (DataArray dataArray : getDataArrays()) {
+            if (filter.test(dataArray)) {
+                result.add(dataArray);
+            }
+        }
+        return result;
     }
 
     /**
@@ -567,6 +675,25 @@ public class Block extends EntityWithMetadata {
     }
 
     /**
+     * Get tags within this block.
+     * <p>
+     * The parameter filter can be used to filter tags by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list that contains all filtered tags.
+     */
+    public List<Tag> getTags(Predicate<Tag> filter) {
+        List<Tag> result = new ArrayList<>();
+        for (Tag tag : getTags()) {
+            if (filter.test(tag)) {
+                result.add(tag);
+            }
+        }
+        return result;
+    }
+
+    /**
      * Returns the number of tags within this block.
      *
      * @return The number of tags.
@@ -698,6 +825,24 @@ public class Block extends EntityWithMetadata {
      */
     public List<MultiTag> getMultiTags() {
         return multiTags().getMultiTags();
+    }
+
+    /**
+     * Get multi tags within this block.
+     * <p>
+     * The parameter filter can be used to filter multi tags by various     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list that contains all filtered multi tags.
+     */
+    public List<MultiTag> getMultiTags(Predicate<MultiTag> filter) {
+        List<MultiTag> result = new ArrayList<>();
+        for (MultiTag multiTag : getMultiTags()) {
+            if (filter.test(multiTag)) {
+                result.add(multiTag);
+            }
+        }
+        return result;
     }
 
     /**
