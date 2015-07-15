@@ -228,6 +228,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param filter A filter function.
      * @return A list of filtered Block entities.
+     * @see Block
      */
     public List<Block> getBlocks(Predicate<Block> filter) {
         List<Block> result = new ArrayList<>();
@@ -249,6 +250,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param nameOrId Name or ID of the section.
      * @return True if the section exists, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -259,6 +261,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param section The section to check.
      * @return True if the section exists, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -274,6 +277,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param nameOrId Name or id of the section.
      * @return The section with the specified name/id.
+     * @see Section
      */
     public Section getSection(String nameOrId) {
         Section section = fetchSection(nameOrId);
@@ -293,6 +297,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param index The index of the section.
      * @return The section with the specified index.
+     * @see Section
      */
     public Section getSection(long index) {
         Section section = fetchSection(index);
@@ -306,6 +311,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * Returns the number of root sections stored in the File.
      *
      * @return The number of sections.
+     * @see Section
      */
     public native
     @Name("sectionCount")
@@ -322,6 +328,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * criteria. By default a filter is used that accepts all sections.
      *
      * @return A list of filtered Section entities.
+     * @see Section
      */
     public List<Section> getSections() {
         return sections().getSections();
@@ -335,6 +342,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param filter A filter function.
      * @return A list of filtered Section entities.
+     * @see Section
      */
     public List<Section> getSections(Predicate<Section> filter) {
         List<Section> result = new ArrayList<>();
@@ -357,6 +365,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @param filter   A filter function.
      * @param maxDepth The maximum depth of traversal.
      * @return A list containing the matching sections.
+     * @see Section
      */
     public List<Section> findSections(Predicate<Section> filter, int maxDepth) {
         List<Section> result = new ArrayList<>();
@@ -377,6 +386,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param maxDepth The maximum depth of traversal.
      * @return A list containing the matching sections.
+     * @see Section
      */
     public List<Section> findSections(int maxDepth) {
         return findSections((Section s) -> true, maxDepth);
@@ -393,6 +403,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @param name The name of the section.
      * @param type The type of the section.
      * @return The created Section.
+     * @see Section
      */
     public Section createSection(String name, String type) {
         Section section = makeSection(name, type);
@@ -407,6 +418,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param nameOrId Name or id of the section to delete.
      * @return True if the section was deleted, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -417,6 +429,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param section The section to delete.
      * @return True if the section was deleted, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -522,6 +535,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * Validator.
      *
      * @return result
+     * @see Result
      */
     public native
     @ByVal
