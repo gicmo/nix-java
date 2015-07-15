@@ -4,10 +4,25 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.base.EntityWithMetadata;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
+
+/**
+ * <h1>Source</h1>
+ * A class that describes the provenance of other entities of the NIX data model.
+ * <p>
+ * The Source is conceptually a rather simple entity. It is used to note the provenance of
+ * the data and offers the opportunity to bind additional metadata.
+ * One special feature of the Source is the possibility to contain other sources as children
+ * thus building up a tree of sources.
+ * This can, for example, be used to specify that a source electrode array contains
+ * multiple electrodes as its child sources.
+ */
 
 @Properties(value = {
         @Platform(include = {"<nix/Source.hpp>"}, link = "nix"),
@@ -22,7 +37,7 @@ public class Source extends EntityWithMetadata {
 
     /**
      * Constructor that creates an uninitialized Source.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized source will throw a {@link java.lang.RuntimeException}.
      */
     public Source() {
@@ -42,7 +57,7 @@ public class Source extends EntityWithMetadata {
     /**
      * Get id of the source.
      *
-     * @return id string
+     * @return ID string.
      */
     public native
     @Name("id")
@@ -104,16 +119,16 @@ public class Source extends EntityWithMetadata {
     /**
      * Setter for the type of the source.
      *
-     * @param type The type of the source
+     * @param type The type of the source.
      */
     public native
     @Name("type")
     void setType(@StdString String type);
 
     /**
-     * Getter for the type of the source
+     * Getter for the type of the source.
      *
-     * @return The type of the source
+     * @return The type of the source.
      */
     public native
     @Name("type")
@@ -135,7 +150,7 @@ public class Source extends EntityWithMetadata {
     private native void definition(@StdString String definition);
 
     /**
-     * Setter for the definition of the source. If null is passed definition is removed.
+     * Setter for the definition of the source. If <tt>null</tt> is passed definition is removed.
      *
      * @param definition definition of source
      */
@@ -171,26 +186,27 @@ public class Source extends EntityWithMetadata {
     /**
      * Get metadata associated with this entity.
      *
-     * @return The associated section, if no such section exists {#link null} is returned.
+     * @return The associated section, if no such section exists <tt>null</tt> is returned.
+     * @see Section
      */
     public
     @Name("metadata")
     Section getMetadata() {
         Section section = metadata();
-        if (section.isInitialized()) {
-            return section;
-        } else {
-            return null;
+        if (section.isNone()) {
+            section = null;
         }
+        return section;
     }
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param metadata The {@link Section} that should be associated
      *                 with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -198,11 +214,12 @@ public class Source extends EntityWithMetadata {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param id The id of the {@link Section} that should be associated
      *           with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -212,6 +229,8 @@ public class Source extends EntityWithMetadata {
 
     /**
      * Removes metadata associated with the entity.
+     *
+     * @see Section
      */
     public void removeMetadata() {
         metadata(new None());
@@ -257,10 +276,10 @@ public class Source extends EntityWithMetadata {
      */
     public Source getSource(String nameOrId) {
         Source source = fetchSource(nameOrId);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -276,10 +295,10 @@ public class Source extends EntityWithMetadata {
      */
     public Source getSource(long index) {
         Source source = fetchSource(index);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     /**
@@ -431,10 +450,10 @@ public class Source extends EntityWithMetadata {
      */
     public Source createSource(String name, String type) {
         Source source = makeSource(name, type);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     /**
