@@ -1,5 +1,9 @@
 package org.gnode.nix;
 
+/**
+ * <h1>LinkType</h1>
+ * Constants for link types.
+ */
 public class LinkType {
 
     /**
