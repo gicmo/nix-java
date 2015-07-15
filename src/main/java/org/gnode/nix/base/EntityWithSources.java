@@ -6,6 +6,11 @@ import org.gnode.nix.Source;
 
 import java.util.List;
 
+/**
+ * <h1>EntityWithSources</h1>
+ * An abstract class for entities that can be associated with sources.
+ */
+
 @Properties(value = {
         @Platform(value = "linux"),
         @Platform(value = "windows")})
