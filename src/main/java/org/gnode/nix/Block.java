@@ -231,11 +231,10 @@ public class Block extends EntityWithMetadata {
     @Name("metadata")
     Section getMetadata() {
         Section section = metadata();
-        if (section.isInitialized()) {
-            return section;
-        } else {
-            return null;
+        if (section.isNone()) {
+            section = null;
         }
+        return section;
     }
 
     /**
@@ -319,10 +318,10 @@ public class Block extends EntityWithMetadata {
      */
     public Source getSource(String nameOrId) {
         Source source = fetchSource(nameOrId);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -339,10 +338,10 @@ public class Block extends EntityWithMetadata {
      */
     public Source getSource(long index) {
         Source source = fetchSource(index);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     /**
@@ -476,10 +475,10 @@ public class Block extends EntityWithMetadata {
      */
     public Source createSource(String name, String type) {
         Source source = makeSource(name, type);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     /**
@@ -552,10 +551,10 @@ public class Block extends EntityWithMetadata {
      */
     public DataArray getDataArray(String nameOrId) {
         DataArray da = fetchDataArray(nameOrId);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     private native
@@ -572,10 +571,10 @@ public class Block extends EntityWithMetadata {
      */
     public DataArray getDataArray(long index) {
         DataArray da = fetchDataArray(index);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     private native
@@ -642,10 +641,10 @@ public class Block extends EntityWithMetadata {
      */
     public DataArray createDataArray(String name, String type, int dataType, NDSize shape) {
         DataArray da = makeDataArray(name, type, dataType, shape);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     /**
@@ -718,10 +717,10 @@ public class Block extends EntityWithMetadata {
      */
     public Tag getTag(String nameOrId) {
         Tag tag = fetchTag(nameOrId);
-        if (tag.isInitialized()) {
-            return tag;
+        if (tag.isNone()) {
+            tag = null;
         }
-        return null;
+        return tag;
     }
 
     private native
@@ -738,10 +737,10 @@ public class Block extends EntityWithMetadata {
      */
     public Tag getTag(long index) {
         Tag tag = fetchTag(index);
-        if (tag.isInitialized()) {
-            return tag;
+        if (tag.isNone()) {
+            tag = null;
         }
-        return null;
+        return tag;
     }
 
     private native
@@ -804,10 +803,10 @@ public class Block extends EntityWithMetadata {
      */
     public Tag createTag(String name, String type, double[] position) {
         Tag tag = makeTag(name, type, position);
-        if (tag.isInitialized()) {
-            return tag;
+        if (tag.isNone()) {
+            tag = null;
         }
-        return null;
+        return tag;
     }
 
     /**
@@ -880,10 +879,10 @@ public class Block extends EntityWithMetadata {
      */
     public MultiTag getMultiTag(String nameOrId) {
         MultiTag multiTag = fetchMultiTag(nameOrId);
-        if (multiTag.isInitialized()) {
-            return multiTag;
+        if (multiTag.isNone()) {
+            multiTag = null;
         }
-        return null;
+        return multiTag;
     }
 
     private native
@@ -900,10 +899,10 @@ public class Block extends EntityWithMetadata {
      */
     public MultiTag getMultiTag(long index) {
         MultiTag multiTag = fetchMultiTag(index);
-        if (multiTag.isInitialized()) {
-            return multiTag;
+        if (multiTag.isNone()) {
+            multiTag = null;
         }
-        return null;
+        return multiTag;
     }
 
     private native
@@ -966,10 +965,10 @@ public class Block extends EntityWithMetadata {
      */
     public MultiTag createMultiTag(String name, String type, DataArray positions) {
         MultiTag multiTag = makeMultiTag(name, type, positions);
-        if (multiTag.isInitialized()) {
-            return multiTag;
+        if (multiTag.isNone()) {
+            multiTag = null;
         }
-        return null;
+        return multiTag;
     }
 
     /**
