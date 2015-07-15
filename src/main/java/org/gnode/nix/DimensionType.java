@@ -1,5 +1,13 @@
 package org.gnode.nix;
 
+/**
+ * <h1>DimensionType</h1>
+ * Constants for types of Dimensions.
+ *
+ * @see RangeDimension
+ * @see SampledDimension
+ * @see SetDimension
+ */
 public class DimensionType {
 
     /**
