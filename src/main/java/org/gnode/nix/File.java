@@ -13,6 +13,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * <h1>File</h1>
+ * A File represents a specific data source of a NIX back-end for example an NIX HDF5 file.
+ * All entities of the nix data model (except the Value entity) must exist in the context of an open File object.
+ * Therefore NIX entities can’t be initialized via their constructors but only through the factory methods of their
+ * respective parent entity.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/File.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -129,7 +137,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * Read an existing block from the file.
      *
      * @param nameOrId Name or ID of the block.
-     * @return The block with the given name or id. {@link null} returned if not present.
+     * @return The block with the given name or id. Returns <tt>null</tt> if not present.
      * @see Block
      */
     public
@@ -151,7 +159,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * Read an existing with block from the file, addressed by index.
      *
      * @param index The index of the block to read.
-     * @return The block at the given index. {@link null} returned if not present.
+     * @return The block at the given index. Returns <tt>null</tt> if not present.
      * @see Block
      */
     public
@@ -313,7 +321,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * The parameter filter can be used to filter sections by various
      * criteria. By default a filter is used that accepts all sections.
      *
-     * @return A vector of filtered Section entities.
+     * @return A list of filtered Section entities.
      */
     public List<Section> getSections() {
         return sections().getSections();
@@ -348,7 +356,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param filter   A filter function.
      * @param maxDepth The maximum depth of traversal.
-     * @return A vector containing the matching sections.
+     * @return A list containing the matching sections.
      */
     public List<Section> findSections(Predicate<Section> filter, int maxDepth) {
         List<Section> result = new ArrayList<>();
@@ -368,7 +376,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * By default a filter is used that accepts all sections.
      *
      * @param maxDepth The maximum depth of traversal.
-     * @return A vector containing the matching sections.
+     * @return A list containing the matching sections.
      */
     public List<Section> findSections(int maxDepth) {
         return findSections((Section s) -> true, maxDepth);
@@ -437,7 +445,7 @@ public class File extends ImplContainer implements Comparable<File> {
     /**
      * Read the format hint from the file.
      *
-     * @return format of file
+     * @return format of file.
      */
     public native
     @Name("format")
