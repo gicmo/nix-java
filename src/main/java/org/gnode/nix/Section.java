@@ -256,10 +256,10 @@ public class Section extends NamedEntity {
      */
     public Section getLink() {
         Section section = link();
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     private native void link(@Const @ByVal None t);
@@ -329,10 +329,10 @@ public class Section extends NamedEntity {
      */
     public Section getParent() {
         Section section = parent();
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     //--------------------------------------------------
@@ -385,10 +385,10 @@ public class Section extends NamedEntity {
      */
     public Section getSection(String nameOrId) {
         Section section = fetchSection(nameOrId);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     private native
@@ -405,10 +405,10 @@ public class Section extends NamedEntity {
      */
     public Section getSection(long index) {
         Section section = fetchSection(index);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     private native
@@ -597,10 +597,10 @@ public class Section extends NamedEntity {
      */
     public Section createSection(String name, String type) {
         Section section = makeSection(name, type);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     /**
@@ -675,10 +675,10 @@ public class Section extends NamedEntity {
      */
     public Property getProperty(String nameOrId) {
         Property property = fetchProperty(nameOrId);
-        if (property.isInitialized()) {
-            return property;
+        if (property.isNone()) {
+            property = null;
         }
-        return null;
+        return property;
     }
 
     private native
@@ -695,10 +695,10 @@ public class Section extends NamedEntity {
      */
     public Property getProperty(long index) {
         Property property = fetchProperty(index);
-        if (property.isInitialized()) {
-            return property;
+        if (property.isNone()) {
+            property = null;
         }
-        return null;
+        return property;
     }
 
     private native
@@ -745,10 +745,10 @@ public class Section extends NamedEntity {
      */
     public Property createProperty(String name, int dtype) {
         Property property = makeProperty(name, dtype);
-        if (property.isInitialized()) {
-            return property;
+        if (property.isNone()) {
+            property = null;
         }
-        return null;
+        return property;
     }
 
     private native
@@ -766,10 +766,10 @@ public class Section extends NamedEntity {
      */
     public Property createProperty(String name, Value value) {
         Property property = makeProperty(name, value);
-        if (property.isInitialized()) {
-            return property;
+        if (property.isNone()) {
+            property = null;
         }
-        return null;
+        return property;
     }
 
     private native
@@ -787,10 +787,10 @@ public class Section extends NamedEntity {
      */
     public Property createProperty(String name, List<Value> values) {
         Property property = makeProperty(name, new VectorUtils.ValueVector(values));
-        if (property.isInitialized()) {
-            return property;
+        if (property.isNone()) {
+            property = null;
         }
-        return null;
+        return property;
     }
 
     /**
