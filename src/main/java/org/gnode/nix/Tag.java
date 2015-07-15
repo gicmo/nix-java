@@ -216,11 +216,10 @@ public class Tag extends EntityWithSources {
     @Name("metadata")
     Section getMetadata() {
         Section section = metadata();
-        if (section.isInitialized()) {
-            return section;
-        } else {
-            return null;
+        if (section.isNone()) {
+            section = null;
         }
+        return section;
     }
 
     /**
@@ -253,6 +252,7 @@ public class Tag extends EntityWithSources {
 
     /**
      * Removes metadata associated with the entity.
+     *
      * @see Section
      */
     public void removeMetadata() {
@@ -304,10 +304,10 @@ public class Tag extends EntityWithSources {
      */
     public Source getSource(String id) {
         Source source = fetchSource(id);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -325,10 +325,10 @@ public class Tag extends EntityWithSources {
      */
     public Source getSource(long index) {
         Source source = fetchSource(index);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -554,10 +554,10 @@ public class Tag extends EntityWithSources {
      */
     public DataArray getReference(String id) {
         DataArray da = fetchReference(id);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     private native
@@ -574,10 +574,10 @@ public class Tag extends EntityWithSources {
      */
     public DataArray getReference(long index) {
         DataArray da = fetchReference(index);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     /**
@@ -726,10 +726,10 @@ public class Tag extends EntityWithSources {
      */
     public Feature getFeature(String id) {
         Feature feature = fetchFeature(id);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -746,10 +746,10 @@ public class Tag extends EntityWithSources {
      */
     public Feature getFeature(long index) {
         Feature feature = fetchFeature(index);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -801,10 +801,10 @@ public class Tag extends EntityWithSources {
      */
     public Feature createFeature(DataArray data, int linkType) {
         Feature feature = makeFeature(data, linkType);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -822,10 +822,10 @@ public class Tag extends EntityWithSources {
      */
     public Feature createFeature(String dataArrayId, int linkType) {
         Feature feature = makeFeature(dataArrayId, linkType);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     /**
