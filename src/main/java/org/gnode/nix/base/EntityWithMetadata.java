@@ -4,6 +4,11 @@ import org.bytedeco.javacpp.annotation.Platform;
 import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.Section;
 
+/**
+ * <h1>EntityWithMetadata</h1>
+ * An abstract class for entities that can be associated with additional metadata.
+ */
+
 @Properties(value = {
         @Platform(value = "linux"),
         @Platform(value = "windows")})
@@ -18,7 +23,7 @@ public abstract class EntityWithMetadata extends NamedEntity {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param metadata The {@link Section} that should be associated
@@ -28,7 +33,7 @@ public abstract class EntityWithMetadata extends NamedEntity {
 
     /**
      * Associate the entity with some metadata.
-     * <p/>
+     * <p>
      * Calling this method will replace previously stored information.
      *
      * @param id The id of the {@link Section} that should be associated
