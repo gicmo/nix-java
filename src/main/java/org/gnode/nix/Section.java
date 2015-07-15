@@ -4,10 +4,18 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.base.NamedEntity;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
+
+/**
+ * <h1>Section</h1>
+ * Used to store metadata.
+ */
 
 @Properties(value = {
         @Platform(include = {"<nix/Section.hpp>"}, link = "nix"),
@@ -26,7 +34,7 @@ public class Section extends NamedEntity {
 
     /**
      * Constructor that creates an uninitialized Section.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized section will throw a {@link RuntimeException}.
      */
     public Section() {
@@ -44,9 +52,9 @@ public class Section extends NamedEntity {
     boolean isNone();
 
     /**
-     * Get id of the section
+     * Get id of the section.
      *
-     * @return id string
+     * @return ID string.
      */
     public native
     @Name("id")
@@ -106,18 +114,18 @@ public class Section extends NamedEntity {
     }
 
     /**
-     * Setter for the type of the section
+     * Setter for the type of the section.
      *
-     * @param type The type of the section
+     * @param type The type of the section.
      */
     public native
     @Name("type")
     void setType(@StdString String type);
 
     /**
-     * Getter for the type of the section
+     * Getter for the type of the section.
      *
-     * @return The type of the section
+     * @return The type of the section.
      */
     public native
     @Name("type")
@@ -141,7 +149,7 @@ public class Section extends NamedEntity {
     /**
      * Setter for the definition of the section.
      *
-     * @param definition definition of section. If {#link null} is passed definition is removed.
+     * @param definition definition of section. If <tt>null</tt> is passed definition is removed.
      */
     public void setDefinition(String definition) {
         if (definition != null) {
@@ -158,7 +166,7 @@ public class Section extends NamedEntity {
     /**
      * Getter for the definition of the section.
      *
-     * @return The definition of the section. {#link null} if not present.
+     * @return The definition of the section. Returns <tt>null</tt> if not present.
      */
     public String getDefinition() {
         OptionalUtils.OptionalString defintion = definition();
@@ -178,10 +186,10 @@ public class Section extends NamedEntity {
 
     /**
      * Set the repository in which a section of this type is defined.
-     * <p/>
+     * <p>
      * Usually this information is provided in the form of an URL
      *
-     * @param repository URL to the repository. If {#link null} is passed repository is removed.
+     * @param repository URL to the repository. If <tt>null</tt> is passed repository is removed.
      */
 
     public void setRepository(String repository) {
@@ -199,7 +207,7 @@ public class Section extends NamedEntity {
     /**
      * Gets the repository URL.
      *
-     * @return The URL to the repository. {#link null} if not present.
+     * @return The URL to the repository. Returns <tt>null</tt> if not present.
      */
     public String getRepository() {
         OptionalUtils.OptionalString repository = repository();
@@ -211,11 +219,12 @@ public class Section extends NamedEntity {
 
     /**
      * Establish a link to another section.
-     * <p/>
+     * <p>
      * The linking section inherits the properties defined in the linked section.
      * Properties of the same name are overridden.
      *
      * @param id The id of the section that should be linked.
+     * @see Section
      */
     public native
     @Name("link")
@@ -223,11 +232,12 @@ public class Section extends NamedEntity {
 
     /**
      * Establish a link to another section.
-     * <p/>
+     * <p>
      * The linking section inherits the properties defined in the linked section.
      * Properties of the same name are overridden.
      *
      * @param link The section to link with.
+     * @see Section
      */
     public native
     @Name("link")
@@ -240,8 +250,9 @@ public class Section extends NamedEntity {
     /**
      * Get the linked section.
      *
-     * @return The linked section. If no section was linked a null
+     * @return The linked section. If no section was linked a <tt>null</tt>
      * Section will be returned.
+     * @see Section
      */
     public Section getLink() {
         Section section = link();
@@ -255,7 +266,7 @@ public class Section extends NamedEntity {
 
     /**
      * Deleter for the linked section.
-     * <p/>
+     * <p>
      * This just removes the link between both sections, but does not remove
      * the linked section from the file.
      */
@@ -269,10 +280,10 @@ public class Section extends NamedEntity {
 
     /**
      * Sets the mapping information for this section.
-     * <p/>
+     * <p>
      * The mapping is provided as a path or URL to another section.
      *
-     * @param mapping The mapping information to this section.  If {#link null} is passed mapping is removed.
+     * @param mapping The mapping information to this section.  If <tt>null</tt> is passed mapping is removed.
      */
     public void setMapping(String mapping) {
         if (mapping != null) {
@@ -289,7 +300,7 @@ public class Section extends NamedEntity {
     /**
      * Gets the mapping information.
      *
-     * @return The mapping information. {#link null} if not present.
+     * @return The mapping information. Returns <tt>null</tt> if not present.
      */
     public String getMapping() {
         OptionalUtils.OptionalString mapping = mapping();
@@ -310,10 +321,11 @@ public class Section extends NamedEntity {
 
     /**
      * Returns the parent section.
-     * <p/>
+     * <p>
      * Each section which is not a root section has a parent.
      *
-     * @return The parent section. If the section has no parent, a null section will be returned.
+     * @return The parent section. If the section has no parent, a <tt>null</tt> section will be returned.
+     * @see Section
      */
     public Section getParent() {
         Section section = parent();
@@ -331,6 +343,7 @@ public class Section extends NamedEntity {
      * Get the number of child section of the section.
      *
      * @return The number of child sections.
+     * @see Section
      */
     public native
     @Name("sectionCount")
@@ -341,6 +354,7 @@ public class Section extends NamedEntity {
      *
      * @param nameOrId Name or id of requested section.
      * @return True if the section is a child, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -351,6 +365,7 @@ public class Section extends NamedEntity {
      *
      * @param section The section to check.
      * @return True if the section is a child, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -366,6 +381,7 @@ public class Section extends NamedEntity {
      *
      * @param nameOrId The name or the ID of the child section.
      * @return The child section.
+     * @see Section
      */
     public Section getSection(String nameOrId) {
         Section section = fetchSection(nameOrId);
@@ -385,6 +401,7 @@ public class Section extends NamedEntity {
      *
      * @param index The index of the child.
      * @return The specified child section.
+     * @see Section
      */
     public Section getSection(long index) {
         Section section = fetchSection(index);
@@ -402,6 +419,7 @@ public class Section extends NamedEntity {
      * Get all direct child sections of the section.
      *
      * @return list of child sections
+     * @see Section
      */
     public List<Section> getSections() {
         return sections().getSections();
@@ -415,6 +433,7 @@ public class Section extends NamedEntity {
      *
      * @param filter A filter function.
      * @return A list containing the matching child sections.
+     * @see Section
      */
     public List<Section> getSections(Predicate<Section> filter) {
         List<Section> result = new ArrayList<>();
@@ -447,6 +466,7 @@ public class Section extends NamedEntity {
      * @param filter   A filter function.
      * @param maxDepth The maximum depth of traversal.
      * @return A list containing the matching descendant sections.
+     * @see Section
      */
     public List<Section> findSections(Predicate<Section> filter, int maxDepth) {
         List<Section> results = new ArrayList<>();
@@ -485,6 +505,7 @@ public class Section extends NamedEntity {
      *
      * @param filter A filter function.
      * @return A list containing the matching descendant sections.
+     * @see Section
      */
     public List<Section> findSections(Predicate<Section> filter) {
         return findSections(filter, Integer.MAX_VALUE);
@@ -500,6 +521,7 @@ public class Section extends NamedEntity {
      *
      * @param maxDepth The maximum depth of traversal.
      * @return A list containing the matching descendant sections.
+     * @see Section
      */
     public List<Section> findSections(int maxDepth) {
         return findSections((Section s) -> true, maxDepth);
@@ -514,6 +536,7 @@ public class Section extends NamedEntity {
      * By default a filter is used that accepts all sections at all depths.
      *
      * @return A list containing the matching descendant sections.
+     * @see Section
      */
     public List<Section> findSections() {
         return findSections((Section s) -> true, Integer.MAX_VALUE);
@@ -524,6 +547,7 @@ public class Section extends NamedEntity {
      *
      * @param filter A filter function.
      * @return A list containing all filtered related sections.
+     * @see Section
      */
     public List<Section> findRelated(Predicate<Section> filter) {
         List<Section> results = findDownstream(filter);
@@ -552,6 +576,7 @@ public class Section extends NamedEntity {
      * Find all related sections of the section.
      *
      * @return A list containing all filtered related sections.
+     * @see Section
      */
     public List<Section> findRelated() {
         return findRelated((Section s) -> true);
@@ -568,6 +593,7 @@ public class Section extends NamedEntity {
      * @param name The name of the new section
      * @param type The type of the section
      * @return The new child section.
+     * @see Section
      */
     public Section createSection(String name, String type) {
         Section section = makeSection(name, type);
@@ -582,6 +608,7 @@ public class Section extends NamedEntity {
      *
      * @param nameOrId Name or id of the child section to delete.
      * @return True if the section was deleted, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -592,6 +619,7 @@ public class Section extends NamedEntity {
      *
      * @param section The section to delete.
      * @return True if the section was deleted, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -605,6 +633,7 @@ public class Section extends NamedEntity {
      * Gets the number of properties of this section.
      *
      * @return The number of Properties
+     * @see Property
      */
     public native
     @Name("propertyCount")
@@ -615,6 +644,7 @@ public class Section extends NamedEntity {
      *
      * @param nameOrId Name or id of the property.
      * @return True if the property exists, false otherwise.
+     * @see Property
      */
     public native
     @Cast("bool")
@@ -625,6 +655,7 @@ public class Section extends NamedEntity {
      *
      * @param property The Property to check.
      * @return True if the property exists, false otherwise.
+     * @see Property
      */
     public native
     @Cast("bool")
@@ -640,6 +671,7 @@ public class Section extends NamedEntity {
      *
      * @param nameOrId Name or id of the property.
      * @return The specified property.
+     * @see Property
      */
     public Property getProperty(String nameOrId) {
         Property property = fetchProperty(nameOrId);
@@ -659,6 +691,7 @@ public class Section extends NamedEntity {
      *
      * @param index The index of the property.
      * @return The property.
+     * @see Property
      */
     public Property getProperty(long index) {
         Property property = fetchProperty(index);
@@ -676,6 +709,7 @@ public class Section extends NamedEntity {
      * Get all properties of the section.
      *
      * @return list of properties.
+     * @see Property
      */
     public List<Property> getProperties() {
         return properties().getProperties();
@@ -690,6 +724,7 @@ public class Section extends NamedEntity {
      * This list may include Properties that are locally overridden.
      *
      * @return All inherited properties as a list.
+     * @see Property
      */
     public List<Property> getInheritedProperties() {
         return inheritedProperties().getProperties();
@@ -706,6 +741,7 @@ public class Section extends NamedEntity {
      * @param name  The name of the property.
      * @param dtype The DataType of the property.
      * @return The newly created property
+     * @see Property
      */
     public Property createProperty(String name, int dtype) {
         Property property = makeProperty(name, dtype);
@@ -726,6 +762,7 @@ public class Section extends NamedEntity {
      * @param name  The name of the property.
      * @param value The Value to be stored.
      * @return The newly created property.
+     * @see Property
      */
     public Property createProperty(String name, Value value) {
         Property property = makeProperty(name, value);
@@ -746,6 +783,7 @@ public class Section extends NamedEntity {
      * @param name   The name of the property.
      * @param values The values of the created property.
      * @return The newly created property.
+     * @see Property
      */
     public Property createProperty(String name, List<Value> values) {
         Property property = makeProperty(name, new VectorUtils.ValueVector(values));
@@ -760,6 +798,7 @@ public class Section extends NamedEntity {
      *
      * @param nameOrId Name or id of the property.
      * @return True if the property was deleted, false otherwise.
+     * @see Property
      */
     public native
     @Cast("bool")
@@ -770,6 +809,7 @@ public class Section extends NamedEntity {
      *
      * @param property The Property to delete.
      * @return True if the property was deleted, false otherwise.
+     * @see Property
      */
     public native
     @Cast("bool")
