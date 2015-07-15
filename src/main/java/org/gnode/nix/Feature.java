@@ -7,6 +7,34 @@ import org.gnode.nix.internal.DateUtils;
 
 import java.util.Date;
 
+/**
+ * <h1>Feature</h1>
+ * Feature entities are used to attach further data to a {@link Tag} or
+ * {@link MultiTag}
+ * <p>
+ * A Feature entity contains a link to an existing {@link DataArray} containing additional
+ * data that belongs to the respective tag. The way how data and feature are connected is specified by the
+ * link type.
+ * <p>
+ * <h2>Tagged</h2>
+ * This link type  indicates, that only a certain subset of the linked {@link DataArray}
+ * belongs to the Feature. This subset is defined by the position and extent of the
+ * respective tag.
+ * <p>
+ * <h2>Untagged</h2>
+ * This implies that the whole data stored in the linked {@link DataArray} belongs to
+ * the Feature.
+ * <p>
+ * <h2>Indexed</h2>
+ * This value is only valid for multi tags where it indicates that
+ * the data linked via this Feature has to be accessed according
+ * to the index in the respective position entry.
+ *
+ * @see DataArray
+ * @see MultiTag
+ * @see Tag
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Feature.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -41,9 +69,9 @@ public class Feature extends Entity {
     boolean isNone();
 
     /**
-     * Get id of the property
+     * Get id of the feature.
      *
-     * @return id string
+     * @return ID string.
      */
     public native
     @Name("id")
@@ -55,9 +83,9 @@ public class Feature extends Entity {
     long createdAt();
 
     /**
-     * Get the creation date of the property.
+     * Get the creation date of the feature.
      *
-     * @return The creation date of the property.
+     * @return The creation date of the feature.
      */
     public Date getCreatedAt() {
         return DateUtils.convertSecondsToDate(createdAt());
@@ -110,6 +138,7 @@ public class Feature extends Entity {
      * Setter for the link type.
      *
      * @param type The link type to set.
+     * @see LinkType
      */
     public native
     @Name("linkType")
@@ -119,6 +148,7 @@ public class Feature extends Entity {
      * Getter for the link type.
      *
      * @return The current link type of the feature.
+     * @see LinkType
      */
     public native
     @Name("linkType")
@@ -139,6 +169,7 @@ public class Feature extends Entity {
      * Sets the data array associated with this feature.
      *
      * @param data The data array to set.
+     * @see DataArray
      */
     public native
     @Name("data")
@@ -148,6 +179,7 @@ public class Feature extends Entity {
      * Gets the data array associated with this feature.
      *
      * @return The associated data array.
+     * @see DataArray
      */
     public native
     @Name("data")
@@ -155,10 +187,11 @@ public class Feature extends Entity {
     DataArray getData();
 
     /**
-     * Convert link type to string.
+     * Convert {@link LinkType} to string.
      *
      * @param linkType link to convert
      * @return link type as a string
+     * @see LinkType
      */
     public static String linkTypeToString(int linkType) {
         String strLinkType = "";
