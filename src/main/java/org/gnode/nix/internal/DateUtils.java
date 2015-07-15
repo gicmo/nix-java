@@ -2,11 +2,16 @@ package org.gnode.nix.internal;
 
 import java.util.Date;
 
+/**
+ * <h1>DateUtils</h1>
+ * This class contains functions for date conversions.
+ */
+
 public class DateUtils {
 
     /**
      * Convert seconds to appropriate date
-     * <p/>
+     * <p>
      * Required for functions that use time_t
      *
      * @param seconds seconds to be converted
@@ -22,7 +27,7 @@ public class DateUtils {
 
     /**
      * Convert date object to seconds
-     * <p/>
+     * <p>
      * Required for functions that use time_t
      *
      * @param dateTime date to be converted
