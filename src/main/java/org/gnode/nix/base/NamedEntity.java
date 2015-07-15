@@ -3,6 +3,12 @@ package org.gnode.nix.base;
 import org.bytedeco.javacpp.annotation.Platform;
 import org.bytedeco.javacpp.annotation.Properties;
 
+/**
+ * <h1>NamedEntity</h1>
+ * An abstract class for entities with a {@link NamedEntity#getName()}, {@link NamedEntity#getType()}
+ * and {@link NamedEntity#getDefinition()}.
+ */
+
 @Properties(value = {
         @Platform(value = "linux"),
         @Platform(value = "windows")})
@@ -17,7 +23,7 @@ public abstract class NamedEntity<T extends NamedEntity> extends Entity implemen
 
     /**
      * Getter for the type of the entity.
-     * <p/>
+     * <p>
      * The property type is used in order to allow the specification
      * of additional semantic meaning for an entity and therefore can introduce
      * domain-specificity into the quite generic data model.
@@ -28,7 +34,7 @@ public abstract class NamedEntity<T extends NamedEntity> extends Entity implemen
 
     /**
      * Getter for the name of the entity.
-     * <p/>
+     * <p>
      * The name of an entity serves as a human readable identifier. It is not obliged
      * to be unique. However it is strongly recommended to use unique name inside one specific
      * {@link org.gnode.nix.Block}.
@@ -46,7 +52,7 @@ public abstract class NamedEntity<T extends NamedEntity> extends Entity implemen
 
     /**
      * Getter for the definition of the entity.
-     * <p/>
+     * <p>
      * The definition is an optional property that allows the user to add
      * a freely assignable textual definition to the entity.
      *
