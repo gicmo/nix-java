@@ -4,9 +4,37 @@ import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
+
+/**
+ * <h1>SampledDimension</h1>
+ * Dimension descriptor for regularly sampled dimensions.
+ * <p>
+ * Instances of the SampledDimension Class are used to describe a dimension of data in
+ * a DataArray that has been sampled in regular intervals. For example this can be a time axis.
+ * <p>
+ * Sampled dimensions are characterized by the label for the dimension, the unit in which the
+ * sampling interval is given. If not specified otherwise the dimension starts with zero offset.
+ * <p>
+ * <h2>Create a sampled dimension</h2>
+ * The following example will create a sampled dimension on a data array. The dimension
+ * has a sampling rate of 10kHz and represents the time axis of a recording.
+ * <pre> <code>
+ *     DataArray da = ...;
+ *     SampledDimension sd = da.appendSampledDimension(0.1); <p>
+ *     sd.setUnit("ms");
+ *     sd.setLabel("time");
+ *     sd.setOffset(10000);
+ * </code></pre>
+ *
+ * @see Dimension
+ * @see RangeDimension
+ * @see SetDimension
+ */
 
 @Properties(value = {
         @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
@@ -24,7 +52,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * Constructor that creates an uninitialized SampledDimension.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized dimension will throw a {@link java.lang.RuntimeException}.
      */
     public SampledDimension() {
@@ -47,7 +75,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * The actual dimension that is described by the dimension descriptor.
-     * <p/>
+     * <p>
      * The index of the dimension entity representing the dimension of the actual
      * data that is defined by this descriptor.
      *
@@ -60,11 +88,12 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * The type of the dimension.
-     * <p/>
+     * <p>
      * This field indicates whether the dimension is a SampledDimension, SetDimension or
      * RangeDimension.
      *
      * @return The dimension type.
+     * @see DataType
      */
     public native
     @Name("dimensionType")
@@ -78,11 +107,11 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * Getter for the label of the dimension.
-     * <p/>
+     * <p>
      * The label of a SampledDimension corresponds to the axis label
      * in a plot of the respective dimension.
      *
-     * @return The label of the dimension. {#link null} if not present.
+     * @return The label of the dimension. Returns <tt>null</tt> if not present.
      */
     public String getLabel() {
         OptionalUtils.OptionalString label = label();
@@ -97,7 +126,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
     private native void label(@Const @ByVal None t);
 
     /**
-     * Sets the label of the dimension. If {#link null} removes label.
+     * Sets the label of the dimension. If <tt>null</tt> removes label.
      *
      * @param label The label of the dimension.
      */
@@ -115,7 +144,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * Gets the unit of a dimension.
-     * <p/>
+     * <p>
      * The unit describes which SI unit applies to this dimension
      * and to its sampling interval.
      *
@@ -134,7 +163,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
     private native void unit(@Const @ByVal None t);
 
     /**
-     * Sets the unit of a dimension. If {#link null} removes the unit.
+     * Sets the unit of a dimension. If <tt>null</tt> removes the unit.
      *
      * @param unit The unit to set.
      */
@@ -170,10 +199,10 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * Gets the offset of the dimension.
-     * <p/>
+     * <p>
      * The offset defines at which position the sampling was started. The offset is
      * interpreted in the same unit as the sampling interval.
-     * <p/>
+     * <p>
      * By default the offset is 0.
      *
      * @return The offset of the SampledDimension.
@@ -197,7 +226,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * Returns the index of the given position.
-     * <p/>
+     * <p>
      * This method returns the index of the given position. Use this method for
      * example to find out which data point (index) relates to a given
      * time. Note: This method does not check if the position is within the
@@ -213,7 +242,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
 
     /**
      * Returns the position of this dimension at a given index.
-     * <p/>
+     * <p>
      * This method returns the position at a given index. Use this method for
      * example to find the position that relates to a certain index. Note: This
      * method does not check if the index is the extent of the data!
@@ -230,7 +259,7 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
     DoublePointer axis(@Cast("const size_t") long count, @Cast("const size_t") long startIndex);
 
     /**
-     * Returns a vector containing the positions defined by this
+     * Returns a list containing the positions defined by this
      * dimension.
      *
      * @param count      The number of indices
