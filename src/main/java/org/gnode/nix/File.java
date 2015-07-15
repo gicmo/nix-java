@@ -144,10 +144,10 @@ public class File extends ImplContainer implements Comparable<File> {
     @ByVal
     Block getBlock(@StdString String nameOrId) {
         Block block = block(nameOrId);
-        if (block.isInitialized()) {
-            return block;
+        if (block.isNone()) {
+            block = null;
         }
-        return null;
+        return block;
     }
 
     private native
@@ -166,10 +166,10 @@ public class File extends ImplContainer implements Comparable<File> {
     @ByVal
     Block getBlock(@Cast("size_t") long index) {
         Block block = block(index);
-        if (block.isInitialized()) {
-            return block;
+        if (block.isNone()) {
+            block = null;
         }
-        return null;
+        return block;
     }
 
     /**
@@ -277,10 +277,10 @@ public class File extends ImplContainer implements Comparable<File> {
      */
     public Section getSection(String nameOrId) {
         Section section = fetchSection(nameOrId);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     private native
@@ -296,10 +296,10 @@ public class File extends ImplContainer implements Comparable<File> {
      */
     public Section getSection(long index) {
         Section section = fetchSection(index);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     /**
@@ -396,10 +396,10 @@ public class File extends ImplContainer implements Comparable<File> {
      */
     public Section createSection(String name, String type) {
         Section section = makeSection(name, type);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     /**
