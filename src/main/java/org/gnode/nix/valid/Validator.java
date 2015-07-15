@@ -4,6 +4,11 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.*;
 
+/**
+ * <h1>Validator</h1>
+ * Class used to validate entities.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/valid/validate.hpp>",
                 "<nix/Block.hpp>",
@@ -31,6 +36,7 @@ public class Validator {
      *
      * @param block Block entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -45,6 +51,7 @@ public class Validator {
      *
      * @param dataArray DataArray entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -59,6 +66,7 @@ public class Validator {
      *
      * @param tag Tag entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -73,6 +81,7 @@ public class Validator {
      *
      * @param property Property entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -86,6 +95,7 @@ public class Validator {
      *
      * @param multiTag MultiTag entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -100,6 +110,7 @@ public class Validator {
      *
      * @param dimension Dimension entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -114,6 +125,7 @@ public class Validator {
      *
      * @param rangeDimension RangeDimension entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -128,6 +140,7 @@ public class Validator {
      *
      * @param sampledDimension SampledDimension entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -142,6 +155,7 @@ public class Validator {
      *
      * @param setDimension SetDimension entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -155,6 +169,7 @@ public class Validator {
      *
      * @param feature Feature entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -168,6 +183,7 @@ public class Validator {
      *
      * @param section Section entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -181,6 +197,7 @@ public class Validator {
      *
      * @param source Source entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
@@ -194,6 +211,7 @@ public class Validator {
      *
      * @param file File entity
      * @return The validation results as {@link Result} object
+     * @see Result
      */
     public static native
     @ByVal
