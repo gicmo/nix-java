@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static org.junit.Assert.*;
 
@@ -162,6 +163,124 @@ public class TestSection {
         assertEquals(section.getSectionCount(), 0);
         assertEquals(section.getSections().size(), 0);
         assertFalse(section.hasSection("invalid_id"));
+    }
+
+    @Test
+    public void testFindSection() {
+        // prepare
+        Section l1n1 = section.createSection("l1n1", "typ1");
+        Section l1n2 = section.createSection("l1n2", "typ2");
+        Section l1n3 = section.createSection("l1n3", "typ3");
+
+        Section l2n1 = l1n1.createSection("l2n1", "typ1");
+        Section l2n2 = l1n1.createSection("l2n2", "typ2");
+        Section l2n3 = l1n1.createSection("l2n3", "typ2");
+        Section l2n4 = l1n3.createSection("l2n4", "typ2");
+        Section l2n5 = l1n3.createSection("l2n5", "typ2");
+        Section l2n6 = l1n3.createSection("l2n6", "typ3");
+
+        Section l3n1 = l2n1.createSection("l3n1", "typ1");
+        Section l3n2 = l2n3.createSection("l3n2", "typ2");
+        Section l3n3 = l2n3.createSection("l3n3", "typ2");
+        Section l3n4 = l2n5.createSection("l3n4", "typ2");
+
+        // test depth limit
+        assertTrue(section.findSections().size() == 14);
+        assertTrue(section.findSections((Section s) -> true, 2).size() == 10);
+        assertTrue(section.findSections((Section s) -> true, 1).size() == 4);
+        assertTrue(section.findSections((Section s) -> true, 0).size() == 1);
+
+        // test filter
+        Predicate<Section> filter_typ1 = (Section s) -> s.getType().equals("typ1");
+        Predicate<Section> filter_typ2 = (Section s) -> s.getType().equals("typ2");
+
+        assertTrue(section.findSections(filter_typ1).size() == 3);
+        assertTrue(section.findSections(filter_typ2).size() == 8);
+    }
+
+    @Test
+    public void testFindRelated() {
+        /* We create the following tree:
+         *
+         * section---l1n1---l2n1---l3n1------------
+         *            |      |                    |
+         *            ------l2n2---l3n2---l4n1---l5n1
+         *                   |      |      |
+         *                   ------l3n3---l4n2
+         * section_other------------|
+         */
+        Section l1n1 = section.createSection("l1n1", "typ1");
+
+        Section l2n1 = l1n1.createSection("l2n1", "t1");
+        Section l2n2 = l1n1.createSection("l2n2", "t2");
+        Section l3n1 = l2n1.createSection("l3n1", "t3");
+        Section l3n2 = l2n2.createSection("l3n2", "t3");
+        Section l3n3 = l2n2.createSection("l3n3", "t4");
+        Section l4n1 = l3n2.createSection("l4n1", "typ2");
+        Section l4n2 = l3n3.createSection("l4n2", "typ2");
+        Section l5n1 = l4n1.createSection("l5n1", "typ2");
+        l2n1.setLink(l2n2.getId());
+        l3n1.setLink(l5n1.getId());
+        l3n2.setLink(l3n3.getId());
+        l4n1.setLink(l4n2.getId());
+        section_other.setLink(l3n3.getId());
+
+        String t1 = "t1";
+        String t3 = "t3";
+        String t4 = "t4";
+        String typ2 = "typ2";
+        String typ1 = "typ1";
+
+        List<Section> related = l1n1.findRelated((Section s) -> s.getType().equals(t1));
+        assertTrue(related.size() == 1);
+        related = l1n1.findRelated((Section s) -> s.getType().equals(t3));
+        assertTrue(related.size() == 2);
+        related = l1n1.findRelated((Section s) -> s.getType().equals(t4));
+        assertTrue(related.size() == 1);
+        related = l1n1.findRelated((Section s) -> s.getType().equals(typ2));
+        assertTrue(related.size() == 2);
+        related = l4n1.findRelated((Section s) -> s.getType().equals(typ1));
+        assertTrue(related.size() == 1);
+        related = l4n1.findRelated((Section s) -> s.getType().equals(t1));
+        assertTrue(related.size() == 1);
+        related = l3n2.findRelated((Section s) -> s.getType().equals(t1));
+        assertTrue(related.size() == 1);
+        related = l3n2.findRelated((Section s) -> s.getType().equals(t3));
+        assertTrue(related.size() == 0);
+
+        /* Chop the tree to:
+         *
+         * section---l1n1---l2n1---l3n1
+         * section_other
+         *
+         */
+        l1n1.deleteSection(l2n2.getId());
+        assertTrue(section.findSections().size() == 4);
+        // test that all (horizontal) links are gone too:
+        assertNull(l2n1.getLink());
+        assertNull(l3n1.getLink());
+        assertNull(l3n2.getLink());
+        assertNull(l4n1.getLink());
+        assertNull(section_other.getLink());
+        assertFalse(l1n1.hasSection(l2n2));
+
+        /* Extend the tree to:
+         *
+         * section---l1n1---l2n1---l3n1
+         * section_other-----|
+         *
+         * and then chop it down to:
+         *
+         * section_other
+         *
+         */
+        section_other.setLink(l2n1.getId());
+        file.deleteSection(section.getId());
+        assertTrue(section_other.findSections().size() == 1);
+        assertNull(section_other.getLink());
+
+        // re-create section
+        section = file.createSection("section", "metadata");
     }
 
     @Test

@@ -8,8 +8,10 @@ import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalUtils;
 import org.gnode.nix.internal.VectorUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Properties(value = {
         @Platform(include = {"<nix/MultiTag.hpp>"}, link = "nix"),
@@ -629,6 +631,25 @@ public class MultiTag extends EntityWithSources {
         return references().getDataArrays();
     }
 
+    /**
+     * Get referenced data arrays associated with this tag.
+     * <p>
+     * The parameter filter can be used to filter data arrays by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching data arrays.
+     */
+    public List<DataArray> getReferences(Predicate<DataArray> filter) {
+        List<DataArray> result = new ArrayList<>();
+        for (DataArray dataArray : getReferences()) {
+            if (filter.test(dataArray)) {
+                result.add(dataArray);
+            }
+        }
+        return result;
+    }
+
     private native void references(@Const @ByRef VectorUtils.DataArrayVector references);
 
     /**
@@ -738,6 +759,25 @@ public class MultiTag extends EntityWithSources {
      */
     public List<Feature> getFeatures() {
         return features().getFeatures();
+    }
+
+    /**
+     * Get all Features of this tag.
+     * <p>
+     * The parameter filter can be used to filter features by various
+     * criteria.
+     *
+     * @param filter A filter function.
+     * @return A list containing the matching features.
+     */
+    public List<Feature> getFeatures(Predicate<Feature> filter) {
+        List<Feature> result = new ArrayList<>();
+        for (Feature feature : getFeatures()) {
+            if (filter.test(feature)) {
+                result.add(feature);
+            }
+        }
+        return result;
     }
 
     private native
