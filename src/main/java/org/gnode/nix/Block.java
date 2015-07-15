@@ -13,6 +13,55 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * <h1>Block</h1>
+ * Class for grouping further data entities.
+ * <p>
+ * The Block entity is a top-level, summarizing element that allows to
+ * group the other data entities belonging for example to the same recording session.
+ * All data entities such as {@link Source}, {@link DataArray}, {@link Tag} and
+ * {@link MultiTag} have to be associated with one Block.
+ * <p>
+ * <h2>Create a new Block</h2>
+ * A block can only be created on an existing file object. Do not use the blocks constructors for this
+ * purpose.
+ * <pre><code>
+ *      File f = ...;
+ *      Block b = f.createBlock("session one", "recording_session");
+ * </code></pre>
+ * <p>
+ * <h2>Working with blocks</h2>
+ * After a block was created it can be used to create further entities. See the documentation of
+ * {@link Source}, {@link DataArray}, {@link Tag} and {@link MultiTag}
+ * for more information.
+ * The next example shows how some properties of a block can be accessed.
+ * <pre> <code>
+ *      File f = ...;
+ *      Block b = f.createBlock("session one", "recording_session");<p>
+ *      // add metadata to a block
+ *      Section s = f.getSection(sec_id);
+ *      b.setMetadata(s); <p>
+ *      // get associated metadata from a block
+ *      Section s1 = b.getMetadata();<p>
+ *      // remove associated metadata from a block
+ *      b.removeMetadata();
+ * </code></pre>
+ * <p>
+ * <h2>Deleting a block</h2>
+ * When a block is deleted from a file all contained data e.g. sources, data arrays and tags will
+ * be removed too.
+ * <pre><code>
+ *      File f = ...;
+ *      boolean deleted = f.deleteBlock(some_id);
+ *      System.out.println("The block was " + (deleted ? "" : "not ") + "deleted.");
+ * </code></pre>
+ *
+ * @see Source
+ * @see DataArray
+ * @see Tag
+ * @see MultiTag
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Block.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -46,7 +95,7 @@ public class Block extends EntityWithMetadata {
     /**
      * Get id of the block
      *
-     * @return id string
+     * @return ID string.
      */
     public native
     @Name("id")
@@ -106,18 +155,18 @@ public class Block extends EntityWithMetadata {
     }
 
     /**
-     * Setter for the type of the block
+     * Setter for the type of the block.
      *
-     * @param type The type of the block
+     * @param type The type of the block.
      */
     public native
     @Name("type")
     void setType(@StdString String type);
 
     /**
-     * Getter for the type of the block
+     * Getter for the type of the block.
      *
-     * @return The type of the block
+     * @return The type of the block.
      */
     public native
     @Name("type")
@@ -139,9 +188,9 @@ public class Block extends EntityWithMetadata {
     private native void definition(@StdString String definition);
 
     /**
-     * Setter for the definition of the block. If null is passed definition is removed.
+     * Setter for the definition of the block. If <tt>null</tt> is passed definition is removed.
      *
-     * @param definition definition of block
+     * @param definition The definition of block.
      */
     public void setDefinition(String definition) {
         if (definition != null) {
@@ -175,7 +224,8 @@ public class Block extends EntityWithMetadata {
     /**
      * Get metadata associated with this entity.
      *
-     * @return The associated section, if no such section exists {#link null} is returned.
+     * @return The associated section, if no such section exists <tt>null</tt>  is returned.
+     * @see Section
      */
     public
     @Name("metadata")
@@ -195,6 +245,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param metadata The {@link Section} that should be associated
      *                 with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -207,6 +258,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param id The id of the {@link Section} that should be associated
      *           with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -216,6 +268,8 @@ public class Block extends EntityWithMetadata {
 
     /**
      * Removes metadata associated with the entity.
+     *
+     * @see Section
      */
     public void removeMetadata() {
         metadata(new None());
@@ -232,6 +286,7 @@ public class Block extends EntityWithMetadata {
      * @param nameOrId Name or id of the source.
      * @return True if a source with the given id exists at the root, false
      * otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -243,6 +298,7 @@ public class Block extends EntityWithMetadata {
      * @param source The source to check.
      * @return True if the source exists at the root, false
      * otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -259,6 +315,7 @@ public class Block extends EntityWithMetadata {
      * @param nameOrId Name or id of the source.
      * @return The source with the given id. If it doesn't exist an exception
      * will be thrown.
+     * @see Source
      */
     public Source getSource(String nameOrId) {
         Source source = fetchSource(nameOrId);
@@ -278,6 +335,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param index The index of the source.
      * @return The source at the specified index.
+     * @see Source
      */
     public Source getSource(long index) {
         Source source = fetchSource(index);
@@ -291,6 +349,7 @@ public class Block extends EntityWithMetadata {
      * Returns the number of root sources in this block.
      *
      * @return The number of root sources.
+     * @see Source
      */
     public native
     @Name("sourceCount")
@@ -304,6 +363,7 @@ public class Block extends EntityWithMetadata {
      * Get all root sources associated with this block.
      *
      * @return list of source.
+     * @see Source
      */
     public List<Source> getSources() {
         return sources().getSources();
@@ -317,6 +377,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param filter A filter function.
      * @return A list containing the matching root sources.
+     * @see Source
      */
     public List<Source> getSources(Predicate<Source> filter) {
         List<Source> result = new ArrayList<>();
@@ -340,6 +401,7 @@ public class Block extends EntityWithMetadata {
      * @param filter   A filter function.
      * @param maxDepth The maximum depth of traversal.
      * @return A list containing the matching sources.
+     * @see Source
      */
     public List<Source> findSources(Predicate<Source> filter, int maxDepth) {
         List<Source> result = new ArrayList<>();
@@ -360,6 +422,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param filter A filter function.
      * @return A list containing the matching sources.
+     * @see Source
      */
     public List<Source> findSources(Predicate<Source> filter) {
         return findSources(filter, Integer.MAX_VALUE);
@@ -376,6 +439,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param maxDepth The maximum depth of traversal.
      * @return A list containing the matching sources.
+     * @see Source
      */
     public List<Source> findSources(int maxDepth) {
         return findSources((Source s) -> true, maxDepth);
@@ -391,6 +455,7 @@ public class Block extends EntityWithMetadata {
      * By default a filter is used that accepts all sources at all depths.
      *
      * @return A list containing the matching sources.
+     * @see Source
      */
     public List<Source> findSources() {
         return findSources((Source s) -> true, Integer.MAX_VALUE);
@@ -407,6 +472,7 @@ public class Block extends EntityWithMetadata {
      * @param name The name of the source to create.
      * @param type The type of the source.
      * @return The created source object.
+     * @see Source
      */
     public Source createSource(String name, String type) {
         Source source = makeSource(name, type);
@@ -424,6 +490,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of the source to delete.
      * @return True if the source was deleted, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -437,10 +504,12 @@ public class Block extends EntityWithMetadata {
      *
      * @param source The source to delete.
      * @return True if the source was deleted, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
     boolean deleteSource(@Const @ByRef Source source);
+
 
     //--------------------------------------------------
     // Methods concerning data arrays
@@ -451,6 +520,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of a data array.
      * @return True if the data array exists, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -461,6 +531,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param dataArray The data array to check.
      * @return True if the data array exists, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -477,6 +548,7 @@ public class Block extends EntityWithMetadata {
      * @param nameOrId Name or id of an existing data array.
      * @return The data array with the specified id. If this
      * doesn't exist, an exception will be thrown.
+     * @see DataArray
      */
     public DataArray getDataArray(String nameOrId) {
         DataArray da = fetchDataArray(nameOrId);
@@ -496,6 +568,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param index The index of the data array.
      * @return The data array at the specified index.
+     * @see DataArray
      */
     public DataArray getDataArray(long index) {
         DataArray da = fetchDataArray(index);
@@ -513,6 +586,7 @@ public class Block extends EntityWithMetadata {
      * Get data arrays within this block.
      *
      * @return list of data arrays
+     * @see DataArray
      */
     public List<DataArray> getDataArrays() {
         return dataArrays().getDataArrays();
@@ -526,6 +600,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param filter A filter function.
      * @return A list that contains all filtered data arrays.
+     * @see DataArray
      */
     public List<DataArray> getDataArrays(Predicate<DataArray> filter) {
         List<DataArray> result = new ArrayList<>();
@@ -541,11 +616,11 @@ public class Block extends EntityWithMetadata {
      * Returns the number of all data arrays of the block.
      *
      * @return The number of data arrays of the block.
+     * @see DataArray
      */
     public native
     @Name("dataArrayCount")
     long getDataArrayCount();
-
 
     private native
     @Name("createDataArray")
@@ -563,6 +638,7 @@ public class Block extends EntityWithMetadata {
      * @param dataType A {@link DataType} indicating the format to store values.
      * @param shape    A NDSize holding the extent of the array to create.
      * @return The newly created data array.
+     * @see DataArray
      */
     public DataArray createDataArray(String name, String type, int dataType, NDSize shape) {
         DataArray da = makeDataArray(name, type, dataType, shape);
@@ -580,6 +656,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of the data array to delete.
      * @return True if the data array was deleted, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -593,10 +670,12 @@ public class Block extends EntityWithMetadata {
      *
      * @param dataArray The data array to delete.
      * @return True if the data array was deleted, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
     boolean deleteDataArray(@Const @ByRef DataArray dataArray);
+
 
     //--------------------------------------------------
     // Methods concerning tags.
@@ -607,6 +686,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of a tag.
      * @return True if the tag exists, false otherwise.
+     * @see Tag
      */
     public native
     @Cast("bool")
@@ -617,6 +697,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param tag The tag to check.
      * @return True if the tag exists, false otherwise.
+     * @see Tag
      */
     public native
     @Cast("bool")
@@ -633,6 +714,7 @@ public class Block extends EntityWithMetadata {
      * @param nameOrId Name or id of the tag.
      * @return The tag with the specified id. If this tag doesn't exist
      * an exception will be thrown.
+     * @see Tag
      */
     public Tag getTag(String nameOrId) {
         Tag tag = fetchTag(nameOrId);
@@ -652,6 +734,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param index The index of the tag.
      * @return The tag at the specified index.
+     * @see Tag
      */
     public Tag getTag(long index) {
         Tag tag = fetchTag(index);
@@ -669,6 +752,7 @@ public class Block extends EntityWithMetadata {
      * Get tags within this block.
      *
      * @return list of all tags.
+     * @see Tag
      */
     public List<Tag> getTags() {
         return tags().getTags();
@@ -682,6 +766,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param filter A filter function.
      * @return A list that contains all filtered tags.
+     * @see Tag
      */
     public List<Tag> getTags(Predicate<Tag> filter) {
         List<Tag> result = new ArrayList<>();
@@ -715,6 +800,7 @@ public class Block extends EntityWithMetadata {
      * @param type     The type of the tag.
      * @param position The position of the tag.
      * @return The newly created tag.
+     * @see Tag
      */
     public Tag createTag(String name, String type, double[] position) {
         Tag tag = makeTag(name, type, position);
@@ -732,6 +818,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of the tag to remove.
      * @return True if the tag was removed, false otherwise.
+     * @see Tag
      */
     public native
     @Cast("bool")
@@ -745,6 +832,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param tag The tag to remove.
      * @return True if the tag was removed, false otherwise.
+     * @see Tag
      */
     public native
     @Cast("bool")
@@ -760,6 +848,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of a multi tag.
      * @return True if the multi tag exists, false otherwise.
+     * @see MultiTag
      */
     public native
     @Cast("bool")
@@ -770,6 +859,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param multiTag The multi tag to check.
      * @return True if the multi tag exists, false otherwise.
+     * @see MultiTag
      */
     public native
     @Cast("bool")
@@ -786,6 +876,7 @@ public class Block extends EntityWithMetadata {
      * @param nameOrId Name or id of the multi tag.
      * @return The tag with the specified id. If this tag doesn't exist
      * an exception will be thrown.
+     * @see MultiTag
      */
     public MultiTag getMultiTag(String nameOrId) {
         MultiTag multiTag = fetchMultiTag(nameOrId);
@@ -805,6 +896,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param index The index of the tag.
      * @return The multi tag at the specified index.
+     * @see MultiTag
      */
     public MultiTag getMultiTag(long index) {
         MultiTag multiTag = fetchMultiTag(index);
@@ -822,6 +914,7 @@ public class Block extends EntityWithMetadata {
      * Get multi tags within this block.
      *
      * @return A list that contains all filtered multi tags.
+     * @see MultiTag
      */
     public List<MultiTag> getMultiTags() {
         return multiTags().getMultiTags();
@@ -834,6 +927,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param filter A filter function.
      * @return A list that contains all filtered multi tags.
+     * @see MultiTag
      */
     public List<MultiTag> getMultiTags(Predicate<MultiTag> filter) {
         List<MultiTag> result = new ArrayList<>();
@@ -849,6 +943,7 @@ public class Block extends EntityWithMetadata {
      * Returns the number of multi tags associated with this block.
      *
      * @return The number of multi tags.
+     * @see MultiTag
      */
     public native
     @Name("multiTagCount")
@@ -867,6 +962,7 @@ public class Block extends EntityWithMetadata {
      * @param type      The type of the tag.
      * @param positions The positions of the tag.
      * @return The newly created tag.
+     * @see MultiTag
      */
     public MultiTag createMultiTag(String name, String type, DataArray positions) {
         MultiTag multiTag = makeMultiTag(name, type, positions);
@@ -884,6 +980,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param nameOrId Name or id of the tag to remove.
      * @return True if the tag was removed, false otherwise.
+     * @see MultiTag
      */
     public native
     @Cast("bool")
@@ -897,6 +994,7 @@ public class Block extends EntityWithMetadata {
      *
      * @param multiTag The tag to remove.
      * @return True if the tag was removed, false otherwise.
+     * @see MultiTag
      */
     public native
     @Cast("bool")
