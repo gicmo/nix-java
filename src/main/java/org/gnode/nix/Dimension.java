@@ -4,6 +4,18 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
 
+/**
+ * <h1>Dimension</h1>
+ * Instances of the Dimension subclasses are used to define the different dimensions of data in a DataArray.
+ * <p>
+ * The real dimension descriptor are defined in three subclasses: {@link RangeDimension},
+ * {@link SampledDimension} and {@link SetDimension} .
+ *
+ * @see RangeDimension
+ * @see SampledDimension
+ * @see SetDimension
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -60,7 +72,11 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
      * This field indicates whether the dimension is a SampledDimension, SetDimension or
      * RangeDimension.
      *
-     * @return The dimension type.
+     * @return The dimension type. Constant specified in {@link DimensionType}
+     * @see DimensionType
+     * @see RangeDimension
+     * @see SampledDimension
+     * @see SetDimension     *
      */
     public native
     @Name("dimensionType")
@@ -69,7 +85,7 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
     int getDimensionType();
 
     /**
-     * Returns as {#link SetDimension}.
+     * Returns as {@link SetDimension}.
      *
      * @return SetDimension object
      */
@@ -78,7 +94,7 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
     SetDimension asSetDimension();
 
     /**
-     * Returns as {#link SampledDimension}.
+     * Returns as {@link SampledDimension}.
      *
      * @return SampledDimension object
      */
@@ -87,7 +103,7 @@ public class Dimension<T extends Dimension> extends ImplContainer implements Com
     SampledDimension asSampledDimension();
 
     /**
-     * Returns as {#link RangeDimension}.
+     * Returns as {@link RangeDimension}.
      *
      * @return RangeDimension object
      */
