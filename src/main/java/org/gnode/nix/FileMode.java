@@ -1,7 +1,8 @@
 package org.gnode.nix;
 
 /**
- * File open modes
+ * <h1>FileMode</h1>
+ * Constants for file modes.
  */
 public class FileMode {
 

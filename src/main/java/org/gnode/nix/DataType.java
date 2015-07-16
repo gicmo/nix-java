@@ -1,5 +1,15 @@
 package org.gnode.nix;
 
+/**
+ * <h1>DataType</h1>
+ * Constants for all valid data types.
+ * <p>
+ * Those data types are used by {@link DataArray} and {@link Property}
+ * in order to indicate of what type the stored data of value is.
+ *
+ * @see DataArray
+ * @see Property
+ */
 public class DataType {
 
     public static final int Bool = 0;

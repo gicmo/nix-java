@@ -5,6 +5,11 @@ import org.bytedeco.javacpp.LongPointer;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
+/**
+ * <h1>NDSize</h1>
+ * Used for setting extent and dimensions for data.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/NDSize.hpp>"}, link = "nix"),
         @Platform(value = "linux"),

@@ -14,6 +14,35 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * <h1>Tag</h1>
+ * A tag class that defines a single point or region of interest.
+ * <p>
+ * Besides the {@link DataArray} the tag entities can be considered as the other
+ * core entities of the data model.
+ * They are meant to attach annotations directly to the data and to establish meaningful
+ * links between different kinds of stored data.
+ * Most importantly tags allow the definition of points or regions of interest in data
+ * that is stored in other {@link DataArray} entities. The data array entities the
+ * tag applies to are defined by its property {@link Tag#getReferences(Predicate)}.
+ * <p>
+ * Further the referenced data is defined by an origin vector called {@link Tag#getPosition()}
+ * and an optional {@link Tag#getExtent()} vector that defines its size.
+ * Therefore position and extent of a tag, together with the references field
+ * defines a group of points or regions of interest collected from a subset of all
+ * available {@link DataArray} entities.
+ * <p>
+ * Further tags have a field called {@link Tag#getFeatures()} which makes it possible to associate
+ * other data with the tag.  Semantically a feature of a tag is some additional data that
+ * contains additional information about the points of hyperslabs defined by the tag.
+ * This could be for example data that represents a stimulus (e.g. an image or a
+ * signal) that was applied in a certain interval during the recording.
+ *
+ * @see DataArray
+ * @see Feature
+ * @see MultiTag
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Tag.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -49,9 +78,9 @@ public class Tag extends EntityWithSources {
     boolean isNone();
 
     /**
-     * Get id of the tag
+     * Get id of the tag.
      *
-     * @return id string
+     * @return ID string.
      */
     public native
     @Name("id")
@@ -144,7 +173,7 @@ public class Tag extends EntityWithSources {
     private native void definition(@StdString String definition);
 
     /**
-     * Setter for the definition of the tag. If null is passed definition is removed.
+     * Setter for the definition of the tag. If <tt>null</tt> is passed definition is removed.
      *
      * @param definition definition of tag.
      */
@@ -180,17 +209,17 @@ public class Tag extends EntityWithSources {
     /**
      * Get metadata associated with this entity.
      *
-     * @return The associated section, if no such section exists {#link null} is returned.
+     * @return The associated section, if no such section exists <tt>null</tt> is returned.
+     * @see Section
      */
     public
     @Name("metadata")
     Section getMetadata() {
         Section section = metadata();
-        if (section.isInitialized()) {
-            return section;
-        } else {
-            return null;
+        if (section.isNone()) {
+            section = null;
         }
+        return section;
     }
 
     /**
@@ -200,6 +229,7 @@ public class Tag extends EntityWithSources {
      *
      * @param metadata The {@link Section} that should be associated
      *                 with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -212,6 +242,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of the {@link Section} that should be associated
      *           with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -221,6 +252,8 @@ public class Tag extends EntityWithSources {
 
     /**
      * Removes metadata associated with the entity.
+     *
+     * @see Section
      */
     public void removeMetadata() {
         metadata(new None());
@@ -230,6 +263,7 @@ public class Tag extends EntityWithSources {
      * Get the number of sources associated with this entity.
      *
      * @return The number sources.
+     * @see Source
      */
     public native
     @Name("sourceCount")
@@ -240,6 +274,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The source id to check.
      * @return True if the source is associated with this entity, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -250,6 +285,7 @@ public class Tag extends EntityWithSources {
      *
      * @param source The source to check.
      * @return True if the source is associated with this entity, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -264,13 +300,14 @@ public class Tag extends EntityWithSources {
      * Returns an associated source identified by its id.
      *
      * @param id The id of the associated source.
+     * @see Source
      */
     public Source getSource(String id) {
         Source source = fetchSource(id);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -284,13 +321,14 @@ public class Tag extends EntityWithSources {
      * @param index The index of the associated source.
      * @return The source with the given id. If it doesn't exist an exception
      * will be thrown.
+     * @see Source
      */
     public Source getSource(long index) {
         Source source = fetchSource(index);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -300,7 +338,8 @@ public class Tag extends EntityWithSources {
     /**
      * Get all sources associated with this entity.
      *
-     * @return All associated sources that match the given filter as a vector
+     * @return All associated sources that match the given filter as a vector.
+     * @see Source
      */
     public List<Source> getSources() {
         return sources().getSources();
@@ -314,6 +353,7 @@ public class Tag extends EntityWithSources {
      * All previously existing associations will be overwritten.
      *
      * @param sources A vector with all sources.
+     * @see Source
      */
     public void setSources(List<Source> sources) {
         sources(new VectorUtils.SourceVector(sources));
@@ -326,6 +366,7 @@ public class Tag extends EntityWithSources {
      * entity, the call will have no effect.
      *
      * @param id The id of the source.
+     * @see Source
      */
     public native void addSource(@StdString String id);
 
@@ -335,6 +376,7 @@ public class Tag extends EntityWithSources {
      * Calling this method will have no effect if the source is already associated to this entity.
      *
      * @param source The source to add.
+     * @see Source
      */
     public native void addSource(@Const @ByRef Source source);
 
@@ -346,6 +388,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of the source to remove.
      * @return True if the source was removed, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -359,6 +402,7 @@ public class Tag extends EntityWithSources {
      *
      * @param source The source to remove.
      * @return True if the source was removed, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -392,7 +436,7 @@ public class Tag extends EntityWithSources {
     /**
      * Sets the units of a tag.
      *
-     * @param units All units as a list. If {@link null} removes the units.
+     * @param units All units as a list. If <tt>null</tt> removes the units.
      */
     public void setUnits(List<String> units) {
         if (units != null) {
@@ -469,6 +513,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of the DataArray to check.
      * @return True if the data array is referenced, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -479,6 +524,7 @@ public class Tag extends EntityWithSources {
      *
      * @param reference The DataArray to check.
      * @return True if the data array is referenced, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -488,6 +534,7 @@ public class Tag extends EntityWithSources {
      * Gets the number of referenced DataArray entities of the tag.
      *
      * @return The number of referenced data arrays.
+     * @see DataArray
      */
     public native
     @Name("referenceCount")
@@ -503,13 +550,14 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of the referenced DataArray.
      * @return The referenced data array.
+     * @see DataArray
      */
     public DataArray getReference(String id) {
         DataArray da = fetchReference(id);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     private native
@@ -522,19 +570,21 @@ public class Tag extends EntityWithSources {
      *
      * @param index The index of the DataArray.
      * @return The referenced data array.
+     * @see DataArray
      */
     public DataArray getReference(long index) {
         DataArray da = fetchReference(index);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     /**
      * Add a DataArray to the list of referenced data of the tag.
      *
      * @param reference The DataArray to add.
+     * @see DataArray
      */
     public native void addReference(@Const @ByRef DataArray reference);
 
@@ -542,6 +592,7 @@ public class Tag extends EntityWithSources {
      * Add a DataArray to the list of referenced data of the tag.
      *
      * @param id The id of the DataArray to add.
+     * @see DataArray
      */
     public native void addReference(@StdString String id);
 
@@ -553,6 +604,7 @@ public class Tag extends EntityWithSources {
      *
      * @param reference The DataArray to remove.
      * @return True if the DataArray was removed, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -566,6 +618,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of the DataArray to remove.
      * @return True if the DataArray was removed, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -580,7 +633,8 @@ public class Tag extends EntityWithSources {
      * <p>
      * Always uses filter that accepts all sources.
      *
-     * @return The filtered dimensions as a vector
+     * @return The filtered dimensions as a vector.
+     * @see DataArray
      */
     public List<DataArray> getReferences() {
         return references().getDataArrays();
@@ -594,6 +648,7 @@ public class Tag extends EntityWithSources {
      *
      * @param filter A filter function.
      * @return A list containing the matching data arrays.
+     * @see DataArray
      */
     public List<DataArray> getReferences(Predicate<DataArray> filter) {
         List<DataArray> result = new ArrayList<>();
@@ -614,6 +669,7 @@ public class Tag extends EntityWithSources {
      * will be removed.
      *
      * @param references All referenced arrays.
+     * @see DataArray
      */
     public void setReferences(List<DataArray> references) {
         references(new VectorUtils.DataArrayVector(references));
@@ -628,6 +684,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of a feature.
      * @return True if the feature exists, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -638,6 +695,7 @@ public class Tag extends EntityWithSources {
      *
      * @param feature The Feature to check.
      * @return True if the feature exists, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -647,6 +705,7 @@ public class Tag extends EntityWithSources {
      * Gets the number of features in this block.
      *
      * @return The number of features.
+     * @see Feature
      */
     public native
     @Name("featureCount")
@@ -663,13 +722,14 @@ public class Tag extends EntityWithSources {
      * @param id The id of the feature.
      * @return The feature with the specified id. If it doesn't exist
      * an exception will be thrown.
+     * @see Feature
      */
     public Feature getFeature(String id) {
         Feature feature = fetchFeature(id);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -682,13 +742,14 @@ public class Tag extends EntityWithSources {
      *
      * @param index The index of the feature.
      * @return The feature with the specified index.
+     * @see Feature
      */
     public Feature getFeature(long index) {
         Feature feature = fetchFeature(index);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -699,6 +760,7 @@ public class Tag extends EntityWithSources {
      * Get all Features of this tag.
      *
      * @return A vector containing the matching features.
+     * @see Feature
      */
     public List<Feature> getFeatures() {
         return features().getFeatures();
@@ -712,6 +774,7 @@ public class Tag extends EntityWithSources {
      *
      * @param filter A filter function.
      * @return A list containing the matching features.
+     * @see Feature
      */
     public List<Feature> getFeatures(Predicate<Feature> filter) {
         List<Feature> result = new ArrayList<>();
@@ -734,13 +797,14 @@ public class Tag extends EntityWithSources {
      * @param data     The data array of this feature.
      * @param linkType The link type of this feature.
      * @return The created feature object.
+     * @see Feature
      */
     public Feature createFeature(DataArray data, int linkType) {
         Feature feature = makeFeature(data, linkType);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -754,13 +818,14 @@ public class Tag extends EntityWithSources {
      * @param dataArrayId The id of the data array of this feature.
      * @param linkType    The link type of this feature.
      * @return The created feature object.
+     * @see Feature
      */
     public Feature createFeature(String dataArrayId, int linkType) {
         Feature feature = makeFeature(dataArrayId, linkType);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     /**
@@ -768,6 +833,7 @@ public class Tag extends EntityWithSources {
      *
      * @param id The id of the feature to remove.
      * @return True if the feature was removed, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -778,6 +844,7 @@ public class Tag extends EntityWithSources {
      *
      * @param feature The feature to remove.
      * @return True if the feature was removed, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -793,6 +860,7 @@ public class Tag extends EntityWithSources {
      * @param referenceIndex The index of the reference of which
      *                       the data should be returned.
      * @return the data
+     * @see DataView
      */
     public native
     @ByVal
@@ -803,6 +871,7 @@ public class Tag extends EntityWithSources {
      *
      * @param featureIndex The index of the requested feature.
      * @return The data stored in the Feature.
+     * @see DataView
      */
     public native
     @ByVal

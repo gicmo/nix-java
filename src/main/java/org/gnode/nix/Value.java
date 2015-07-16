@@ -6,6 +6,11 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
+/**
+ * <h1>Value</h1>
+ * Class that corresponds to the odML Value.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Value.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -235,7 +240,7 @@ public class Value extends Pointer {
     /**
      * Check if value supports a data type.
      *
-     * @param dtype @link{DataType} constant.
+     * @param dtype {@link DataType} constant.
      * @return True is supported, otherwise false.
      */
     public static native

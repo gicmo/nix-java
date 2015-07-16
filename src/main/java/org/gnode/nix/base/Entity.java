@@ -5,6 +5,11 @@ import org.bytedeco.javacpp.annotation.Properties;
 
 import java.util.Date;
 
+/**
+ * <h1>Entity</h1>
+ * An abstract class that declares a basic features of most entities.
+ */
+
 @Properties(value = {
         @Platform(value = "linux"),
         @Platform(value = "windows")})

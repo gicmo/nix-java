@@ -3,10 +3,30 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.Entity;
-import org.gnode.nix.internal.*;
+import org.gnode.nix.internal.DateUtils;
+import org.gnode.nix.internal.None;
+import org.gnode.nix.internal.OptionalUtils;
+import org.gnode.nix.internal.VectorUtils;
 
 import java.util.Date;
 import java.util.List;
+
+/**
+ * <h1>Property</h1>
+ * Class representing an odML property entity.
+ * <p>
+ * In the odML model information is stored in the form of extended
+ * key-value pairs. A Property contains information that is valid for
+ * all Values stored in it. Its {@link DataType} provides information about
+ * the type of the stored Value entities (e.g. double or integer).
+ * <p>
+ * The {@link Property#setUnit(String)} is the unit of the stored values. Similar
+ * to the {@link Section} entity, mapping information can be provided
+ * using the {@link Property#setMapping(String)} field.
+ *
+ * @see DataType
+ * @see Section
+ */
 
 @Properties(value = {
         @Platform(include = {"<nix/Property.hpp>"}, link = "nix"),
@@ -24,7 +44,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     /**
      * Constructor that creates an uninitialized Property.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized property will throw a {@link RuntimeException}.
      */
     public Property() {
@@ -42,9 +62,9 @@ public class Property extends Entity implements Comparable<Property> {
     boolean isNone();
 
     /**
-     * Get id of the property
+     * Get id of the property.
      *
-     * @return id string
+     * @return ID string
      */
     public native
     @Name("id")
@@ -110,7 +130,7 @@ public class Property extends Entity implements Comparable<Property> {
 
     /**
      * Getter for the name of the property.
-     * <p/>
+     * <p>
      * The  of an property serves as a human readable identifier. It is not obliged
      * to be unique. However it is strongly recommended to use unique name inside one specific
      * {@link Section}.
@@ -129,7 +149,7 @@ public class Property extends Entity implements Comparable<Property> {
     /**
      * Setter for the definition of the property.
      *
-     * @param definition definition of property. If {#link null} is passed definition is removed.
+     * @param definition definition of property. If <tt>null</tt> is passed definition is removed.
      */
     public void setDefinition(String definition) {
         if (definition != null) {
@@ -145,11 +165,11 @@ public class Property extends Entity implements Comparable<Property> {
 
     /**
      * Getter for the definition of the property.
-     * <p/>
+     * <p>
      * The definition is an optional property that allows the user to add
      * a freely assignable textual definition to the property.
      *
-     * @return The definition of the property. {#link null} if not present.
+     * @return The definition of the property. Returns <tt>null</tt> if not present.
      */
     public String getDefinition() {
         OptionalUtils.OptionalString defintion = definition();
@@ -167,7 +187,7 @@ public class Property extends Entity implements Comparable<Property> {
     /**
      * Retrieve Getter for the mapping information stored in this Property.
      *
-     * @return The mapping for the Property. {#link null} if not present.
+     * @return The mapping for the Property. Returns <tt>null</tt> if not present.
      */
     public String getMapping() {
         OptionalUtils.OptionalString mapping = mapping();
@@ -183,12 +203,12 @@ public class Property extends Entity implements Comparable<Property> {
 
     /**
      * Set the mapping information for this Property.
-     * <p/>
+     * <p>
      * The mapping defines how this Property should be treated in a mapping procedure. The mapping
      * is provided in form of an url pointing to the definition of a section into which this
      * property should be mapped.
      *
-     * @param mapping The mapping information. If {#link null} is passed the unit is removed.
+     * @param mapping The mapping information. If <tt>null</tt> is passed the unit is removed.
      */
     public void setMapping(String mapping) {
         if (mapping != null) {
@@ -202,6 +222,7 @@ public class Property extends Entity implements Comparable<Property> {
      * Returns the data type of the stored Values.
      *
      * @return The data type.
+     * @see DataType
      */
     public native
     @Name("dataType")
@@ -216,7 +237,7 @@ public class Property extends Entity implements Comparable<Property> {
     /**
      * Returns the unit for all stored values.
      *
-     * @return The unit for all values. {#link null} if not present.
+     * @return The unit for all values. Returns <tt>null</tt> if not present.
      */
     public String getUnit() {
         OptionalUtils.OptionalString unit = unit();
@@ -233,7 +254,7 @@ public class Property extends Entity implements Comparable<Property> {
     /**
      * Set the unit for all stored values.
      *
-     * @param unit The unit for all values. If {#link null} is passed the unit is removed.
+     * @param unit The unit for all values. If <tt>null</tt> is passed the unit is removed.
      */
     public void setUnit(String unit) {
         if (unit != null) {
@@ -249,6 +270,8 @@ public class Property extends Entity implements Comparable<Property> {
 
     /**
      * Deletes all values from the property.
+     *
+     * @see Value
      */
     public native void deleteValues();
 
@@ -256,6 +279,7 @@ public class Property extends Entity implements Comparable<Property> {
      * Get the number of values of the property.
      *
      * @return The number of values.
+     * @see Value
      */
     public native
     @Name("valueCount")
@@ -267,6 +291,7 @@ public class Property extends Entity implements Comparable<Property> {
      * Set the values of the property.
      *
      * @param values The values to set.
+     * @see Value
      */
     public void setValues(List<Value> values) {
         values(new VectorUtils.ValueVector(values));
@@ -280,6 +305,7 @@ public class Property extends Entity implements Comparable<Property> {
      * Get all values of the property.
      *
      * @return The values of the property.
+     * @see Value
      */
     public List<Value> getValues() {
         return values().getValues();

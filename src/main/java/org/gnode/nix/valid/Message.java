@@ -4,6 +4,14 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
+/**
+ * <h1>Message</h1>
+ * Message class with entity id and msg string
+ * <p>
+ * Class with message text and id string to save a message and the
+ * entity id together, used by {@link Result}.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/valid/helper.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -29,7 +37,7 @@ public class Message extends Pointer {
     /**
      * Get id of message.
      *
-     * @return id
+     * @return id of message.
      */
     public native
     @Name("id")
@@ -40,7 +48,7 @@ public class Message extends Pointer {
     /**
      * Set id of message.
      *
-     * @param id id
+     * @param id id of message.
      */
     public native
     @Name("id")

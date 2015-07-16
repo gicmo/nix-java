@@ -8,6 +8,19 @@ import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
+/**
+ * <h1>SetDimension</h1>
+ * Dimension descriptor for a dimension that represents just a list or set of values.
+ * <p>
+ * The SetDimension is used in cases where data is given as a set or list. This can be just a collection of values but
+ * also a list of recorded signals or a stack of images. Optionally an array of labels, one for each index of this
+ * dimension, can be specified.
+ *
+ * @see Dimension
+ * @see RangeDimension
+ * @see SampledDimension
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -24,7 +37,7 @@ public class SetDimension<T extends SetDimension> extends ImplContainer implemen
 
     /**
      * Constructor that creates an uninitialized SetDimension.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized dimension will throw a {@link java.lang.RuntimeException}.
      */
     public SetDimension() {
@@ -47,7 +60,7 @@ public class SetDimension<T extends SetDimension> extends ImplContainer implemen
 
     /**
      * The actual dimension that is described by the dimension descriptor.
-     * <p/>
+     * <p>
      * The index of the dimension entity representing the dimension of the actual
      * data that is defined by this descriptor.
      *
@@ -60,11 +73,12 @@ public class SetDimension<T extends SetDimension> extends ImplContainer implemen
 
     /**
      * The type of the dimension.
-     * <p/>
+     * <p>
      * This field indicates whether the dimension is a SampledDimension, SetDimension or
      * RangeDimension.
      *
-     * @return The dimension type.
+     * @return The dimension type. Constants specified in {@link DataType}
+     * @see DataType
      */
     public native
     @Name("dimensionType")
@@ -78,7 +92,7 @@ public class SetDimension<T extends SetDimension> extends ImplContainer implemen
 
     /**
      * Get the labels of the range dimension.
-     * <p/>
+     * <p>
      * The labels serve as names for each index of the data at the respective
      * dimension.
      *
@@ -95,7 +109,7 @@ public class SetDimension<T extends SetDimension> extends ImplContainer implemen
     /**
      * Set the labels for the dimension.
      *
-     * @param labels A list containing all new labels. If {@link null} removes the labels from the dimension.
+     * @param labels A list containing all new labels. If <tt>null</tt> removes the labels from the dimension.
      */
     public void setLabels(List<String> labels) {
         if (labels != null) {

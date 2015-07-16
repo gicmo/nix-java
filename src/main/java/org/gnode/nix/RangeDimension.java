@@ -10,6 +10,21 @@ import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
+/**
+ * <h1>RangeDimension</h1>
+ * Dimension descriptor for a dimension that is irregularly sampled.
+ * <p>
+ * The RangeDimension covers cases when indexes of a dimension are mapped to other values
+ * in a not regular fashion. A use-case for this would be for example irregularly sampled
+ * time-series or certain kinds of histograms. To achieve the mapping of the indexes an
+ * array of mapping values must be provided. Those values are stored in the dimensions {@link RangeDimension#setTicks(double[])}
+ * property. In analogy to the sampled dimension a {@link RangeDimension#setUnit(String)} and a {@link RangeDimension#setLabel(String)} can be defined.
+ *
+ * @see Dimension
+ * @see SampledDimension
+ * @see SetDimension
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -26,7 +41,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * Constructor that creates an uninitialized RangeDimension.
-     * <p/>
+     * <p>
      * Calling any method on an uninitialized dimension will throw a {@link java.lang.RuntimeException}.
      */
     public RangeDimension() {
@@ -49,7 +64,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * The actual dimension that is described by the dimension descriptor.
-     * <p/>
+     * <p>
      * The index of the dimension entity representing the dimension of the actual
      * data that is defined by this descriptor.
      *
@@ -62,7 +77,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * The type of the dimension.
-     * <p/>
+     * <p>
      * This field indicates whether the dimension is a SampledDimension, SetDimension or
      * RangeDimension.
      *
@@ -80,11 +95,11 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * Getter for the label of the dimension.
-     * <p/>
+     * <p>
      * The label of a RangeDimension corresponds to the axis label
      * in a plot of the respective dimension.
      *
-     * @return The label of the dimension. {#link null} if not present.
+     * @return The label of the dimension. Returns <tt>null</tt> if not present.
      */
     public String getLabel() {
         OptionalUtils.OptionalString label = label();
@@ -99,7 +114,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
     private native void label(@Const @ByVal None t);
 
     /**
-     * Sets the label of the dimension. If {#link null} removes label.
+     * Sets the label of the dimension. If <tt>null</tt> removes label.
      *
      * @param label The label of the dimension.
      */
@@ -117,7 +132,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * Gets the unit of a dimension.
-     * <p/>
+     * <p>
      * The unit describes which SI unit applies to this dimension
      * and to its sampling interval.
      *
@@ -136,7 +151,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
     private native void unit(@Const @ByVal None t);
 
     /**
-     * Sets the unit of a dimension. If {#link null} removes the unit.
+     * Sets the unit of a dimension. If <tt>null</tt> removes the unit.
      *
      * @param unit The unit to set.
      */
@@ -154,7 +169,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * Get the ticks of the dimension.
-     * <p/>
+     * <p>
      * The ticks map the index of the data at the respective dimension to other
      * values. This can be used to store data that is sampled at irregular
      * intervals.
@@ -167,7 +182,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * Set the ticks array for the dimension.
-     * <p/>
+     * <p>
      * Ticks must be ordered in ascending order.
      *
      * @param ticks The new ticks for the dimension provided as an array.
@@ -188,7 +203,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
 
     /**
      * Returns the index of the given position.
-     * <p/>
+     * <p>
      * Method will return the index closest to the given position.
      *
      * @param position The position.
@@ -204,9 +219,9 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
     DoublePointer axis(@Cast("const size_t") long count, @Cast("const size_t") long startIndex);
 
     /**
-     * Returns a vector containing a number of ticks.
-     * <p/>
-     * The result vector contains a given number of ticks starting from a
+     * Returns a list containing a number of ticks.
+     * <p>
+     * The result list contains a given number of ticks starting from a
      * starting index
      *
      * @param count      The number of ticks.
@@ -222,9 +237,9 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
     DoublePointer axis(@Cast("const size_t") long count);
 
     /**
-     * Returns a vector containing a number of ticks.
-     * <p/>
-     * The result vector contains a given number of ticks starting from a
+     * Returns a list containing a number of ticks.
+     * <p>
+     * The result list contains a given number of ticks starting from a
      * starting index
      *
      * @param count The number of ticks.

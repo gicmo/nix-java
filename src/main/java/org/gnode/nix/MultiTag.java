@@ -13,6 +13,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * <h1>MultiTag</h1>
+ * A tag class that can be used to tag multiple positions or regions in data.
+ * <p>
+ * Besides the {@link DataArray} the tag entities can be considered as the other
+ * core entities of the data model.
+ * They are meant to attach annotations directly to the data and to establish meaningful
+ * links between different kinds of stored data.
+ * Most importantly tags allow the definition of points or regions of interest in data
+ * that is stored in other {@link DataArray} entities. The data array entities the
+ * tag applies to are defined by its property {@link MultiTag#setReferences(List)}.
+ * <p>
+ * Further the referenced data is defined by an origin vector called {@link MultiTag#setPositions(DataArray)}
+ * and an optional {@link MultiTag#setExtents(DataArray)} vector that defines its size.
+ * Therefore position and extent of a tag, together with the references field
+ * defines a group of points or regions of interest collected from a subset of all
+ * available {@link DataArray} entities.
+ * <p>
+ * Further tags have a field called {@link MultiTag#getFeatures(Predicate)} which makes it possible to associate
+ * other data with the tag.  Semantically a feature of a tag is some additional data that
+ * contains additional information about the points of hyperslabs defined by the tag.
+ * This could be for example data that represents a stimulus (e.g. an image or a
+ * signal) that was applied in a certain interval during the recording.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/MultiTag.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -143,7 +168,7 @@ public class MultiTag extends EntityWithSources {
     private native void definition(@StdString String definition);
 
     /**
-     * Setter for the definition of the multitag. If null is passed definition is removed.
+     * Setter for the definition of the multitag. If <tt>null</tt> is passed definition is removed.
      *
      * @param definition definition of multitag.
      */
@@ -179,17 +204,17 @@ public class MultiTag extends EntityWithSources {
     /**
      * Get metadata associated with this entity.
      *
-     * @return The associated section, if no such section exists {#link null} is returned.
+     * @return The associated section, if no such section exists <tt>null</tt> is returned.
+     * @see Section
      */
     public
     @Name("metadata")
     Section getMetadata() {
         Section section = metadata();
-        if (section.isInitialized()) {
-            return section;
-        } else {
-            return null;
+        if (section.isNone()) {
+            section = null;
         }
+        return section;
     }
 
     /**
@@ -199,6 +224,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param metadata The {@link Section} that should be associated
      *                 with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -211,6 +237,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param id The id of the {@link Section} that should be associated
      *           with this entity.
+     * @see Section
      */
     public native
     @Name("metadata")
@@ -220,6 +247,8 @@ public class MultiTag extends EntityWithSources {
 
     /**
      * Removes metadata associated with the entity.
+     *
+     * @see Section
      */
     public void removeMetadata() {
         metadata(new None());
@@ -229,6 +258,7 @@ public class MultiTag extends EntityWithSources {
      * Get the number of sources associated with this entity.
      *
      * @return The number sources.
+     * @see Source
      */
     public native
     @Name("sourceCount")
@@ -239,6 +269,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param id The source id to check.
      * @return True if the source is associated with this entity, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -249,6 +280,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param source The source to check.
      * @return True if the source is associated with this entity, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -263,13 +295,14 @@ public class MultiTag extends EntityWithSources {
      * Returns an associated source identified by its id.
      *
      * @param id The id of the associated source.
+     * @see Source
      */
     public Source getSource(String id) {
         Source source = fetchSource(id);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -283,13 +316,14 @@ public class MultiTag extends EntityWithSources {
      * @param index The index of the associated source.
      * @return The source with the given id. If it doesn't exist an exception
      * will be thrown.
+     * @see Source
      */
     public Source getSource(long index) {
         Source source = fetchSource(index);
-        if (source.isInitialized()) {
-            return source;
+        if (source.isNone()) {
+            source = null;
         }
-        return null;
+        return source;
     }
 
     private native
@@ -299,7 +333,8 @@ public class MultiTag extends EntityWithSources {
     /**
      * Get all sources associated with this entity.
      *
-     * @return All associated sources that match the given filter as a vector
+     * @return All associated sources that match the given filter as a list.
+     * @see Source
      */
     public List<Source> getSources() {
         return sources().getSources();
@@ -312,7 +347,8 @@ public class MultiTag extends EntityWithSources {
      * <p>
      * All previously existing associations will be overwritten.
      *
-     * @param sources A vector with all sources.
+     * @param sources A list with all sources.
+     * @see Source
      */
     public void setSources(List<Source> sources) {
         sources(new VectorUtils.SourceVector(sources));
@@ -325,6 +361,7 @@ public class MultiTag extends EntityWithSources {
      * entity, the call will have no effect.
      *
      * @param id The id of the source.
+     * @see Source
      */
     public native void addSource(@StdString String id);
 
@@ -334,6 +371,7 @@ public class MultiTag extends EntityWithSources {
      * Calling this method will have no effect if the source is already associated to this entity.
      *
      * @param source The source to add.
+     * @see Source
      */
     public native void addSource(@Const @ByRef Source source);
 
@@ -345,6 +383,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param id The id of the source to remove.
      * @return True if the source was removed, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -358,6 +397,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param source The source to remove.
      * @return True if the source was removed, false otherwise.
+     * @see Source
      */
     public native
     @Cast("bool")
@@ -380,29 +420,31 @@ public class MultiTag extends EntityWithSources {
      * region of interest.
      *
      * @return The DataArray defining the positions of the tag.
+     * @see DataArray
      */
     public DataArray getPositions() {
         DataArray da = positions();
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     /**
      * Setter for the positions of the tag.
      *
      * @param nameOrId Name or id of the DataArray that defines the positions for this tag.
+     * @see DataArray
      */
     public native
     @Name("positions")
     void setPositions(@StdString String nameOrId);
 
-
     /**
      * Setter for the positions of the tag.
      *
      * @param positions The DataArray containing the positions of the tag.
+     * @see DataArray
      */
     public native
     @Name("positions")
@@ -428,19 +470,21 @@ public class MultiTag extends EntityWithSources {
      * extent vectors, each defining the size of the corresponding region of interest.
      *
      * @return The DataArray defining the extents of the tag.
+     * @see DataArray
      */
     public DataArray getExtents() {
         DataArray da = extents();
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     /**
      * Sets the extents DataArray of the tag.
      *
      * @param extents The DataArray containing the extents of the tag.
+     * @see DataArray
      */
     public native
     @Name("extents")
@@ -450,6 +494,7 @@ public class MultiTag extends EntityWithSources {
      * Setter for the positions of the tag.
      *
      * @param nameOrId Name or id of the DataArray that defines the extents of the tag.
+     * @see DataArray
      */
     public native
     @Name("extents")
@@ -462,6 +507,7 @@ public class MultiTag extends EntityWithSources {
      * <p>
      * This function only removes the association between the tag and the data array,
      * but does not delete the data array itself.
+     * @see DataArray
      */
     public void removeExtents() {
         extents(new None());
@@ -493,7 +539,7 @@ public class MultiTag extends EntityWithSources {
      * All previously defined units will be replaced by the ones passed
      * to the units parameter.
      *
-     * @param units All units as a list. If {@link null} removes the units.
+     * @param units All units as a list. If <tt>null</tt> removes the units.
      */
     public void setUnits(List<String> units) {
         if (units != null) {
@@ -507,12 +553,12 @@ public class MultiTag extends EntityWithSources {
     // Methods concerning references.
     //--------------------------------------------------
 
-
     /**
      * Checks if the specified DataArray is referenced by the tag.
      *
      * @param reference The data array to check.
      * @return True if the data array is referenced, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -523,6 +569,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param nameOrId Name or id of the data array to check.
      * @return True if a data array with the given id is referenced, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -532,6 +579,7 @@ public class MultiTag extends EntityWithSources {
      * Get the number of DataArray entities that are referenced by the tag.
      *
      * @return The number of referenced data arrays.
+     * @see DataArray
      */
     public native
     @Name("referenceCount")
@@ -547,13 +595,14 @@ public class MultiTag extends EntityWithSources {
      *
      * @param nameOrId Name or id of the data array.
      * @return The referenced data array.
+     * @see DataArray
      */
     public DataArray getReference(String nameOrId) {
         DataArray da = fetchReference(nameOrId);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     private native
@@ -566,19 +615,21 @@ public class MultiTag extends EntityWithSources {
      *
      * @param index The index of the data array.
      * @return The referenced data array.
+     * @see DataArray
      */
     public DataArray getReference(long index) {
         DataArray da = fetchReference(index);
-        if (da.isInitialized()) {
-            return da;
+        if (da.isNone()) {
+            da = null;
         }
-        return null;
+        return da;
     }
 
     /**
      * Add a new DataArray to the list of referenced data.
      *
      * @param nameOrId Name or id of the data array.
+     * @see DataArray
      */
     public native void addReference(@StdString String nameOrId);
 
@@ -586,6 +637,7 @@ public class MultiTag extends EntityWithSources {
      * Adds a new DataArray to the list of referenced data.
      *
      * @param reference The DataArray that should be referenced.
+     * @see DataArray
      */
     public native void addReference(@Const @ByRef DataArray reference);
 
@@ -597,6 +649,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param nameOrId Name or id of the data array.
      * @return True if the data array was removed, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
@@ -610,11 +663,11 @@ public class MultiTag extends EntityWithSources {
      *
      * @param reference The DataArray to remove.
      * @return True if the data array was removed, false otherwise.
+     * @see DataArray
      */
     public native
     @Cast("bool")
     boolean removeReference(@Const @ByRef DataArray reference);
-
 
     private native
     @ByVal
@@ -625,7 +678,8 @@ public class MultiTag extends EntityWithSources {
      * <p>
      * Always uses filter that accepts all sources.
      *
-     * @return A vector containing all filtered DataArray entities.
+     * @return A list containing all filtered DataArray entities.
+     * @see DataArray
      */
     public List<DataArray> getReferences() {
         return references().getDataArrays();
@@ -639,6 +693,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param filter A filter function.
      * @return A list containing the matching data arrays.
+     * @see DataArray
      */
     public List<DataArray> getReferences(Predicate<DataArray> filter) {
         List<DataArray> result = new ArrayList<>();
@@ -659,6 +714,7 @@ public class MultiTag extends EntityWithSources {
      * removed.
      *
      * @param references All referenced arrays.
+     * @see DataArray
      */
     public void setReferences(List<DataArray> references) {
         references(new VectorUtils.DataArrayVector(references));
@@ -671,6 +727,7 @@ public class MultiTag extends EntityWithSources {
      * @param positionIndex  the index of the requested position.
      * @param referenceIndex the index of the requested reference.
      * @return the requested data.
+     * @see DataView
      */
     public native
     @ByVal
@@ -685,6 +742,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param nameOrId Name or id of a feature.
      * @return True if the feature exists, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -695,6 +753,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param feature The Feature to check.
      * @return True if the feature exists, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -704,6 +763,7 @@ public class MultiTag extends EntityWithSources {
      * Returns the number of features in this block.
      *
      * @return The number of features.
+     * @see Feature
      */
     public native
     @Name("featureCount")
@@ -720,13 +780,14 @@ public class MultiTag extends EntityWithSources {
      * @param nameOrId Name or id of the feature.
      * @return The feature with the specified name or id. If it doesn't exist
      * an exception will be thrown.
+     * @see Feature
      */
     public Feature getFeature(String nameOrId) {
         Feature feature = fetchFeature(nameOrId);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -739,13 +800,14 @@ public class MultiTag extends EntityWithSources {
      *
      * @param index The index of the feature.
      * @return The feature with the specified index.
+     * @see Feature
      */
     public Feature getFeature(long index) {
         Feature feature = fetchFeature(index);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -755,7 +817,8 @@ public class MultiTag extends EntityWithSources {
     /**
      * Get all Feature entities contained in the tag.
      *
-     * @return A vector containing all filtered Feature entities.
+     * @return A list containing all filtered Feature entities.
+     * @see Feature
      */
     public List<Feature> getFeatures() {
         return features().getFeatures();
@@ -769,6 +832,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param filter A filter function.
      * @return A list containing the matching features.
+     * @see Feature
      */
     public List<Feature> getFeatures(Predicate<Feature> filter) {
         List<Feature> result = new ArrayList<>();
@@ -785,13 +849,20 @@ public class MultiTag extends EntityWithSources {
     @ByVal
     Feature makeFeature(@Const @ByRef DataArray data, @Cast("nix::LinkType") int linkType);
 
-
+    /**
+     * Create a new feature.
+     *
+     * @param data     Data array
+     * @param linkType The link type of this feature.
+     * @return The created feature object. Returns <tt>null</tt> on error.
+     * @see Feature
+     */
     public Feature createFeature(DataArray data, int linkType) {
         Feature feature = makeFeature(data, linkType);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     private native
@@ -804,14 +875,15 @@ public class MultiTag extends EntityWithSources {
      *
      * @param dataArrayId The data array that is part of the new feature.
      * @param linkType    The link type of this feature.
-     * @return The created feature object.
+     * @return The created feature object. Returns <tt>null</tt> on error.
+     * @see Feature
      */
     public Feature createFeature(String dataArrayId, int linkType) {
         Feature feature = makeFeature(dataArrayId, linkType);
-        if (feature.isInitialized()) {
-            return feature;
+        if (feature.isNone()) {
+            feature = null;
         }
-        return null;
+        return feature;
     }
 
     /**
@@ -819,6 +891,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param nameOrId Name or id of the feature to remove.
      * @return True if the feature was removed, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -829,6 +902,7 @@ public class MultiTag extends EntityWithSources {
      *
      * @param feature The feature to remove.
      * @return True if the feature was removed, false otherwise.
+     * @see Feature
      */
     public native
     @Cast("bool")
@@ -841,6 +915,7 @@ public class MultiTag extends EntityWithSources {
      * @param positionIndex The index of the requested position
      * @param featureIndex  The index of the selected feature
      * @return The data
+     * @see DataView
      */
     public native
     @ByVal

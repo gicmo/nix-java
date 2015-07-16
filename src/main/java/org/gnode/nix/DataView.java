@@ -4,6 +4,10 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
+/**
+ * <h1>DataView</h1>
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/DataView.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -15,6 +19,13 @@ public class DataView extends Pointer {
         Loader.load();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param da     DataArray
+     * @param count  count
+     * @param offset offset
+     */
     public DataView(@ByVal DataArray da, @ByVal NDSize count, @ByVal NDSize offset) {
         allocate(da, count, offset);
     }
@@ -26,7 +37,8 @@ public class DataView extends Pointer {
     /**
      * Set data extent.
      *
-     * @param extent extent
+     * @param extent Data extent.
+     * @see NDSize
      */
     public native
     @Name("dataExtent")
@@ -35,7 +47,8 @@ public class DataView extends Pointer {
     /**
      * Data extent.
      *
-     * @return extent
+     * @return Data extent.
+     * @see NDSize
      */
     public native
     @Name("dataExtent")
@@ -45,7 +58,8 @@ public class DataView extends Pointer {
     /**
      * Get type of data.
      *
-     * @return type
+     * @return The type of data. Constant specified in {@link DataType}.
+     * @see DataType
      */
     public native
     @Name("dataType")

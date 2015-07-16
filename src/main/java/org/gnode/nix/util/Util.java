@@ -10,6 +10,11 @@ import org.gnode.nix.internal.VectorUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h1>Util</h1>
+ * This class contains utility functions.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/util/util.hpp>"}, link = "nix"),
         @Platform(value = "linux"),

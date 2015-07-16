@@ -8,6 +8,11 @@ import org.gnode.nix.internal.VectorUtils;
 
 import java.util.List;
 
+/**
+ * <h1>Result</h1>
+ * Class used to store error and warning messages.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/valid/result.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -52,12 +57,13 @@ public class Result extends Pointer {
 
     /**
      * Standard constructor.
-     * <p/>
+     * <p>
      * Standard constructor that expects a list of error msgs and a list
      * of warning msgs. Pass null if not present.
      *
      * @param errs  List of error messages
      * @param warns List of warning messages
+     * @see Message
      */
     public Result(List<Message> errs, List<Message> warns) {
         if (errs == null && warns == null) {
@@ -73,12 +79,13 @@ public class Result extends Pointer {
 
     /**
      * Standard constructor.
-     * <p/>
+     * <p>
      * Standard constructor that expects an error msg and a warning msg.
      * Pass null if not present.
      *
      * @param err  error message
      * @param warn warning message
+     * @see Message
      */
     public Result(Message err, Message warn) {
         if (err == null && warn == null) {
@@ -105,6 +112,7 @@ public class Result extends Pointer {
      * Returns the warnings list.
      *
      * @return list of warning msgs
+     * @see Message
      */
     public List<Message> getWarnings() {
         return fetchWarnings().getMessages();
@@ -119,6 +127,7 @@ public class Result extends Pointer {
      * Returns the errors list.
      *
      * @return list of error msgs
+     * @see Message
      */
     public List<Message> getErrors() {
         return fetchErrors().getMessages();
@@ -126,7 +135,7 @@ public class Result extends Pointer {
 
     /**
      * Appends the warnings & errors of given Result to this one
-     * <p/>
+     * <p>
      * Concatenates the errors and warnings lists
      * of the given {@link Result} object to those if this {@link Result}
      * object and returns a reference to this object.
@@ -139,11 +148,12 @@ public class Result extends Pointer {
 
     /**
      * Adds an error message
-     * <p/>
+     * <p>
      * Adds an error message to this {@link Result}
      * object and returns a reference to this object.
      *
      * @return reference to this Result
+     * @see Message
      */
     public native
     @ByVal
@@ -151,11 +161,12 @@ public class Result extends Pointer {
 
     /**
      * Adds a warning message
-     * <p/>
+     * <p>
      * Adds a warning message to this {@link Result}
      * object and returns a reference to this object.
      *
      * @return reference to this Result
+     * @see Message
      */
     public native
     @ByVal
@@ -163,7 +174,7 @@ public class Result extends Pointer {
 
     /**
      * Returns true if no msgs added at all
-     * <p/>
+     * <p>
      * Returns true if neither errors nor warnings have been added,
      * thus both lists are empty. Returns false otherwise.
      *
@@ -176,7 +187,7 @@ public class Result extends Pointer {
 
     /**
      * Returns true if no error msgs added at all
-     * <p/>
+     * <p>
      * Returns false if no errors have been added, thus list is empty.
      * Returns true otherwise.
      *
@@ -188,7 +199,7 @@ public class Result extends Pointer {
 
     /**
      * Returns true if no warning msgs added at all
-     * <p/>
+     * <p>
      * Returns false if no warnings have been added, thus list is empty.
      * Returns true otherwise.
      *

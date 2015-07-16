@@ -4,6 +4,11 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 
+/**
+ * <h1>OptionalUtils</h1>
+ * Low level wrapper to Boost optionals.
+ */
+
 @Properties(value = {
         @Platform(include = {"<boost/optional.hpp>"}),
         @Platform(value = "linux"),
@@ -17,6 +22,10 @@ public class OptionalUtils {
     // Optional Double
     //--------------------------------------------------
 
+    /**
+     * <h1>OptionalDouble</h1>
+     * Low level <tt>boost::optional&lt;double&gt;</tt> wrapper
+     */
     @Name("boost::optional<double>")
     public static class OptionalDouble extends Pointer {
 
@@ -49,6 +58,10 @@ public class OptionalUtils {
     // Optional String
     //--------------------------------------------------
 
+    /**
+     * <h1>OptionalString</h1>
+     * Low level <tt>boost::optional&lt;string&gt;</tt> wrapper
+     */
     @Name("boost::optional<std::string>")
     public static class OptionalString extends Pointer {
 

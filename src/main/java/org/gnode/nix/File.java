@@ -13,6 +13,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * <h1>File</h1>
+ * A File represents a specific data source of a NIX back-end for example an NIX HDF5 file.
+ * All entities of the nix data model (except the Value entity) must exist in the context of an open File object.
+ * Therefore NIX entities can’t be initialized via their constructors but only through the factory methods of their
+ * respective parent entity.
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/File.hpp>"}, link = "nix"),
         @Platform(value = "linux"),
@@ -129,17 +137,17 @@ public class File extends ImplContainer implements Comparable<File> {
      * Read an existing block from the file.
      *
      * @param nameOrId Name or ID of the block.
-     * @return The block with the given name or id. {@link null} returned if not present.
+     * @return The block with the given name or id. Returns <tt>null</tt> if not present.
      * @see Block
      */
     public
     @ByVal
     Block getBlock(@StdString String nameOrId) {
         Block block = block(nameOrId);
-        if (block.isInitialized()) {
-            return block;
+        if (block.isNone()) {
+            block = null;
         }
-        return null;
+        return block;
     }
 
     private native
@@ -151,17 +159,17 @@ public class File extends ImplContainer implements Comparable<File> {
      * Read an existing with block from the file, addressed by index.
      *
      * @param index The index of the block to read.
-     * @return The block at the given index. {@link null} returned if not present.
+     * @return The block at the given index. Returns <tt>null</tt> if not present.
      * @see Block
      */
     public
     @ByVal
     Block getBlock(@Cast("size_t") long index) {
         Block block = block(index);
-        if (block.isInitialized()) {
-            return block;
+        if (block.isNone()) {
+            block = null;
         }
-        return null;
+        return block;
     }
 
     /**
@@ -220,6 +228,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param filter A filter function.
      * @return A list of filtered Block entities.
+     * @see Block
      */
     public List<Block> getBlocks(Predicate<Block> filter) {
         List<Block> result = new ArrayList<>();
@@ -241,6 +250,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param nameOrId Name or ID of the section.
      * @return True if the section exists, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -251,6 +261,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param section The section to check.
      * @return True if the section exists, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -266,13 +277,14 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param nameOrId Name or id of the section.
      * @return The section with the specified name/id.
+     * @see Section
      */
     public Section getSection(String nameOrId) {
         Section section = fetchSection(nameOrId);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     private native
@@ -285,19 +297,21 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param index The index of the section.
      * @return The section with the specified index.
+     * @see Section
      */
     public Section getSection(long index) {
         Section section = fetchSection(index);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     /**
      * Returns the number of root sections stored in the File.
      *
      * @return The number of sections.
+     * @see Section
      */
     public native
     @Name("sectionCount")
@@ -313,7 +327,8 @@ public class File extends ImplContainer implements Comparable<File> {
      * The parameter filter can be used to filter sections by various
      * criteria. By default a filter is used that accepts all sections.
      *
-     * @return A vector of filtered Section entities.
+     * @return A list of filtered Section entities.
+     * @see Section
      */
     public List<Section> getSections() {
         return sections().getSections();
@@ -327,6 +342,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param filter A filter function.
      * @return A list of filtered Section entities.
+     * @see Section
      */
     public List<Section> getSections(Predicate<Section> filter) {
         List<Section> result = new ArrayList<>();
@@ -348,7 +364,8 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param filter   A filter function.
      * @param maxDepth The maximum depth of traversal.
-     * @return A vector containing the matching sections.
+     * @return A list containing the matching sections.
+     * @see Section
      */
     public List<Section> findSections(Predicate<Section> filter, int maxDepth) {
         List<Section> result = new ArrayList<>();
@@ -368,7 +385,8 @@ public class File extends ImplContainer implements Comparable<File> {
      * By default a filter is used that accepts all sections.
      *
      * @param maxDepth The maximum depth of traversal.
-     * @return A vector containing the matching sections.
+     * @return A list containing the matching sections.
+     * @see Section
      */
     public List<Section> findSections(int maxDepth) {
         return findSections((Section s) -> true, maxDepth);
@@ -385,13 +403,14 @@ public class File extends ImplContainer implements Comparable<File> {
      * @param name The name of the section.
      * @param type The type of the section.
      * @return The created Section.
+     * @see Section
      */
     public Section createSection(String name, String type) {
         Section section = makeSection(name, type);
-        if (section.isInitialized()) {
-            return section;
+        if (section.isNone()) {
+            section = null;
         }
-        return null;
+        return section;
     }
 
     /**
@@ -399,6 +418,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param nameOrId Name or id of the section to delete.
      * @return True if the section was deleted, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -409,6 +429,7 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param section The section to delete.
      * @return True if the section was deleted, false otherwise.
+     * @see Section
      */
     public native
     @Cast("bool")
@@ -437,7 +458,7 @@ public class File extends ImplContainer implements Comparable<File> {
     /**
      * Read the format hint from the file.
      *
-     * @return format of file
+     * @return format of file.
      */
     public native
     @Name("format")
@@ -514,6 +535,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * Validator.
      *
      * @return result
+     * @see Result
      */
     public native
     @ByVal

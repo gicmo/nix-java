@@ -7,6 +7,11 @@ import org.bytedeco.javacpp.annotation.Namespace;
 import org.bytedeco.javacpp.annotation.Platform;
 import org.bytedeco.javacpp.annotation.Properties;
 
+/**
+ * <h1>None</h1>
+ * Low level wrapper to NIX None.hpp .
+ */
+
 @Properties(value = {
         @Platform(include = {"<nix/None.hpp>"}),
         @Platform(value = "linux"),
