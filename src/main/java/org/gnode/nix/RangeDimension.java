@@ -8,8 +8,6 @@ import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalUtils;
 import org.gnode.nix.internal.VectorUtils;
 
-import java.util.List;
-
 /**
  * <h1>RangeDimension</h1>
  * Dimension descriptor for a dimension that is irregularly sampled.
@@ -186,8 +184,8 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
      *
      * @return A list with all ticks for the dimension.
      */
-    public List<Double> getTicks() {
-        return VectorUtils.convertPointerToList(ticks());
+    public double[] getTicks() {
+        return VectorUtils.convertPointerToArray(ticks());
     }
 
     /**
@@ -236,10 +234,10 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
      *
      * @param count      The number of ticks.
      * @param startIndex The starting index.
-     * @return list containing the ticks.
+     * @return array containing the ticks.
      */
-    public List<Double> getAxis(long count, long startIndex) {
-        return VectorUtils.convertPointerToList(axis(count, startIndex));
+    public double[] getAxis(long count, long startIndex) {
+        return VectorUtils.convertPointerToArray(axis(count, startIndex));
     }
 
     private native
@@ -253,10 +251,10 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
      * starting index
      *
      * @param count The number of ticks.
-     * @return list containing the ticks.
+     * @return array containing the ticks.
      */
-    public List<Double> getAxis(long count) {
-        return VectorUtils.convertPointerToList(axis(count));
+    public double[] getAxis(long count) {
+        return VectorUtils.convertPointerToArray(axis(count));
     }
 
     //--------------------------------------------------

@@ -125,14 +125,14 @@ public class TestTag {
         double[] extent = {1.0, 2.0, 3.0};
         st.setExtent(extent);
 
-        List<Double> retrieved = st.getExtent();
-        assertEquals(retrieved.size(), extent.length);
-        for (int i = 0; i < retrieved.size(); i++) {
-            assertTrue(retrieved.get(i) == extent[i]);
+        double[] retrieved = st.getExtent();
+        assertEquals(retrieved.length, extent.length);
+        for (int i = 0; i < retrieved.length; i++) {
+            assertTrue(retrieved[i] == extent[i]);
         }
 
         st.setExtent(null);
-        assertEquals(st.getExtent().size(), 0);
+        assertNull(st.getExtent());
         for (DataArray da : refs) {
             block.deleteDataArray(da.getId());
         }
@@ -149,17 +149,17 @@ public class TestTag {
 
         st.setPosition(position);
 
-        List<Double> retrieved = st.getPosition();
-        assertEquals(retrieved.size(), position.length);
-        for (int i = 0; i < retrieved.size(); i++) {
-            assertTrue(retrieved.get(i) == position[i]);
+        double[] retrieved = st.getPosition();
+        assertEquals(retrieved.length, position.length);
+        for (int i = 0; i < retrieved.length; i++) {
+            assertTrue(retrieved[i] == position[i]);
         }
 
         st.setPosition(new_position);
         retrieved = st.getPosition();
-        assertEquals(retrieved.size(), new_position.length);
-        for (int i = 0; i < retrieved.size(); i++) {
-            assertTrue(retrieved.get(i) == new_position[i]);
+        assertEquals(retrieved.length, new_position.length);
+        for (int i = 0; i < retrieved.length; i++) {
+            assertTrue(retrieved[i] == new_position[i]);
         }
 
         for (DataArray da : refs) {

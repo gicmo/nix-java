@@ -554,8 +554,8 @@ public class DataArray extends EntityWithSources {
      *
      * @return The polynom coefficients for the calibration.
      */
-    public List<Double> getPolynomCoefficients() {
-        return VectorUtils.convertPointerToList(polynomCoefficients());
+    public double[] getPolynomCoefficients() {
+        return VectorUtils.convertPointerToArray(polynomCoefficients());
     }
 
 

@@ -63,10 +63,10 @@ public class TestFile {
 
     @Test
     public void testVersion() {
-        List<Integer> version = file_open.getVersion();
-        assertEquals(version.get(0), Integer.valueOf(1));
-        assertEquals(version.get(1), Integer.valueOf(0));
-        assertEquals(version.get(2), Integer.valueOf(0));
+        int[] version = file_open.getVersion();
+        assertEquals(version[0], 1);
+        assertEquals(version[1], 0);
+        assertEquals(version[2], 0);
     }
 
     @Test

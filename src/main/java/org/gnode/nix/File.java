@@ -451,8 +451,8 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @return The format version of the NIX file.
      */
-    public List<Integer> getVersion() {
-        return VectorUtils.convertPointerToList(version());
+    public int[] getVersion() {
+        return VectorUtils.convertPointerToArray(version());
     }
 
     /**
