@@ -273,13 +273,37 @@ public class TestDataArray {
         rd.setLabel(null);
         assertTrue(rd.getLabel() == null && array3.getLabel() == null);
 
-        assertTrue((rd.getUnit() != null && array3.getUnit() != null ) && (rd.getUnit().equals(array3.getUnit())));
+        assertTrue((rd.getUnit() != null && array3.getUnit() != null) && (rd.getUnit().equals(array3.getUnit())));
         rd.setUnit("ms");
-        assertTrue((rd.getUnit() != null  && array3.getUnit()!= null ) && (rd.getUnit().equals(array3.getUnit())));
+        assertTrue((rd.getUnit() != null && array3.getUnit() != null) && (rd.getUnit().equals(array3.getUnit())));
         rd.setUnit(null);
         assertTrue(rd.getUnit() == null && array3.getUnit() == null);
 
-        
+        double[] t = rd.getTicks();
+        assertTrue(t.length == array3.getDataExtent().getElementsProduct());
+        t = new double[10];
+        for (int i = 0; i < 10; i++) {
+            t[i] = 0.2 * i;
+        }
+        rd.setTicks(t);
+        assertTrue(t.length == array3.getDataExtent().getElementsProduct());
+
+        DataArray int_array = block.createDataArray("int array", "int_array",
+                DataType.Int64, new NDSize(new int[]{20}));
+        try {
+            int_array.createAliasRangeDimension();
+        } catch (Exception e) {
+            fail();
+        }
+        dim = int_array.getDimension(1).asRangeDimension();
+        rd = dim;
+        assertTrue(rd.isAlias());
+        rd.setTicks(t);
+
+        assertTrue(t.length == int_array.getDataExtent().getElementsProduct());
+
+        double[] ticks_2 = rd.getTicks();
+        assertTrue(t.length == ticks_2.length);
     }
 
     @Test
