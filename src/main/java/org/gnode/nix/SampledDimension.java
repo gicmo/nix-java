@@ -8,8 +8,6 @@ import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.OptionalUtils;
 import org.gnode.nix.internal.VectorUtils;
 
-import java.util.List;
-
 /**
  * <h1>SampledDimension</h1>
  * Dimension descriptor for regularly sampled dimensions.
@@ -264,10 +262,10 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
      *
      * @param count      The number of indices
      * @param startIndex The start index
-     * @return list containing the respective dimension.
+     * @return array containing the respective dimension.
      */
-    public List<Double> getAxis(long count, long startIndex) {
-        return VectorUtils.convertPointerToList(axis(count, startIndex));
+    public double[] getAxis(long count, long startIndex) {
+        return VectorUtils.convertPointerToArray(axis(count, startIndex));
     }
 
     private native
@@ -279,10 +277,10 @@ public class SampledDimension<T extends SampledDimension> extends ImplContainer 
      * dimension with the start index set to 0.
      *
      * @param count The number of indices
-     * @return list containing the respective dimension.
+     * @return array containing the respective dimension.
      */
-    public List<Double> getAxis(long count) {
-        return VectorUtils.convertPointerToList(axis(count));
+    public double[] getAxis(long count) {
+        return VectorUtils.convertPointerToArray(axis(count));
     }
 
     //--------------------------------------------------

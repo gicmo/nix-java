@@ -680,19 +680,20 @@ public class VectorUtils {
     //--------------------------------------------------
 
     /**
-     * Converts {@link IntPointer} to {@link Integer} {@link List}
+     * Converts {@link IntPointer} to integer array
      *
      * @param ip {@link IntPointer} pointer to be converted
-     * @return list of ints
+     * @return array of ints
      */
-    public static List<Integer> convertPointerToList(IntPointer ip) {
-        ArrayList<Integer> intList = new ArrayList<Integer>();
+    public static int[] convertPointerToArray(IntPointer ip) {
+        int[] arr = null;
         if (ip != null) {
+            arr = new int[ip.capacity()];
             for (int i = 0; i < ip.capacity(); i++) {
-                intList.add(ip.get(i));
+                arr[i] = ip.get(i);
             }
         }
-        return intList;
+        return arr;
     }
 
     //--------------------------------------------------
@@ -700,18 +701,19 @@ public class VectorUtils {
     //--------------------------------------------------
 
     /**
-     * Converts {@link DoublePointer} to {@link Double} {@link List}
+     * Converts {@link DoublePointer} to double array.
      *
      * @param dp {@link DoublePointer} pointer to be converted
-     * @return list of doubles
+     * @return array of doubles
      */
-    public static List<Double> convertPointerToList(DoublePointer dp) {
-        ArrayList<Double> doubleList = new ArrayList<Double>();
+    public static double[] convertPointerToArray(DoublePointer dp) {
+        double[] arr = null;
         if (dp != null) {
+            arr = new double[dp.capacity()];
             for (int i = 0; i < dp.capacity(); i++) {
-                doubleList.add(dp.get(i));
+                arr[i] = dp.get(i);
             }
         }
-        return doubleList;
+        return arr;
     }
 }

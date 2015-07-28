@@ -285,17 +285,17 @@ public class TestDimension {
         assertEquals(sd.getDimensionType(), DimensionType.Sample);
         sd.setOffset(offset);
 
-        List<Double> axis = sd.getAxis(100);
-        assertTrue(axis.size() == 100);
-        assertTrue(axis.get(0) == offset);
+        double[] axis = sd.getAxis(100);
+        assertTrue(axis.length == 100);
+        assertTrue(axis[0] == offset);
         assertTrue(99 * samplingInterval + offset ==
-                axis.get(axis.size() - 1));
+                axis[axis.length - 1]);
 
         axis = sd.getAxis(100, 10);
         assertTrue(10 * samplingInterval + offset ==
-                axis.get(0));
+                axis[0]);
         assertTrue(109 * samplingInterval + offset ==
-                axis.get(axis.size() - 1));
+                axis[axis.length - 1]);
 
         data_array.deleteDimension(sd.getIndex());
     }
@@ -399,11 +399,11 @@ public class TestDimension {
         RangeDimension rd = data_array.appendRangeDimension(ticks);
         assertEquals(rd.getDimensionType(), DimensionType.Range);
 
-        assertTrue(rd.getTicks().size() == ticks.length);
-        List<Double> retrieved_ticks = rd.getTicks();
-        assertTrue(retrieved_ticks.size() == ticks.length);
+        assertTrue(rd.getTicks().length == ticks.length);
+        double[] retrieved_ticks = rd.getTicks();
+        assertTrue(retrieved_ticks.length == ticks.length);
         for (int i = 0; i < ticks.length; i++) {
-            assertTrue(ticks[i] == retrieved_ticks.get(i));
+            assertTrue(ticks[i] == retrieved_ticks[i]);
         }
         try {
             rd.setTicks(unordered_ticks);
@@ -418,9 +418,9 @@ public class TestDimension {
 
         rd.setTicks(new_ticks);
         retrieved_ticks = rd.getTicks();
-        assertTrue(retrieved_ticks.size() == new_ticks.length);
+        assertTrue(retrieved_ticks.length == new_ticks.length);
         for (int i = 0; i < new_ticks.length; i++) {
-            assertTrue(new_ticks[i] == retrieved_ticks.get(i));
+            assertTrue(new_ticks[i] == retrieved_ticks[i]);
         }
 
         data_array.deleteDimension(rd.getIndex());
@@ -434,8 +434,8 @@ public class TestDimension {
 
         assertTrue(rd.getIndexOf(-100.) == 0);
         assertTrue(rd.getIndexOf(-50.) == 1);
-        assertTrue(rd.getIndexOf(-70.) == 0);
-        assertTrue(rd.getIndexOf(5.0) == 2);
+        assertTrue(rd.getIndexOf(-70.) == 1);
+        assertTrue(rd.getIndexOf(5.0) == 3);
         assertTrue(rd.getIndexOf(257.28) == 4);
         assertTrue(rd.getIndexOf(-257.28) == 0);
 
@@ -475,15 +475,15 @@ public class TestDimension {
         RangeDimension rd = data_array.appendRangeDimension(ticks);
         assertEquals(rd.getDimensionType(), DimensionType.Range);
 
-        List<Double> axis = rd.getAxis(2);
-        assertTrue(axis.size() == 2);
-        assertTrue(axis.get(0) == -100.0);
-        assertTrue(axis.get(1) == -10.0);
+        double[] axis = rd.getAxis(2);
+        assertTrue(axis.length == 2);
+        assertTrue(axis[0] == -100.0);
+        assertTrue(axis[1] == -10.0);
 
         axis = rd.getAxis(2, 2);
-        assertTrue(axis.size() == 2);
-        assertTrue(axis.get(0) == 0.0);
-        assertTrue(axis.get(1) == 10.0);
+        assertTrue(axis.length == 2);
+        assertTrue(axis[0] == 0.0);
+        assertTrue(axis[1] == 10.0);
 
         try {
             rd.getAxis(10);

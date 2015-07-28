@@ -554,8 +554,8 @@ public class DataArray extends EntityWithSources {
      *
      * @return The polynom coefficients for the calibration.
      */
-    public List<Double> getPolynomCoefficients() {
-        return VectorUtils.convertPointerToList(polynomCoefficients());
+    public double[] getPolynomCoefficients() {
+        return VectorUtils.convertPointerToArray(polynomCoefficients());
     }
 
 
@@ -652,6 +652,17 @@ public class DataArray extends EntityWithSources {
     RangeDimension appendRangeDimension(@StdVector double[] ticks);
 
     /**
+     * Append a new RangeDimension that uses the data stored in this DataArray as ticks.
+     * This works only(!) if the DataArray in 1D and the stored data is numeric.
+     *
+     * @return The created RangeDimension
+     * @see RangeDimension
+     */
+    public native
+    @ByVal
+    RangeDimension appendAliasRangeDimension();
+
+    /**
      * Append a new SampledDimension to the list of existing dimension descriptors.
      *
      * @param samplingInterval The sampling interval of the SetDimension to create.
@@ -690,6 +701,16 @@ public class DataArray extends EntityWithSources {
     public native
     @ByVal
     RangeDimension createRangeDimension(@Cast("size_t") long id, @StdVector double[] ticks);
+
+    /**
+     * Create a new RangeDimension that uses the data stored in this DataArray as ticks.
+     *
+     * @return The created dimension descriptor.
+     * @see RangeDimension
+     */
+    public native
+    @ByVal
+    RangeDimension createAliasRangeDimension();
 
     /**
      * Create a new SampledDimension at a specified dimension index.

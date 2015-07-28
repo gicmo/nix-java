@@ -456,10 +456,10 @@ public class Tag extends EntityWithSources {
      * <p>
      * The position is a vector that points into referenced DataArrays.
      *
-     * @return The position vector list.
+     * @return The position array.
      */
-    public List<Double> getPosition() {
-        return VectorUtils.convertPointerToList(fetchPosition());
+    public double[] getPosition() {
+        return VectorUtils.convertPointerToArray(fetchPosition());
     }
 
     /**
@@ -483,8 +483,8 @@ public class Tag extends EntityWithSources {
      *
      * @return The extent of the tag.
      */
-    public List<Double> getExtent() {
-        return VectorUtils.convertPointerToList(extent());
+    public double[] getExtent() {
+        return VectorUtils.convertPointerToArray(extent());
     }
 
     private native void extent(@StdVector double[] extent);

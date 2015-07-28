@@ -134,9 +134,9 @@ public class TestDataAccess {
         assertTrue(DataAccess.positionToIndex(0.001, scaled_unit, rangeDim) == 0);
         assertTrue(DataAccess.positionToIndex(0.008, scaled_unit, rangeDim) == 4);
         assertTrue(DataAccess.positionToIndex(3.4, unit, rangeDim) == 2);
-        assertTrue(DataAccess.positionToIndex(3.6, unit, rangeDim) == 2);
+        assertTrue(DataAccess.positionToIndex(3.6, unit, rangeDim) == 3);
         assertTrue(DataAccess.positionToIndex(4.0, unit, rangeDim) == 3);
-        assertTrue(DataAccess.positionToIndex(0.0036, scaled_unit, rangeDim) == 2);
+        assertTrue(DataAccess.positionToIndex(0.0036, scaled_unit, rangeDim) == 3);
     }
 
     @Test
