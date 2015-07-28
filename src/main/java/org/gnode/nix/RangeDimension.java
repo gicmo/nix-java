@@ -63,6 +63,16 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
     //--------------------------------------------------
 
     /**
+     * Tells if the RangeDimension uses the contents of a linked DataArray for ticks,
+     * i.e. is an alias.
+     *
+     * @return bool true, if RangeDimension is an alias, false otherwise.
+     */
+    public native
+    @Name("alias")
+    boolean isAlias();
+
+    /**
      * The actual dimension that is described by the dimension descriptor.
      * <p>
      * The index of the dimension entity representing the dimension of the actual
