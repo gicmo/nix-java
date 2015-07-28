@@ -204,7 +204,7 @@ public class RangeDimension<T extends RangeDimension> extends ImplContainer impl
     /**
      * Returns the index of the given position.
      * <p>
-     * Method will return the index closest to the given position.
+     * Method will return the index equal or larger than position
      *
      * @param position The position.
      * @return The respective index.
