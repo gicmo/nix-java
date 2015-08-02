@@ -2,7 +2,7 @@
 
 --
 
-Java bindigs for the NIX library
+Java bindings for the NIX library
 ================================
 
 This project is an extension for the [NIX](https://github.com/G-Node/nix) library and provides Java bindings for nix.
