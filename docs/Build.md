@@ -20,7 +20,7 @@ Building NIX-Java on Linux
     - The include and link paths can be explicitly defined by 
     
     ```
-        $ mvn clean package -DincludePath=/usr/local/include/ -DboostIncludePath=/usr/include/boost/ -DlinkPath=/usr/local/lib/
+        $ mvn clean package -DnixIncludePath=/usr/local/include/ -DboostIncludePath=/usr/include/boost/ -DnixLinkPath=/usr/local/lib/ -Dhdf5LinkPath=/usr/local/lib/
     ```
     
 
@@ -43,7 +43,7 @@ Building NIX-Java on Windows
     - The include and link paths can be explicitly defined by 
     
     ```
-        > mvn clean package -DincludePath=C:/nix/include -DboostIncludePath=%BOOST_INCLUDEDIR% -DlinkPath=C:/nix/build/Release
+        > mvn clean package -DnixIncludePath=C:/nix/include -DboostIncludePath=%BOOST_INCLUDEDIR% -DnixLinkPath=C:/nix/build/Release -Dhdf5LinkPath=%HDF5_BASE%/bin
     ```
     
 
