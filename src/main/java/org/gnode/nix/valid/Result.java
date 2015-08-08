@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/valid/result.hpp>"}, link = "nix"),
+        @Platform(include = {"<nix/valid/result.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix::valid")

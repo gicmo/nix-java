@@ -36,7 +36,7 @@ import java.util.Date;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/Feature.hpp>"}, link = "nix"),
+        @Platform(include = {"<nix/Feature.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix")

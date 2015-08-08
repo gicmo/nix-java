@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/MultiTag.hpp>"}, link = "nix"),
+        @Platform(include = {"<nix/MultiTag.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix")
@@ -507,6 +507,7 @@ public class MultiTag extends EntityWithSources {
      * <p>
      * This function only removes the association between the tag and the data array,
      * but does not delete the data array itself.
+     *
      * @see DataArray
      */
     public void removeExtents() {
