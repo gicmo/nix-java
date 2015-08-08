@@ -16,9 +16,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <platform>${os.name}-${os.arch}</platform>
         <platform.properties>${platform}</platform.properties>
-        <includePath>/usr/local/include/</includePath>
+        <nixIncludePath>/usr/local/include/</nixIncludePath>
         <boostIncludePath>/usr/include/boost/</boostIncludePath>
-        <linkPath>/usr/local/lib/</linkPath>
+        <nixLinkPath>/usr/local/lib/</nixLinkPath>
+        <hdf5LinkPath>/usr/lib/x86_64-linux-gnu/</hdf5LinkPath>
     </properties>
 
     <dependencies>
@@ -62,13 +63,15 @@
                     <properties>${platform.properties}</properties>
                     <classPath>${project.build.outputDirectory}</classPath>
                     <includePaths>
-                        <includePath>${includePath}</includePath>
+                        <includePath>${nixIncludePath}</includePath>
                         <includePath>${boostIncludePath}</includePath>
                     </includePaths>
-                    <linkPath>${linkPath}</linkPath>
+                    <linkPath>${nixLinkPath}</linkPath>
                     <compilerOptions>
                         <compilerOption>-std=c++11</compilerOption>
                     </compilerOptions>
+                    <copyLibs>true</copyLibs>
+                    <preloadPath>${hdf5LinkPath}</preloadPath>
                 </configuration>
                 <executions>
                     <execution>
