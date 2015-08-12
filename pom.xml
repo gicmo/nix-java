@@ -106,12 +106,13 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
+                            <classifier>${platform}</classifier>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>./</Class-Path>
+                                    <Class-Path>./ javacpp.jar</Class-Path>
                                     <Name>org/gnode/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
@@ -157,24 +158,6 @@
                         <configuration>
                             <detectLinks>true</detectLinks>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <finalName>${project.artifactId}-${project.version}-${platform}</finalName>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
