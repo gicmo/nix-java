@@ -12,6 +12,31 @@
     <description>Java bindings for NIX library</description>
     <url>https://github.com/G-Node/nix-java</url>
 
+    <licenses>
+        <license>
+            <name>German Neuroinformatics Node (G-Node) License</name>
+            <url>https://github.com/G-Node/nix-java/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/G-Node/nix-java</url>
+        <connection>scm:git:git://github.com/G-Node/nix-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:G-Node/nix-java.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Adrian Stoewer</name>
+            <email>adrian.stoewer@rz.ifi.lmu.de</email>
+        </developer>
+        <developer>
+            <name>Sujith Vadakkepat</name>
+            <email>sujithvm24@gmail.com</email>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <platform>${os.name}-${os.arch}</platform>
