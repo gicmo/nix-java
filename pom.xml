@@ -5,7 +5,7 @@
 
     <groupId>org.gnode</groupId>
     <artifactId>nix</artifactId>
-    <version>0.1</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>Java Bindings for NIX</name>
@@ -23,7 +23,7 @@
     <scm>
         <url>https://github.com/G-Node/nix-java</url>
         <connection>scm:git:git://github.com/G-Node/nix-java.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:G-Node/nix-java.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/G-Node/nix-java.git</developerConnection>
     </scm>
 
     <distributionManagement>
