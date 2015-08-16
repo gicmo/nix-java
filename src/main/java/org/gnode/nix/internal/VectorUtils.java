@@ -30,7 +30,7 @@ import java.util.List;
                 "<nix/Tag.hpp>",
                 "<nix/Value.hpp>",
                 "<nix/valid/helper.hpp>"},
-                link = {"nix"}),
+                link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 public class VectorUtils {

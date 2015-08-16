@@ -25,7 +25,7 @@ import java.util.function.Predicate;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/Source.hpp>"}, link = "nix"),
+        @Platform(include = {"<nix/Source.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix")

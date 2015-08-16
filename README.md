@@ -29,10 +29,10 @@ $ mvn clean package
 
 To specify include and link path
 ```
-$ mvn clean package -DincludePath=<path> -DlinkPath=<path>
+$ mvn clean package -DnixIncludePath=<path> -DnixLinkPath=<path>
 ```
 
 Sample usage
 ```
-$ mvn clean package -DincludePath=/usr/local/include/ -DlinkPath=/usr/local/lib/
+$ mvn clean package -DnixIncludePath=/usr/local/include/ -DnixLinkPath=/usr/local/lib/
 ```

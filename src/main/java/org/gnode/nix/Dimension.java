@@ -17,7 +17,7 @@ import org.gnode.nix.base.ImplContainer;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix"),
+        @Platform(include = {"<nix/Dimensions.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix")

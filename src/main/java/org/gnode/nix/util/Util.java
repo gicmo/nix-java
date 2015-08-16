@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/util/util.hpp>"}, link = "nix"),
+        @Platform(include = {"<nix/util/util.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix::util")

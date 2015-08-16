@@ -5,20 +5,59 @@
 
     <groupId>org.gnode</groupId>
     <artifactId>nix</artifactId>
-    <version>0.1</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>Java Bindings for NIX</name>
     <description>Java bindings for NIX library</description>
     <url>https://github.com/G-Node/nix-java</url>
 
+    <licenses>
+        <license>
+            <name>German Neuroinformatics Node (G-Node) License</name>
+            <url>https://github.com/G-Node/nix-java/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/G-Node/nix-java</url>
+        <connection>scm:git:git://github.com/G-Node/nix-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/G-Node/nix-java.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Sonatype Nexus Staging</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <developers>
+        <developer>
+            <name>Adrian Stoewer</name>
+            <email>adrian.stoewer@rz.ifi.lmu.de</email>
+        </developer>
+        <developer>
+            <name>Sujith Vadakkepat</name>
+            <email>sujithvm24@gmail.com</email>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <platform>${os.name}-${os.arch}</platform>
         <platform.properties>${platform}</platform.properties>
-        <includePath>/usr/local/include/</includePath>
+        <nixIncludePath>/usr/local/include/</nixIncludePath>
         <boostIncludePath>/usr/include/boost/</boostIncludePath>
-        <linkPath>/usr/local/lib/</linkPath>
+        <nixLinkPath>/usr/local/lib/</nixLinkPath>
+        <hdf5LinkPath>/usr/lib/x86_64-linux-gnu/</hdf5LinkPath>
     </properties>
 
     <dependencies>
@@ -57,18 +96,20 @@
             <plugin>
                 <groupId>org.bytedeco</groupId>
                 <artifactId>javacpp</artifactId>
-                <version>0.11</version>
+                <version>1.0</version>
                 <configuration>
                     <properties>${platform.properties}</properties>
                     <classPath>${project.build.outputDirectory}</classPath>
                     <includePaths>
-                        <includePath>${includePath}</includePath>
+                        <includePath>${nixIncludePath}</includePath>
                         <includePath>${boostIncludePath}</includePath>
                     </includePaths>
-                    <linkPath>${linkPath}</linkPath>
+                    <linkPath>${nixLinkPath}</linkPath>
                     <compilerOptions>
                         <compilerOption>-std=c++11</compilerOption>
                     </compilerOptions>
+                    <copyLibs>true</copyLibs>
+                    <preloadPath>${hdf5LinkPath}</preloadPath>
                 </configuration>
                 <executions>
                     <execution>
@@ -108,7 +149,10 @@
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>./</Class-Path>
+                                    <Class-Path>./ javacpp.jar ${project.artifactId}-linux-arm.jar
+                                        ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar
+                                        ${project.artifactId}-windows-x86.jar ${project.artifactId}-windows-x86_64.jar
+                                    </Class-Path>
                                     <Name>org/gnode/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
@@ -122,6 +166,26 @@
                                 <include>org/gnode/nix/base/*</include>
                                 <include>org/gnode/nix/valid/*</include>
                                 <include>org/gnode/nix/util/*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>org/gnode/nix/${platform}/</exclude>
+                                <exclude>org/gnode/nix/internal/${platform}/</exclude>
+                                <exclude>org/gnode/nix/base/${platform}/</exclude>
+                                <exclude>org/gnode/nix/valid/${platform}/</exclude>
+                                <exclude>org/gnode/nix/util/${platform}/</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>${platform}</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${platform}</classifier>
+                            <skipIfEmpty>true</skipIfEmpty>
+                            <includes>
                                 <include>org/gnode/nix/${platform}/</include>
                                 <include>org/gnode/nix/internal/${platform}/</include>
                                 <include>org/gnode/nix/base/${platform}/</include>
@@ -160,24 +224,6 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <finalName>${project.artifactId}-${project.version}-${platform}</finalName>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
@@ -202,8 +248,52 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>sonatype-nexus-staging</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
+
 
     <profiles>
         <profile>
@@ -218,6 +308,33 @@
                         <configuration>
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

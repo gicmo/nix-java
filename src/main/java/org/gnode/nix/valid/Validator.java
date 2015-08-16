@@ -20,7 +20,7 @@ import org.gnode.nix.*;
                 "<nix/Property.hpp>",
                 "<nix/Section.hpp>",
                 "<nix/Source.hpp>",
-                "<nix/Tag.hpp>"}, link = "nix"),
+                "<nix/Tag.hpp>"}, link = "nix", preload = "hdf5"),
         @Platform(value = "linux"),
         @Platform(value = "windows")})
 @Namespace("nix::valid")
