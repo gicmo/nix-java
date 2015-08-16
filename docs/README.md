@@ -5,8 +5,10 @@ Documentation
 
 2. [Overview](Overview.md)   
    - [Design Principles](Overview.md#design-principles)
+
+3. [API Documentation](http://g-node.github.io/nix-java/)
       
-3. List of Tutorials
+4. List of Tutorials
    - [Working with files](WorkingWithFiles.md)  
         - [Working with files](WorkingWithFiles.md)  
    - [Basic data structures](BasicDataStructures.md) 
