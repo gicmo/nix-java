@@ -96,7 +96,7 @@
             <plugin>
                 <groupId>org.bytedeco</groupId>
                 <artifactId>javacpp</artifactId>
-                <version>0.11</version>
+                <version>1.0</version>
                 <configuration>
                     <properties>${platform.properties}</properties>
                     <classPath>${project.build.outputDirectory}</classPath>
@@ -144,13 +144,15 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <classifier>${platform}</classifier>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>./ javacpp.jar</Class-Path>
+                                    <Class-Path>./ javacpp.jar ${project.artifactId}-linux-arm.jar
+                                        ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar
+                                        ${project.artifactId}-windows-x86.jar ${project.artifactId}-windows-x86_64.jar
+                                    </Class-Path>
                                     <Name>org/gnode/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
@@ -164,6 +166,26 @@
                                 <include>org/gnode/nix/base/*</include>
                                 <include>org/gnode/nix/valid/*</include>
                                 <include>org/gnode/nix/util/*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>org/gnode/nix/${platform}/</exclude>
+                                <exclude>org/gnode/nix/internal/${platform}/</exclude>
+                                <exclude>org/gnode/nix/base/${platform}/</exclude>
+                                <exclude>org/gnode/nix/valid/${platform}/</exclude>
+                                <exclude>org/gnode/nix/util/${platform}/</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>${platform}</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${platform}</classifier>
+                            <skipIfEmpty>true</skipIfEmpty>
+                            <includes>
                                 <include>org/gnode/nix/${platform}/</include>
                                 <include>org/gnode/nix/internal/${platform}/</include>
                                 <include>org/gnode/nix/base/${platform}/</include>
