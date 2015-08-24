@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.gnode</groupId>
-    <artifactId>nix</artifactId>
+    <artifactId>nix-${platform}</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
@@ -166,26 +166,6 @@
                                 <include>org/gnode/nix/base/*</include>
                                 <include>org/gnode/nix/valid/*</include>
                                 <include>org/gnode/nix/util/*</include>
-                            </includes>
-                            <excludes>
-                                <exclude>org/gnode/nix/${platform}/</exclude>
-                                <exclude>org/gnode/nix/internal/${platform}/</exclude>
-                                <exclude>org/gnode/nix/base/${platform}/</exclude>
-                                <exclude>org/gnode/nix/valid/${platform}/</exclude>
-                                <exclude>org/gnode/nix/util/${platform}/</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>${platform}</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>${platform}</classifier>
-                            <skipIfEmpty>true</skipIfEmpty>
-                            <includes>
                                 <include>org/gnode/nix/${platform}/</include>
                                 <include>org/gnode/nix/internal/${platform}/</include>
                                 <include>org/gnode/nix/base/${platform}/</include>
