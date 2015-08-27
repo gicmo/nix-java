@@ -4,6 +4,7 @@ import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.ImplContainer;
+import org.gnode.nix.internal.BuildLibs;
 import org.gnode.nix.internal.DateUtils;
 import org.gnode.nix.internal.VectorUtils;
 import org.gnode.nix.valid.Result;
@@ -22,9 +23,11 @@ import java.util.function.Predicate;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/File.hpp>"}, link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+        @Platform(include = {"<nix/File.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix")
 public class File extends ImplContainer implements Comparable<File> {
 

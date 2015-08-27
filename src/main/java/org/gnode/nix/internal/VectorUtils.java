@@ -29,10 +29,11 @@ import java.util.List;
                 "<nix/Source.hpp>",
                 "<nix/Tag.hpp>",
                 "<nix/Value.hpp>",
-                "<nix/valid/helper.hpp>"},
-                link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+                "<nix/valid/helper.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 public class VectorUtils {
 
     static {

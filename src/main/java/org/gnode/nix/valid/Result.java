@@ -3,6 +3,7 @@ package org.gnode.nix.valid;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.internal.BuildLibs;
 import org.gnode.nix.internal.None;
 import org.gnode.nix.internal.VectorUtils;
 
@@ -14,9 +15,11 @@ import java.util.List;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/valid/result.hpp>"}, link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+        @Platform(include = {"<nix/valid/result.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix::valid")
 @NoOffset
 public class Result extends Pointer {

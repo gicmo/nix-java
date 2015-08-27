@@ -3,6 +3,7 @@ package org.gnode.nix.util;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.*;
+import org.gnode.nix.internal.BuildLibs;
 
 /**
  * <h1>DataAccess</h1>
@@ -20,9 +21,11 @@ import org.gnode.nix.*;
                 "<nix/Property.hpp>",
                 "<nix/Section.hpp>",
                 "<nix/Source.hpp>",
-                "<nix/Tag.hpp>"}, link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+                "<nix/Tag.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix::util")
 public class DataAccess {
     static {

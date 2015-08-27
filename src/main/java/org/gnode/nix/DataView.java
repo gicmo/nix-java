@@ -3,15 +3,18 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
+import org.gnode.nix.internal.BuildLibs;
 
 /**
  * <h1>DataView</h1>
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/DataView.hpp>"}, link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+        @Platform(include = {"<nix/DataView.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix")
 public class DataView extends Pointer {
 

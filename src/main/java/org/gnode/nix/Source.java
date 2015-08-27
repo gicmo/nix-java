@@ -4,10 +4,7 @@ import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.bytedeco.javacpp.annotation.Properties;
 import org.gnode.nix.base.EntityWithMetadata;
-import org.gnode.nix.internal.DateUtils;
-import org.gnode.nix.internal.None;
-import org.gnode.nix.internal.OptionalUtils;
-import org.gnode.nix.internal.VectorUtils;
+import org.gnode.nix.internal.*;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -25,9 +22,11 @@ import java.util.function.Predicate;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/Source.hpp>"}, link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+        @Platform(include = {"<nix/Source.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix")
 public class Source extends EntityWithMetadata {
 

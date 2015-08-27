@@ -3,6 +3,7 @@ package org.gnode.nix;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
 import org.gnode.nix.base.Entity;
+import org.gnode.nix.internal.BuildLibs;
 import org.gnode.nix.internal.DateUtils;
 
 import java.util.Date;
@@ -36,9 +37,11 @@ import java.util.Date;
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/Feature.hpp>"}, link = "nix", preload = "hdf5"),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+        @Platform(include = {"<nix/Feature.hpp>"}),
+        @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "windows",
+                link = BuildLibs.NIX,
+                preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix")
 public class Feature extends Entity {
     static {
