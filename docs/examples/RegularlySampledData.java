@@ -1,4 +1,3 @@
-import org.gnode.nix.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;

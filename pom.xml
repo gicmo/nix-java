@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.gnode</groupId>
-    <artifactId>nix</artifactId>
-    <version>1.0</version>
+    <groupId>org.g_node</groupId>
+    <artifactId>nix-${platform}</artifactId>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Java Bindings for NIX</name>
@@ -121,11 +121,11 @@
                         <configuration>
                             <skip>false</skip>
                             <classOrPackageNames>
-                                <classOrPackageName>org.gnode.nix.*</classOrPackageName>
-                                <classOrPackageName>org.gnode.nix.internal.*</classOrPackageName>
-                                <classOrPackageName>org.gnode.nix.base.*</classOrPackageName>
-                                <classOrPackageName>org.gnode.nix.valid.*</classOrPackageName>
-                                <classOrPackageName>org.gnode.nix.util.*</classOrPackageName>
+                                <classOrPackageName>org.g_node.nix.*</classOrPackageName>
+                                <classOrPackageName>org.g_node.nix.internal.*</classOrPackageName>
+                                <classOrPackageName>org.g_node.nix.base.*</classOrPackageName>
+                                <classOrPackageName>org.g_node.nix.valid.*</classOrPackageName>
+                                <classOrPackageName>org.g_node.nix.util.*</classOrPackageName>
                             </classOrPackageNames>
                             <copyLibs>true</copyLibs>
                         </configuration>
@@ -153,7 +153,7 @@
                                         ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar
                                         ${project.artifactId}-windows-x86.jar ${project.artifactId}-windows-x86_64.jar
                                     </Class-Path>
-                                    <Name>org/gnode/nix/</Name>
+                                    <Name>org/g_node/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
                                     <Implementation-Version>${project.version}</Implementation-Version>
@@ -161,36 +161,16 @@
                                 </manifestEntries>
                             </archive>
                             <includes>
-                                <include>org/gnode/nix/*</include>
-                                <include>org/gnode/nix/internal/*</include>
-                                <include>org/gnode/nix/base/*</include>
-                                <include>org/gnode/nix/valid/*</include>
-                                <include>org/gnode/nix/util/*</include>
-                            </includes>
-                            <excludes>
-                                <exclude>org/gnode/nix/${platform}/</exclude>
-                                <exclude>org/gnode/nix/internal/${platform}/</exclude>
-                                <exclude>org/gnode/nix/base/${platform}/</exclude>
-                                <exclude>org/gnode/nix/valid/${platform}/</exclude>
-                                <exclude>org/gnode/nix/util/${platform}/</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>${platform}</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>${platform}</classifier>
-                            <skipIfEmpty>true</skipIfEmpty>
-                            <includes>
-                                <include>org/gnode/nix/${platform}/</include>
-                                <include>org/gnode/nix/internal/${platform}/</include>
-                                <include>org/gnode/nix/base/${platform}/</include>
-                                <include>org/gnode/nix/valid/${platform}/</include>
-                                <include>org/gnode/nix/util/${platform}/</include>
+                                <include>org/g_node/nix/*</include>
+                                <include>org/g_node/nix/internal/*</include>
+                                <include>org/g_node/nix/base/*</include>
+                                <include>org/g_node/nix/valid/*</include>
+                                <include>org/g_node/nix/util/*</include>
+                                <include>org/g_node/nix/${platform}/</include>
+                                <include>org/g_node/nix/internal/${platform}/</include>
+                                <include>org/g_node/nix/base/${platform}/</include>
+                                <include>org/g_node/nix/valid/${platform}/</include>
+                                <include>org/g_node/nix/util/${platform}/</include>
                             </includes>
                         </configuration>
                     </execution>

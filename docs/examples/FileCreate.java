@@ -1,5 +1,5 @@
-import org.gnode.nix.File;
-import org.gnode.nix.FileMode;
+import org.g_node.nix.File;
+import org.g_node.nix.FileMode;
 
 public class FileCreate {
     public static void main(String[] args) {
