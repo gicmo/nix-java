@@ -63,15 +63,14 @@ public class File extends ImplContainer implements Comparable<File> {
      *
      * @param name The name/path of the file.
      * @param mode The open mode. Check {@link FileMode} for options.
-     * @param impl The back-end implementation the should be used to open the file. Check {@link Implementation} for options.
+     * @param impl The back-end implementation the should be used to open the file.
      * @return The opened file.
      * @see FileMode
-     * @see Implementation
      */
     public static native
     @ByVal
     File open(@StdString String name, @Cast("nix::FileMode") int mode,
-              @Cast("nix::Implementation") int impl);
+              @StdString String impl);
 
     /**
      * Opens a file with back-end implementation in hdf5.
@@ -82,7 +81,7 @@ public class File extends ImplContainer implements Comparable<File> {
      * @see FileMode
      */
     public static File open(@StdString String name, int mode) {
-        return open(name, mode, Implementation.Hdf5);
+        return open(name, mode, "hdf5");
     }
 
     /**
