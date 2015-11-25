@@ -511,15 +511,37 @@ public class Block extends EntityWithMetadata {
     // Methods concerning groups
     //--------------------------------------------------
 
+    /**
+     * Checks if a specific group exists in the block.
+     *
+     * @param nameOrId      Name or id of a group.
+     *
+     * @return True if the group exists, false otherwise.
+     */
     @Cast("bool")
     public native boolean hasGroup(@StdString String nameOrId);
 
+    /**
+     * Checks if a specific group exists in the block.
+     *
+     * @param group         The group to check.
+     *
+     * @return True if the group exists, false otherwise.
+     */
     @Cast("bool")
     public native boolean hasGroup(@Const @ByRef Group group);
 
     @ByVal @Name("getGroup")
     private native Group fetchGroup(@StdString String nameOrId);
 
+    /**
+     * Retrieves a specific group from the block by its name or id.
+     *
+     * @param nameOrId      Name or id of the group.
+     *
+     * @return The group with the specified id. If the group doesn't exist
+     *         an exception will be thrown.
+     */
     public Group getGroup(String nameOrId) {
         Group source = fetchGroup(nameOrId);
         if (source.isNone())
@@ -530,6 +552,13 @@ public class Block extends EntityWithMetadata {
     @ByVal @Name("getGroup")
     private native Group fetchGroup(@Cast("size_t") long index);
 
+    /**
+     * Retrieves a specific group by index.
+     *
+     * @param index     The index of the group.
+     *
+     * @return The group at the specified index.
+     */
     public Group getGroup(long index) {
         Group source = fetchGroup(index);
         if (source.isNone())
@@ -537,12 +566,25 @@ public class Block extends EntityWithMetadata {
         return source;
     }
 
+    /**
+     * Returns the number of groups associated with this block.
+     *
+     * @return The number of groups.
+     */
     @Name("groupCount")
     public native long getGroupCount();
 
     @ByVal @Name("createGroup")
     private native Group makeGroup(@StdString String name, @StdString String type);
 
+    /**
+     * Create a new group associated with this block.
+     *
+     * @param name       The name of the group to create.
+     * @param type       The type of the tag.
+     *
+     * @return The newly created group.
+     */
     public Group createGroup(String name, String type) {
         Group g = makeGroup(name, type);
         if (g.isNone())
@@ -550,17 +592,46 @@ public class Block extends EntityWithMetadata {
         return g;
     }
 
+    /**
+     * List all groups within this block.
+     *
+     * @return A vector that contains all filtered groups.
+     */
     public List<Group> getGroups() {
         return ListBuilder.build(this::getGroupCount, this::getGroup);
     }
 
+    /**
+     * List all groups within this block.
+     * The parameter filter can be used to filter groups by various criteria.
+     *
+     * @param filter        A filter function.
+     *
+     * @return A vector that contains all filtered groups.
+     */
     public List<Group> getGroups(Predicate<Group> filter) {
         return ListBuilder.build(this::getGroupCount, this::getGroup);
     }
 
+    /**
+     * Deletes a Group from the block.
+     * Deletes a group from the block and the file. The deletion can't be undone.
+     *
+     * @param nameOrId      Name or id of the group to remove.
+     *
+     * @return True if the group was removed, false otherwise.
+     */
     @Cast("bool")
     public native boolean deleteGroup(@StdString String nameOrId);
 
+    /**
+     * Deletes a group from the block.
+     * Deletes a group from the block and the file. The deletion can't be undone.
+     *
+     * @param group         The group to remove.
+     *
+     * @return True if the group was removed, false otherwise.
+     */
     @Cast("bool")
     public native boolean deleteGroup(@Const @ByRef Group group);
 
