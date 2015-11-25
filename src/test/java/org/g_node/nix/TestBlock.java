@@ -16,7 +16,7 @@ public class TestBlock {
 
     private File file;
     private Section section;
-    private Block block, blockOther, blockNull;
+    private Block block;
 
     private Date startupTime;
 
@@ -30,8 +30,6 @@ public class TestBlock {
         section = file.createSection("foo_section", "metadata");
 
         block = file.createBlock("block_one", "dataset");
-        blockOther = file.createBlock("block_two", "dataset");
-        blockNull = null;
     }
 
     @After
