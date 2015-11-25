@@ -16,22 +16,22 @@ public class TestBlock {
 
     private File file;
     private Section section;
-    private Block block, block_other, block_null;
+    private Block block, blockOther, blockNull;
 
-    private Date statup_time;
+    private Date startupTime;
 
     @Before
     public void setUp() {
         // precision of time_t is in seconds hence (millis / 1000) * 1000
-        statup_time = new Date((System.currentTimeMillis() / 1000) * 1000);
+        startupTime = new Date((System.currentTimeMillis() / 1000) * 1000);
 
         file = File.open("test_Block_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
 
         section = file.createSection("foo_section", "metadata");
 
         block = file.createBlock("block_one", "dataset");
-        block_other = file.createBlock("block_two", "dataset");
-        block_null = null;
+        blockOther = file.createBlock("block_two", "dataset");
+        blockNull = null;
     }
 
     @After
@@ -69,7 +69,7 @@ public class TestBlock {
 
     @Test
     public void testCreatedAt() {
-        assertTrue(block.getCreatedAt().compareTo(statup_time) >= 0);
+        assertTrue(block.getCreatedAt().compareTo(startupTime) >= 0);
 
         long time = System.currentTimeMillis() - 10000000L * 1000;
         // precision of time_t is in seconds hence (millis / 1000) * 1000
@@ -82,7 +82,7 @@ public class TestBlock {
 
     @Test
     public void testUpdatedAt() {
-        assertTrue(block.getUpdatedAt().compareTo(statup_time) >= 0);
+        assertTrue(block.getUpdatedAt().compareTo(startupTime) >= 0);
     }
 
     @Test
@@ -233,6 +233,61 @@ public class TestBlock {
         assertEquals(block.getDataArrayCount(), 0);
         assertEquals(block.getDataArrays().size(), 0);
         assertFalse(block.hasDataArray("invalid_id"));
+    }
+
+    @Test
+    public void testGroupAccess() {
+        List<String> names = Arrays.asList("group_a", "group_b", "group_c", "group_d", "group_e");
+
+        try {
+            block.hasGroup((Group) null);
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getGroupCount(), 0);
+        assertEquals(block.getGroups().size(), 0);
+        assertFalse(block.hasGroup("invalid_id"));
+
+        List<String> ids = new ArrayList<>();
+        for (String name : names) {
+            Group src = block.createGroup(name, "channel");
+            //assertEquals(src.getName(), name);
+            assertTrue(block.hasGroup(name));
+            assertTrue(block.hasGroup(src));
+
+            ids.add(src.getId());
+        }
+
+        try {
+            block.createGroup(names.get(0), "channel");
+            fail();
+        } catch (RuntimeException re) {
+        }
+
+        assertEquals(block.getGroupCount(), names.size());
+        assertEquals(block.getGroups().size(), names.size());
+
+
+        for (String id : ids) {
+            Group src = block.getGroup(id);
+            assertTrue(block.hasGroup(id));
+            assertEquals(src.getId(), id);
+            block.deleteGroup(id);
+        }
+
+        Group g = block.createGroup("test", "test");
+        assertTrue(block.getGroupCount() == 1);
+
+        try {
+            block.deleteGroup(g);
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(block.getGroupCount(), 0);
+        assertEquals(block.getGroups().size(), 0);
+        assertFalse(block.hasGroup("invalid_id"));
     }
 
     @Test

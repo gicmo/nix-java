@@ -2,12 +2,11 @@ package org.g_node.nix;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
+import org.bytedeco.javacpp.annotation.Properties;
 import org.g_node.nix.internal.*;
 import org.g_node.nix.base.EntityWithMetadata;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -507,6 +506,63 @@ public class Block extends EntityWithMetadata {
     public native
     @Cast("bool")
     boolean deleteSource(@Const @ByRef Source source);
+
+    //--------------------------------------------------
+    // Methods concerning groups
+    //--------------------------------------------------
+
+    @Cast("bool")
+    public native boolean hasGroup(@StdString String nameOrId);
+
+    @Cast("bool")
+    public native boolean hasGroup(@Const @ByRef Group group);
+
+    @ByVal @Name("getGroup")
+    private native Group fetchGroup(@StdString String nameOrId);
+
+    public Group getGroup(String nameOrId) {
+        Group source = fetchGroup(nameOrId);
+        if (source.isNone())
+            return null;
+        return source;
+    }
+
+    @ByVal @Name("getGroup")
+    private native Group fetchGroup(@Cast("size_t") long index);
+
+    public Group getGroup(long index) {
+        Group source = fetchGroup(index);
+        if (source.isNone())
+            return null;
+        return source;
+    }
+
+    @Name("groupCount")
+    public native long getGroupCount();
+
+    @ByVal @Name("createGroup")
+    private native Group makeGroup(@StdString String name, @StdString String type);
+
+    public Group createGroup(String name, String type) {
+        Group g = makeGroup(name, type);
+        if (g.isNone())
+            return null;
+        return g;
+    }
+
+    public List<Group> getGroups() {
+        return ListBuilder.build(this::getGroupCount, this::getGroup);
+    }
+
+    public List<Group> getGroups(Predicate<Group> filter) {
+        return ListBuilder.build(this::getGroupCount, this::getGroup);
+    }
+
+    @Cast("bool")
+    public native boolean deleteGroup(@StdString String nameOrId);
+
+    @Cast("bool")
+    public native boolean deleteGroup(@Const @ByRef Group group);
 
 
     //--------------------------------------------------
