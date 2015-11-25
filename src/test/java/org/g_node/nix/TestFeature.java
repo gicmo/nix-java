@@ -100,11 +100,7 @@ public class TestFeature {
         assertEquals(rp.getData().getId(), da_2.getId());
         block.deleteDataArray(da_2.getId());
         // make sure link is gone with deleted data array
-        try {
-            rp.getData();
-            fail();
-        } catch (RuntimeException re) {
-        }
+        assertTrue(rp.getData().isNone());
         tag.deleteFeature(rp.getId());
     }
 
