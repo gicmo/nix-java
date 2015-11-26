@@ -442,6 +442,23 @@ public class Group extends EntityWithSources {
     }
 
     /**
+     * Set all DataArray associations for this group.
+     * All previously existing associations will be overwritten.
+     *
+     * @param dataArrays    A list with all DataArray entities to add.
+     * @see DataArray
+     */
+    public void setDataArrays(List<DataArray> dataArrays) {
+        // remove if not in dataArrays
+        getDataArrays(da -> !dataArrays.contains(da))
+                .forEach(this::removeDataArray);
+        // add if not already there
+        dataArrays.stream()
+                .filter(da -> !hasDataArray(da))
+                .forEach(this::addDataArray);
+    }
+
+    /**
      * Add a DataArray to the list of referenced data of the group.
      *
      * @param nameOrId      The id of the DataArray to add.
@@ -486,9 +503,301 @@ public class Group extends EntityWithSources {
     // Methods concerning tags
     //--------------------------------------------------
 
+    /**
+     * Checks if a specific tag exists in the group.
+     *
+     * @param nameOrId      Name or id of a tag to check.
+     *
+     * @return True if the tag exists, false otherwise.
+     * @see Tag
+     */
+    @Cast("bool")
+    public native boolean hasTag(@StdString String nameOrId);
 
+    /**
+     * Checks if a specific tag exists in the group.
+     *
+     * @param tag           The tag to check.
+     *
+     * @return True if the tag exists, false otherwise.
+     * @see Tag
+     */
+    @Cast("bool")
+    public native boolean hasTag(@Const @ByRef Tag tag);
+
+    /**
+     * Returns the number of tags within this group.
+     *
+     * @return The number of tags.
+     */
+    @Name("tagCount")
+    public native long getTagCount();
+
+    @Name("getTag") @ByVal
+    private native Tag fetchTag(@StdString String nameOrId);
+
+    @Name("getTag") @ByVal
+    private native Tag fetchTag(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific tag from the group by its id.
+     *
+     * @param nameOrId      Name or id of the tag.
+     *
+     * @return The tag with the specified id. If this tag doesn't exist
+     *         an exception will be thrown.
+     * @see Tag
+     */
+    public Tag getTag(String nameOrId) {
+        Tag tag = fetchTag(nameOrId);
+        if (tag.isNone())
+            return null;
+        return tag;
+    }
+
+    /**
+     * Retrieves a specific tag by index.
+     *
+     * @param index         The index of the tag.
+     *
+     * @return The tag at the specified index.
+     * @see Tag
+     */
+    public Tag getTag(long index) {
+        Tag tag = fetchTag(index);
+        if (tag.isNone())
+            return null;
+        return tag;
+    }
+
+    /**
+     * Gets all Tags within this group.
+     *
+     * @return list of all tags.
+     * @see Tag
+     */
+    public List<Tag> getTags() {
+        return ListBuilder.build(this::getTagCount, this::getTag);
+    }
+
+    /**
+     * Get tags within this block.
+     * The parameter filter can be used to filter tags by variouscriteria.
+     *
+     * @param filter        A filter function.
+     *
+     * @return A list that contains all filtered tags.
+     * @see Tag
+     */
+    public List<Tag> getTags(Predicate<Tag> filter) {
+        return ListBuilder.build(this::getTagCount, this::getTag, filter);
+    }
+
+    /**
+     * Set all Tag associations for this group.
+     * All previously existing associations will be overwritten.
+     *
+     * @param tags    A list with all Tag entities to add.
+     * @see Tag
+     */
+    public void setTags(List<Tag> tags) {
+        // remove if not in dataArrays
+        getTags(tag -> !tags.contains(tag))
+                .forEach(this::removeTag);
+        // add if not already there
+        tags.stream()
+                .filter(tag -> !hasTag(tag))
+                .forEach(this::addTag);
+    }
+
+    /**
+     * Add a Tag to the list of referenced tags of the group.
+     *
+     * @param nameOrId      The id of the Tag to add.
+     */
+    public native void addTag(@StdString String nameOrId);
+
+    /**
+     * Add a Tag to the list of referenced tags of the group.
+     *
+     * @param tag           The Tag to add.
+     */
+    public native void addTag(@Const @ByRef Tag tag);
+
+    /**
+     * Remove a Tag from the list of referenced tags of the group.
+     *
+     * This method just removes the association between the tag and the
+     * group, the tag itself will not be removed from the file.
+     *
+     * @param nameOrId      The id of the Tag to remove.
+     *
+     * @return True if the Tag was removed, false otherwise.
+     */
+    @Cast("bool")
+    public native boolean removeTag(@StdString String nameOrId);
+
+    /**
+     * Remove a Tag from the list of referenced data of the group.
+     *
+     * This method just removes the association between the tag and the
+     * group, the tag itself will not be removed from the file.
+     *
+     * @param tag           The Tag to remove.
+     *
+     * @return True if the Tag was removed, false otherwise.
+     */
+    @Cast("bool")
+    public native boolean removeTag(@Const @ByRef Tag tag);
 
     //--------------------------------------------------
     // Methods concerning multi tags
     //--------------------------------------------------
+
+    /**
+     * Checks if a specific tag exists in the group.
+     *
+     * @param nameOrId      Name or id of a tag to check.
+     *
+     * @return True if the tag exists, false otherwise.
+     * @see MultiTag
+     */
+    @Cast("bool")
+    public native boolean hasMultiTag(@StdString String nameOrId);
+
+    /**
+     * Checks if a specific tag exists in the group.
+     *
+     * @param tag           The tag to check.
+     *
+     * @return True if the tag exists, false otherwise.
+     * @see MultiTag
+     */
+    @Cast("bool")
+    public native boolean hasMultiTag(@Const @ByRef MultiTag tag);
+
+    /**
+     * Returns the number of tags within this group.
+     *
+     * @return The number of tags.
+     */
+    @Name("tagCount")
+    public native long getMultiTagCount();
+
+    @Name("getMultiTag") @ByVal
+    private native MultiTag fetchMultiTag(@StdString String nameOrId);
+
+    @Name("getMultiTag") @ByVal
+    private native MultiTag fetchMultiTag(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific tag from the group by its id.
+     *
+     * @param nameOrId      Name or id of the tag.
+     *
+     * @return The tag with the specified id. If this tag doesn't exist
+     *         an exception will be thrown.
+     * @see MultiTag
+     */
+    public MultiTag getMultiTag(String nameOrId) {
+        MultiTag tag = fetchMultiTag(nameOrId);
+        if (tag.isNone())
+            return null;
+        return tag;
+    }
+
+    /**
+     * Retrieves a specific tag by index.
+     *
+     * @param index         The index of the tag.
+     *
+     * @return The tag at the specified index.
+     * @see MultiTag
+     */
+    public MultiTag getMultiTag(long index) {
+        MultiTag tag = fetchMultiTag(index);
+        if (tag.isNone())
+            return null;
+        return tag;
+    }
+
+    /**
+     * Gets all MultiTags within this group.
+     *
+     * @return list of all tags.
+     * @see MultiTag
+     */
+    public List<MultiTag> getMultiTags() {
+        return ListBuilder.build(this::getMultiTagCount, this::getMultiTag);
+    }
+
+    /**
+     * Get tags within this block.
+     * The parameter filter can be used to filter tags by variouscriteria.
+     *
+     * @param filter        A filter function.
+     *
+     * @return A list that contains all filtered tags.
+     * @see MultiTag
+     */
+    public List<MultiTag> getMultiTags(Predicate<MultiTag> filter) {
+        return ListBuilder.build(this::getMultiTagCount, this::getMultiTag, filter);
+    }
+
+    /**
+     * Set all MultiTag associations for this group.
+     * All previously existing associations will be overwritten.
+     *
+     * @param tags    A list with all MultiTag entities to add.
+     * @see MultiTag
+     */
+    public void setMultiTags(List<MultiTag> tags) {
+        // remove if not in dataArrays
+        getMultiTags(tag -> !tags.contains(tag))
+                .forEach(this::removeMultiTag);
+        // add if not already there
+        tags.stream()
+                .filter(tag -> !hasMultiTag(tag))
+                .forEach(this::addMultiTag);
+    }
+
+    /**
+     * Add a MultiTag to the list of referenced tags of the group.
+     *
+     * @param nameOrId      The id of the MultiTag to add.
+     */
+    public native void addMultiTag(@StdString String nameOrId);
+
+    /**
+     * Add a MultiTag to the list of referenced tags of the group.
+     *
+     * @param tag           The MultiTag to add.
+     */
+    public native void addMultiTag(@Const @ByRef MultiTag tag);
+
+    /**
+     * Remove a MultiTag from the list of referenced tags of the group.
+     *
+     * This method just removes the association between the tag and the
+     * group, the tag itself will not be removed from the file.
+     *
+     * @param nameOrId      The id of the MultiTag to remove.
+     *
+     * @return True if the MultiTag was removed, false otherwise.
+     */
+    @Cast("bool")
+    public native boolean removeMultiTag(@StdString String nameOrId);
+
+    /**
+     * Remove a MultiTag from the list of referenced data of the group.
+     *
+     * This method just removes the association between the tag and the
+     * group, the tag itself will not be removed from the file.
+     *
+     * @param tag           The MultiTag to remove.
+     *
+     * @return True if the MultiTag was removed, false otherwise.
+     */
+    @Cast("bool")
+    public native boolean removeMultiTag(@Const @ByRef MultiTag tag);
 }
