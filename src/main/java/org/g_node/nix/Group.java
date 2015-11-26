@@ -1,11 +1,14 @@
 package org.g_node.nix;
 
-import java.util.Date;
+import java.util.*;
+import java.util.function.Predicate;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.annotation.*;
+import org.bytedeco.javacpp.annotation.Properties;
 import org.g_node.nix.base.*;
 import org.g_node.nix.internal.*;
+import org.g_node.nix.internal.OptionalUtils.OptionalString;
 
 /**
  * An additional grouping element within Block.
@@ -17,7 +20,7 @@ import org.g_node.nix.internal.*;
                 link = BuildLibs.NIX,
                 preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix")
-public class Group extends Entity {
+public class Group extends EntityWithSources {
 
     static {
         Loader.load();
@@ -26,9 +29,9 @@ public class Group extends Entity {
     private native void allocate();
 
     /**
-     * Get id of the block
+     * Get id of the group.
      *
-     * @return ID string.
+     * @return The ID string.
      */
     @Name("id") @StdString
     public native String getId();
@@ -37,9 +40,9 @@ public class Group extends Entity {
     private native long createdAt();
 
     /**
-     * Get the creation date of the block.
+     * Get the creation date of the group.
      *
-     * @return The creation date of the block.
+     * @return The creation date of the group.
      */
     public Date getCreatedAt() {
         return DateUtils.convertSecondsToDate(createdAt());
@@ -83,6 +86,256 @@ public class Group extends Entity {
         forceCreatedAt(DateUtils.convertDateToSeconds(date));
     }
 
+    /**
+     * Setter for the type of the group.
+     *
+     * @param type The type of the group.
+     */
+    @Name("type")
+    public native void setType(@StdString String type);
+
+    /**
+     * Getter for the type of the group.
+     *
+     * @return The type of the group.
+     */
+    @Name("type") @StdString
+    public native String getType();
+
+    /**
+     * Getter for the name of the group.
+     *
+     * @return The name of the group.
+     */
+    @Name("name") @StdString
+    public native String getName();
+
+    private native void definition(@Const @ByVal None none);
+
+    private native void definition(@StdString String definition);
+
+    /**
+     * Setter for the definition of the group. If <tt>null</tt> is passed definition is removed.
+     *
+     * @param definition definition of the group.
+     */
+    public void setDefinition(String definition) {
+        if (definition != null) {
+            definition(definition);
+        } else {
+            definition(new None());
+        }
+    }
+
+    @ByVal
+    private native OptionalString definition();
+
+    /**
+     * Getter for the definition of the group.
+     *
+     * @return The definition of the group.
+     */
+    public String getDefinition() {
+        OptionalString definition = definition();
+        if (! definition.isPresent())
+            return null;
+        return definition.getString();
+    }
+
+    @ByVal
+    private native Section metadata();
+
+    private native void metadata(@Const @ByVal None t);
+
+    /**
+     * Get metadata associated with this entity.
+     *
+     * @return The associated section, if no such section exists <tt>null</tt> is returned.
+     * @see Section
+     */
+    @Name("metadata")
+    public Section getMetadata() {
+        Section section = metadata();
+        if (section.isNone())
+            return null;
+        return section;
+    }
+
+    /**
+     * Associate the entity with some metadata.
+     * Calling this method will replace an existing association.
+     *
+     * @param metadata The {@link Section} that should be associated
+     *                 with this entity.
+     * @see Section
+     */
+    @Name("metadata")
+    public native void setMetadata(@Const @ByRef Section metadata);
+
+    /**
+     * Associate the entity with some metadata.
+     * Calling this method will replace an existing association.
+     *
+     * @param id The id of the {@link Section} that should be associated
+     *           with this entity.
+     * @see Section
+     */
+    @Name("metadata")
+    public native void setMetadata(@StdString String id);
+
+    /**
+     * Removes metadata associated with the entity.
+     *
+     * @see Section
+     */
+    public void removeMetadata() {
+        metadata(new None());
+    }
+
+    /**
+     * Get the number of sources associated with this entity.
+     *
+     * @return The number sources.
+     * @see Source
+     */
+    @Name("sourceCount")
+    public native long getSourceCount();
+
+    /**
+     * Checks if a specific source is associated with this entity.
+     *
+     * @param id The source id to check.
+     * @return True if the source is associated with this entity, false otherwise.
+     * @see Source
+     */
+    @Cast("bool")
+    public native boolean hasSource(@StdString String id);
+
+    /**
+     * Checks if a specific source is associated with this entity.
+     *
+     * @param source The source to check.
+     * @return True if the source is associated with this entity, false otherwise.
+     * @see Source
+     */
+    @Cast("bool")
+    public native boolean hasSource(@Const @ByRef Source source);
+
+    @Name("getSource") @ByVal
+    private native Source fetchSource(@StdString String id);
+
+    /**
+     * Returns an associated source identified by its id.
+     *
+     * @param id The id of the associated source.
+     * @see Source
+     */
+    public Source getSource(String id) {
+        Source source = fetchSource(id);
+        if (source.isNone())
+            return null;
+        return source;
+    }
+
+    @Name("getSource") @ByVal
+    private native Source fetchSource(@Cast("size_t") long index);
+
+    /**
+     * Retrieves an associated source identified by its index.
+     *
+     * @param index The index of the associated source.
+     * @return The source with the given id. If it doesn't exist an exception
+     * will be thrown.
+     * @see Source
+     */
+    public Source getSource(long index) {
+        Source source = fetchSource(index);
+        if (source.isNone())
+            return null;
+        return source;
+    }
+
+    /**
+     * Get all sources associated with this entity.
+     *
+     * @return All associated sources that match the given filter as a list.
+     * @see Source
+     */
+    public List<Source> getSources() {
+        return ListBuilder.build(this::getSourceCount, this::getSource);
+    }
+
+    /**
+     * Get all sources associated with this entity.
+     *
+     * @return All associated sources that match the given filter as a list.
+     * @see Source
+     */
+    public List<Source> getSources(Predicate<Source> filter) {
+        return ListBuilder.build(this::getSourceCount, this::getSource, filter);
+    }
+
+    /**
+     * Set all sources associations for this entity.
+     * All previously existing associations will be overwritten.
+     *
+     * @param sources A list with all sources.
+     * @see Source
+     */
+    public void setSources(List<Source> sources) {
+        // remove if not in sources
+        getSources(s -> !sources.contains(s))
+                .forEach(this::removeSource);
+        // add if not already there
+        sources.stream()
+                .filter(s -> !hasSource(s))
+                .forEach(this::addSource);
+    }
+
+    /**
+     * Associate a new source with the entity.
+     * If a source with the given id already is associated with the
+     * entity, the call will have no effect.
+     *
+     * @param id The id of the source.
+     * @see Source
+     */
+    public native void addSource(@StdString String id);
+
+    /**
+     * Associate a new source with the entity.
+     * Calling this method will have no effect if the source is already associated to this entity.
+     *
+     * @param source The source to add.
+     * @see Source
+     */
+    public native void addSource(@Const @ByRef Source source);
+
+    /**
+     * Remove a source from the list of associated sources.
+     * This method just removes the association between the entity and the source.
+     * The source itself will not be deleted from the file.
+     *
+     * @param id The id of the source to remove.
+     * @return True if the source was removed, false otherwise.
+     * @see Source
+     */
+    @Cast("bool")
+    public native boolean removeSource(@StdString String id);
+
+    /**
+     * Remove a source from the list of associated sources.
+     * This method just removes the association between the entity and the source.
+     * The source itself will not be deleted from the file.
+     *
+     * @param source The source to remove.
+     * @return True if the source was removed, false otherwise.
+     * @see Source
+     */
+    @Cast("bool")
+    public native boolean removeSource(@Const @ByRef Source source);
+
     @Override @Cast("bool")
     public native boolean isNone();
+
 }
