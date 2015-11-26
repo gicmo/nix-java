@@ -28,6 +28,9 @@ public class Group extends EntityWithSources {
 
     private native void allocate();
 
+    @Override @Cast("bool")
+    public native boolean isNone();
+
     /**
      * Get id of the group.
      *
@@ -142,6 +145,10 @@ public class Group extends EntityWithSources {
         return definition.getString();
     }
 
+    //--------------------------------------------------
+    // Methods concerning metadata
+    //--------------------------------------------------
+
     @ByVal
     private native Section metadata();
 
@@ -191,6 +198,10 @@ public class Group extends EntityWithSources {
     public void removeMetadata() {
         metadata(new None());
     }
+
+    //--------------------------------------------------
+    // Methods concerning sources
+    //--------------------------------------------------
 
     /**
      * Get the number of sources associated with this entity.
@@ -335,7 +346,149 @@ public class Group extends EntityWithSources {
     @Cast("bool")
     public native boolean removeSource(@Const @ByRef Source source);
 
-    @Override @Cast("bool")
-    public native boolean isNone();
+    //--------------------------------------------------
+    // Methods concerning data arrays
+    //--------------------------------------------------
 
+    /**
+     * Checks if a specific data array exists in this group.
+     *
+     * @param nameOrId      Name or id of a data array.
+     *
+     * @return True if the data array exists, false otherwise.
+     * @see DataArray
+     */
+    @Cast("bool")
+    public native boolean hasDataArray(@StdString String nameOrId);
+
+    /**
+     * Returns the number of all data arrays of the block.
+     *
+     * @return The number of data arrays of the block.
+     * @see DataArray
+     */
+    @Name("dataArrayCount")
+    public native long getDataArrayCount();
+
+    /**
+     * Checks if a specific data array exists in this group.
+     *
+     * @param dataArray     The data array to check.
+     *
+     * @return True if the data array exists, false otherwise.
+     * @see DataArray
+     */
+    @Cast("bool")
+    public native boolean hasDataArray(@Const @ByRef DataArray dataArray);
+
+    @Name("getDataArray") @ByVal
+    private native DataArray fetchDataArray(@StdString String nameOrId);
+
+    @Name("getDataArray") @ByVal
+    private native DataArray fetchDataArray(@Cast("size_t") long index);
+
+    /**
+     * Retrieves a specific data array from the group by name or id.
+     *
+     * @param nameOrId      Name or id of an existing data array.
+     *
+     * @return The data array with the specified id. If this
+     *         doesn't exist, an exception will be thrown.
+     * @see DataArray
+     */
+    public DataArray getDataArray(String nameOrId) {
+        DataArray da = fetchDataArray(nameOrId);
+        if (da.isNone())
+            return null;
+        return da;
+    }
+
+    /**
+     * Retrieves a data array by index.
+     *
+     * @param index         The index of the data array.
+     *
+     * @return The data array at the specified index.
+     * @see DataArray
+     */
+    public DataArray getDataArray(long index) {
+        DataArray da = fetchDataArray(index);
+        if (da.isNone())
+            return null;
+        return da;
+    }
+
+    /**
+     * Get data arrays within this group.
+     *
+     * @return A list of data arrays
+     * @see DataArray
+     */
+    public List<DataArray> getDataArrays() {
+        return ListBuilder.build(this::getDataArrayCount, this::getDataArray);
+    }
+
+    /**
+     * Get data arrays within this group.
+     * The parameter filter can be used to filter data arrays by various criteria.
+     *
+     * @param filter        A filter function.
+     *
+     * @return A list that contains all filtered data arrays.
+     * @see DataArray
+     */
+    public List<DataArray> getDataArrays(Predicate<DataArray> filter) {
+        return ListBuilder.build(this::getDataArrayCount, this::getDataArray, filter);
+    }
+
+    /**
+     * Add a DataArray to the list of referenced data of the group.
+     *
+     * @param nameOrId      The id of the DataArray to add.
+     */
+    public native void addDataArray(@StdString String nameOrId);
+
+    /**
+     * Add a DataArray to the list of referenced data of the group.
+     *
+     * @param dataArray     The DataArray to add.
+     */
+    public native void addDataArray(@Const @ByRef DataArray dataArray);
+
+    /**
+     * Remove a DataArray from the list of referenced data of the group.
+     *
+     * This method just removes the association between the data array and the
+     * group, the data array itself will not be removed from the file.
+     *
+     * @param nameOrId      The id of the DataArray to remove.
+     *
+     * @return True if the DataArray was removed, false otherwise.
+     */
+    @Cast("bool")
+    public native boolean removeDataArray(@StdString String nameOrId);
+
+    /**
+     * Remove a DataArray from the list of referenced data of the group.
+     *
+     * This method just removes the association between the data array and the
+     * group, the data array itself will not be removed from the file.
+     *
+     * @param dataArray     The DataArray to remove.
+     *
+     * @return True if the DataArray was removed, false otherwise.
+     */
+    @Cast("bool")
+    public native boolean removeDataArray(@Const @ByRef DataArray dataArray);
+
+
+    //--------------------------------------------------
+    // Methods concerning tags
+    //--------------------------------------------------
+
+
+
+    //--------------------------------------------------
+    // Methods concerning multi tags
+    //--------------------------------------------------
 }
