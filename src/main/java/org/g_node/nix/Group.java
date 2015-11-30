@@ -681,7 +681,7 @@ public class Group extends EntityWithSources {
      *
      * @return The number of tags.
      */
-    @Name("tagCount")
+    @Name("multiTagCount")
     public native long getMultiTagCount();
 
     @Name("getMultiTag") @ByVal
