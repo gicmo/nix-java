@@ -65,8 +65,6 @@ public class TestValue {
 
         Value v1 = new Value();
         assertEquals(v1.getType(), DataType.Nothing);
-
-        assertFalse(Value.supportsType(DataType.DateTime));
     }
 
     @Test

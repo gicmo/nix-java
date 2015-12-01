@@ -25,9 +25,7 @@ public class DataType {
     public static final int UInt32 = 10;
     public static final int UInt64 = 11;
     public static final int String = 12;
-    public static final int Date = 13;
-    public static final int DateTime = 14;
-    public static final int Opaque = 15;
+    public static final int Opaque = 13;
 
     public static final int Nothing = -1;
 }
