@@ -35,12 +35,10 @@ install:
   - cd nix
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake -DBUILD_TESTING=OFF ..
   - make all
   - sudo make install
-  - cd ..
-  - cd ..
-  - cd .. 
+  - cd ../../..
 
 script:
   - mvn clean package
