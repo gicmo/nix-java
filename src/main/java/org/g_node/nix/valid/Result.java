@@ -42,9 +42,6 @@ public class Result extends Pointer {
     private native void allocate(@Const @ByRef VectorUtils.MessageVector errs,
                                  @Const @ByVal None none);
 
-    private native void allocate(@Const @ByRef Message err,
-                                 @Const @ByRef Message warn);
-
     private native void allocate(@Const @ByVal None none,
                                  @Const @ByRef Message warn);
 
@@ -80,27 +77,6 @@ public class Result extends Pointer {
         }
     }
 
-    /**
-     * Standard constructor.
-     * <p>
-     * Standard constructor that expects an error msg and a warning msg.
-     * Pass null if not present.
-     *
-     * @param err  error message
-     * @param warn warning message
-     * @see Message
-     */
-    public Result(Message err, Message warn) {
-        if (err == null && warn == null) {
-            allocate();
-        } else if (err == null) {
-            allocate(new None(), warn);
-        } else if (warn == null) {
-            allocate(err, new None());
-        } else {
-            allocate(err, warn);
-        }
-    }
 
     //--------------------------------------------------
     // Error and warning functions
