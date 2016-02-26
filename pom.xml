@@ -149,7 +149,7 @@
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>./ javacpp.jar ${project.artifactId}-linux-arm.jar
+                                    <Class-Path>. javacpp.jar ${project.artifactId}-linux-arm.jar
                                         ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar
                                         ${project.artifactId}-windows-x86.jar ${project.artifactId}-windows-x86_64.jar
                                         ${project.artifactId}-macosx-x86_64.jar
