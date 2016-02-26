@@ -2,6 +2,7 @@ package org.g_node.nix.util;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.Pointer;
 import org.bytedeco.javacpp.annotation.*;
 import org.g_node.nix.base.Entity;
 import org.g_node.nix.base.NamedEntity;
@@ -176,8 +177,8 @@ public class Util {
      */
     public static native double getSIScaling(@StdString String originUnit, @StdString String destinationUnit);
 
-    public static native void splitUnit(@StdString String fullUnit, @ByRef @StdString BytePointer prefix,
-                                        @ByRef @StdString BytePointer unit, @ByRef @StdString BytePointer power);
+    public static native void splitUnit(@StdString String fullUnit, @StdString BytePointer prefix,
+                                        @StdString BytePointer unit, @StdString BytePointer power);
 
     /**
      * Splits an SI unit into prefix, unit and the power components.
@@ -186,12 +187,17 @@ public class Util {
      * @return array with prefix, unit, power
      */
     public static String[] splitUnit(String fullUnit) {
-        BytePointer bp1 = new BytePointer(1);
-        BytePointer bp2 = new BytePointer(1);
-        BytePointer bp3 = new BytePointer(1);
+        BytePointer bp1 = new BytePointer((Pointer) null);
+        BytePointer bp2 = new BytePointer((Pointer) null);
+        BytePointer bp3 = new BytePointer((Pointer) null);
+
         splitUnit(fullUnit, bp1, bp2, bp3);
 
-        return new String[]{bp1.getString(), bp2.getString(), bp3.getString()};
+        String out1 = bp1.isNull() ? "" : bp1.getString();
+        String out2 = bp2.isNull() ? "" : bp2.getString();
+        String out3 = bp3.isNull() ? "" : bp3.getString();
+
+        return new String[]{out1, out2, out3};
     }
 
     private static native void splitCompoundUnit(@StdString String compoundUnit, @ByRef VectorUtils.StringVector atomicUnits);
