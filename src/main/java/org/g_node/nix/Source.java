@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 @Properties(value = {
         @Platform(include = {"<nix/Source.hpp>"}),
         @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "macosx", link = BuildLibs.NIX, preload = BuildLibs.HDF5),
         @Platform(value = "windows",
                 link = BuildLibs.NIX,
                 preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
