@@ -1,4 +1,5 @@
 sudo: required
+dist: trusty
 
 language: java
 
@@ -8,25 +9,10 @@ jdk:
 compiler:
   - gcc
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - kalakris-cmake
-      - boost-latest
-    packages:
-      - libcppunit-dev
-      - libboost1.55-all-dev
-      - libhdf5-serial-dev
-      - cmake
-      - g++-4.8
-
 install:
-  # set compiler
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 100
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 100
-  - sudo update-alternatives --config gcc
-  - sudo update-alternatives --config g++
+  # install dependencies
+  - sudo apt-get update -qq
+  - sudo apt-get install -q cmake gcc-4.8 g++-4.8 libstdc++-4.8-dev libcppunit-dev libboost-all-dev libhdf5-serial-dev libhdf5-dev libhdf5-7 -y
   - g++ --version
   # build nix library
   - mkdir nix-build
