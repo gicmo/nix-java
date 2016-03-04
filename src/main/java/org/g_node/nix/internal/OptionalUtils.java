@@ -10,9 +10,7 @@ import org.bytedeco.javacpp.annotation.*;
  */
 
 @Properties(value = {
-        @Platform(include = {"<boost/optional.hpp>"}),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+        @Platform(include = {"<boost/optional.hpp>"})})
 public class OptionalUtils {
     static {
         Loader.load();

@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacpp</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -96,7 +96,7 @@
             <plugin>
                 <groupId>org.bytedeco</groupId>
                 <artifactId>javacpp</artifactId>
-                <version>1.0</version>
+                <version>1.1</version>
                 <configuration>
                     <properties>${platform.properties}</properties>
                     <classPath>${project.build.outputDirectory}</classPath>
@@ -149,10 +149,7 @@
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>./ javacpp.jar ${project.artifactId}-linux-arm.jar
-                                        ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar
-                                        ${project.artifactId}-windows-x86.jar ${project.artifactId}-windows-x86_64.jar
-                                    </Class-Path>
+                                    <Class-Path>. javacpp.jar ${project.artifactId}.jar</Class-Path>
                                     <Name>org/g_node/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
@@ -350,6 +347,12 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>${project.artifactId}</artifactId>
                     <version>${project.version}</version>
+                    <classifier>macosx-x86_64</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
                     <classifier>linux-x86</classifier>
                 </dependency>
                 <dependency>
@@ -373,6 +376,15 @@
             </dependencies>
         </profile>
 
+        <profile>
+            <id>osx</id>
+            <activation>
+                <os><name>mac os x</name></os>
+            </activation>
+            <properties>
+                <os.name>macosx</os.name>
+            </properties>
+        </profile>
         <profile>
             <id>linux</id>
             <activation>

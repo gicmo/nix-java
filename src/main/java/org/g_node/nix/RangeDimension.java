@@ -27,6 +27,7 @@ import org.g_node.nix.internal.OptionalUtils;
 @Properties(value = {
         @Platform(include = {"<nix/Dimensions.hpp>"}),
         @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
+        @Platform(value = "macosx", link = BuildLibs.NIX, preload = BuildLibs.HDF5),
         @Platform(value = "windows",
                 link = BuildLibs.NIX,
                 preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
