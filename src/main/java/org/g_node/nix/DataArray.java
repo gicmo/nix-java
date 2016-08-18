@@ -675,6 +675,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Create a new SetDimension at a specified dimension index.
+     * * @deprecated  As of release 1.2, replaced by {@link #appendSetDimension()}
      * <p>
      * This adds a new dimension descriptor of the type {@link SetDimension} that describes the dimension
      * of the data at the specified index.
@@ -683,12 +684,13 @@ public class DataArray extends EntityWithSources {
      * @return The created dimension descriptor.
      * @see SetDimension
      */
-    public native
+    @Deprecated public native
     @ByVal
     SetDimension createSetDimension(@Cast("size_t") long id);
 
     /**
      * Create a new RangeDimension at a specified dimension index.
+     * @deprecated  As of release 1.2, replaced by {@link #appendRangeDimension(double[])}
      * <p>
      * This adds a new dimension descriptor of the type {@link RangeDimension} that describes the dimension
      * of the data at the specified index.
@@ -698,7 +700,7 @@ public class DataArray extends EntityWithSources {
      * @return The created dimension descriptor.
      * @see RangeDimension
      */
-    public native
+    @Deprecated public native
     @ByVal
     RangeDimension createRangeDimension(@Cast("size_t") long id, @StdVector double[] ticks);
 
@@ -714,6 +716,7 @@ public class DataArray extends EntityWithSources {
 
     /**
      * Create a new SampledDimension at a specified dimension index.
+     * @deprecated  As of release 1.2, replaced by {@link #appendSampledDimension(double)}}
      * <p>
      * This adds a new dimension descriptor of the type {@link SampledDimension} that describes the dimension
      * of the data at the specified index.
@@ -723,7 +726,7 @@ public class DataArray extends EntityWithSources {
      * @return The created dimension descriptor.
      * @see SampledDimension
      */
-    public native
+    @Deprecated public native
     @ByVal
     SampledDimension createSampledDimension(@Cast("size_t") long id, double samplingInterval);
 
