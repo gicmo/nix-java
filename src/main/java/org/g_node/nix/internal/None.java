@@ -2,20 +2,16 @@ package org.g_node.nix.internal;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.Pointer;
-import org.bytedeco.javacpp.annotation.Name;
-import org.bytedeco.javacpp.annotation.Namespace;
-import org.bytedeco.javacpp.annotation.Platform;
-import org.bytedeco.javacpp.annotation.Properties;
+import org.bytedeco.javacpp.annotation.*;
 
 /**
  * <h1>None</h1>
  * Low level wrapper to NIX None.hpp .
  */
 
-@Properties(value = {
-        @Platform(include = {"<nix/None.hpp>"}),
-        @Platform(value = "linux"),
-        @Platform(value = "windows")})
+
+
+@Platform(include = {"<nix/None.hpp>", "nonehelper.hpp"})
 @Namespace("nix")
 @Name("none_t")
 public class None extends Pointer {
@@ -24,12 +20,11 @@ public class None extends Pointer {
         Loader.load();
     }
 
-    /**
-     * Constructor
-     */
+
     public None() {
-        allocate();
+        super(get_none_pointer());
     }
 
-    private native void allocate();
+    @Namespace("::nix_java")
+    private static native @Cast("void*") Pointer get_none_pointer();
 }
