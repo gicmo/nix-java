@@ -207,32 +207,22 @@ public class TestDataArray {
         } catch (RuntimeException re) {
         }
 
-        try {
-            array2.createRangeDimension(1, new double[]{});
-            fail();
-        } catch (RuntimeException re) {
-        }
-
-        array2.createSampledDimension(1, samplingInterval);
-        array2.createSetDimension(2);
-        array2.createRangeDimension(3, ticks);
         array2.appendSampledDimension(samplingInterval);
         array2.appendSetDimension();
-        array2.createRangeDimension(4, ticks);
+        array2.appendRangeDimension(ticks);
+        array2.appendSampledDimension(samplingInterval);
+        array2.appendSetDimension();
+        array2.appendRangeDimension(ticks);
 
         // have some explicit dimension types
         RangeDimension dim_range = array1.appendRangeDimension(ticks);
         SampledDimension dim_sampled = array1.appendSampledDimension(samplingInterval);
         SetDimension dim_set = array1.appendSetDimension();
 
-        assertTrue(array2.getDimensionCount() == 5);
+        assertTrue(array2.getDimensionCount() == 6);
 
         // since deleteDimension renumbers indices to be continuous we test that too
-        array2.deleteDimension(5);
-        array2.deleteDimension(4);
-        array2.deleteDimension(1);
-        array2.deleteDimension(1);
-        array2.deleteDimension(1);
+        array2.deleteDimensions();
 
         assertTrue(array2.getDimensionCount() == 0);
     }
