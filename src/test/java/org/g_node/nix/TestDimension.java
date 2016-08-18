@@ -89,7 +89,7 @@ public class TestDimension {
     public void testIndex() {
         SetDimension sd = data_array.appendSetDimension();
         assertTrue(data_array.getDimensionCount() == 1 && sd.getIndex() == 1);
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
         assertEquals(data_array.getDimensionCount(), 0);
     }
 
@@ -115,7 +115,7 @@ public class TestDimension {
 
         assertNull(sd.getLabel());
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -148,7 +148,7 @@ public class TestDimension {
         }
 
         assertNull(sd.getUnit());
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -181,7 +181,7 @@ public class TestDimension {
 
         assertTrue(sd.getSamplingInterval() == samplingInterval);
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -208,7 +208,7 @@ public class TestDimension {
 
         assertTrue(sd.getOffset() == 0.0);
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -251,7 +251,7 @@ public class TestDimension {
         assertTrue(sd.getIndexOf(4.28) == 1);
         assertTrue(sd.getIndexOf(7.28) == 2);
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -273,7 +273,7 @@ public class TestDimension {
                         sd.getPositionAt(200)
         );
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -297,7 +297,7 @@ public class TestDimension {
         assertTrue(109 * samplingInterval + offset ==
                 axis[axis.length - 1]);
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -328,7 +328,7 @@ public class TestDimension {
         retrieved_labels = sd.getLabels();
         assertEquals(0, retrieved_labels.size());
 
-        data_array.deleteDimension(sd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -350,7 +350,7 @@ public class TestDimension {
         rd.setLabel(null);
         assertNull(rd.getLabel());
 
-        data_array.deleteDimension(rd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -387,7 +387,7 @@ public class TestDimension {
 
         assertNull(rd.getUnit());
 
-        data_array.deleteDimension(rd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -423,7 +423,7 @@ public class TestDimension {
             assertTrue(new_ticks[i] == retrieved_ticks[i]);
         }
 
-        data_array.deleteDimension(rd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -439,7 +439,7 @@ public class TestDimension {
         assertTrue(rd.getIndexOf(257.28) == 4);
         assertTrue(rd.getIndexOf(-257.28) == 0);
 
-        data_array.deleteDimension(rd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -466,7 +466,7 @@ public class TestDimension {
         } catch (RuntimeException re) {
         }
 
-        data_array.deleteDimension(rd.getIndex());
+        data_array.deleteDimensions();
     }
 
     @Test
@@ -497,6 +497,6 @@ public class TestDimension {
         } catch (RuntimeException re) {
         }
 
-        data_array.deleteDimension(rd.getIndex());
+        data_array.deleteDimensions();
     }
 }

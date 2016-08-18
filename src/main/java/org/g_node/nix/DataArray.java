@@ -728,14 +728,13 @@ public class DataArray extends EntityWithSources {
     SampledDimension createSampledDimension(@Cast("size_t") long id, double samplingInterval);
 
     /**
-     * Remove a dimension descriptor at a specified index.
+     * Remove all dimension descriptors.
      *
-     * @param id The index of the dimension. Must be a value > 0 and < `getDimensionCount + 1`.
      * @see Dimension
      */
     public native
     @Cast("bool")
-    boolean deleteDimension(@Cast("size_t") long id);
+    boolean deleteDimensions();
 
     //--------------------------------------------------
     // Methods concerning data access.

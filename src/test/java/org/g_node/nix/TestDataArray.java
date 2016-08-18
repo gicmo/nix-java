@@ -228,11 +228,7 @@ public class TestDataArray {
         assertTrue(array2.getDimensionCount() == 5);
 
         // since deleteDimension renumbers indices to be continuous we test that too
-        array2.deleteDimension(5);
-        array2.deleteDimension(4);
-        array2.deleteDimension(1);
-        array2.deleteDimension(1);
-        array2.deleteDimension(1);
+        array2.deleteDimensions();
 
         assertTrue(array2.getDimensionCount() == 0);
     }
