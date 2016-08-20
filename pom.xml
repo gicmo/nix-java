@@ -362,10 +362,29 @@
             </properties>
         </profile>
 
+        <profile>
+            <id>dependency-default</id>
+            <activation>
+                <property>
+                    <name>!platform.dependency</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
+                    <classifier>${platform}</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
             <id>platform-dependency</id>
             <activation>
                 <property>
                     <name>platform.dependency</name>
+                    <value>true</value>
                 </property>
             </activation>
             <dependencies>
@@ -383,6 +402,7 @@
             <activation>
                 <property>
                     <name>platform.dependencies</name>
+                    <value>true</value>
                 </property>
             </activation>
             <dependencies>
