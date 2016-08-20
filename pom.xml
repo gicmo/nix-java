@@ -52,7 +52,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <platform>${os.name}-${os.arch}</platform>
         <platform.properties>${platform}</platform.properties>
         <nixIncludePath>/usr/local/include/</nixIncludePath>
         <boostIncludePath>/usr/include/boost/</boostIncludePath>
@@ -323,6 +322,17 @@
         </profile>
 
         <profile>
+            <id>platform-default</id>
+            <activation>
+                <property>
+                    <name>!platform</name>
+                </property>
+            </activation>
+            <properties>
+                <platform>${os.name}-${os.arch}</platform>
+            </properties>
+        </profile>
+
             <id>platform-dependency</id>
             <activation>
                 <property>
