@@ -57,7 +57,7 @@
         <nixIncludePath>/usr/local/include/</nixIncludePath>
         <boostIncludePath>/usr/include/boost/</boostIncludePath>
         <nixLinkPath>/usr/local/lib/</nixLinkPath>
-        <hdf5LinkPath>/usr/lib/x86_64-linux-gnu/</hdf5LinkPath>
+        <hdf5LinkPath>/usr/lib/lib/</hdf5LinkPath>
     </properties>
 
     <dependencies>
