@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.g_node</groupId>
-    <artifactId>nix-${platform}</artifactId>
-    <version>1.1.0</version>
+    <artifactId>nix-java</artifactId>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
     <name>Java Bindings for NIX</name>
@@ -52,12 +52,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <platform>${os.name}-${os.arch}</platform>
         <platform.properties>${platform}</platform.properties>
         <nixIncludePath>/usr/local/include/</nixIncludePath>
         <boostIncludePath>/usr/include/boost/</boostIncludePath>
         <nixLinkPath>/usr/local/lib/</nixLinkPath>
-        <hdf5LinkPath>/usr/lib/x86_64-linux-gnu/</hdf5LinkPath>
+        <hdf5LinkPath>/usr/lib/lib/</hdf5LinkPath>
     </properties>
 
     <dependencies>
@@ -137,6 +136,8 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <executions>
+
+                    <!-- The platform independent jar (nix-java.jar) -->
                     <execution>
                         <id>default-jar</id>
                         <phase>package</phase>
@@ -149,12 +150,14 @@
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
-                                    <Class-Path>. javacpp.jar ${project.artifactId}.jar</Class-Path>
+                                    <Class-Path>. javacpp.jar ${project.artifactId}.jar ${project.artifactId}-linux-arm.jar ${project.artifactId}-linux-x86.jar ${project.artifactId}-linux-x86_64.jar ${project.artifactId}-macosx-x86.jar ${project.artifactId}-macosx-x86_64.jar ${project.artifactId}-windows-x86.jar ${project.artifactId}-windows-x86_64.jar</Class-Path>
                                     <Name>org/g_node/nix/</Name>
                                     <Implementation-Title>${project.name}</Implementation-Title>
                                     <Implementation-Vendor>G-Node</Implementation-Vendor>
                                     <Implementation-Version>${project.version}</Implementation-Version>
                                     <Specification-Title>${project.name}</Specification-Title>
+                                    <Specification-Vendor>G-Node</Specification-Vendor>
+                                    <Specification-Version>${project.version}</Specification-Version>
                                 </manifestEntries>
                             </archive>
                             <includes>
@@ -163,14 +166,39 @@
                                 <include>org/g_node/nix/base/*</include>
                                 <include>org/g_node/nix/valid/*</include>
                                 <include>org/g_node/nix/util/*</include>
-                                <include>org/g_node/nix/${platform}/</include>
-                                <include>org/g_node/nix/internal/${platform}/</include>
-                                <include>org/g_node/nix/base/${platform}/</include>
-                                <include>org/g_node/nix/valid/${platform}/</include>
-                                <include>org/g_node/nix/util/${platform}/</include>
                             </includes>
+                            <excludes>
+                                <exclude>org/g_node/nix/**/*.hpp</exclude>
+                                <exclude>org/g_node/nix/**/linux-*/</exclude>
+                                <exclude>org/g_node/nix/**/macosx-*/</exclude>
+                                <exclude>org/g_node/nix/**/windows-*/</exclude>
+                                <exclude>org/g_node/nix/**/${platform}/</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
+
+                    <!-- The platform *specific* jar (e.g. nix-java-1.2.1-macosx-x86_64.jar) -->
+                    <execution>
+                        <id>${platform}</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${platform}</classifier>
+                            <skipIfEmpty>true</skipIfEmpty>
+                            <includes>
+                                <exclude>org/g_node/nix/**/*.hpp</exclude>
+                                <include>org/g_node/nix/**/${platform}/</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/*.exp</exclude>
+                                <exclude>**/*.lib</exclude>
+                                <exclude>**/*.obj</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
@@ -323,10 +351,40 @@
         </profile>
 
         <profile>
+            <id>platform-default</id>
+            <activation>
+                <property>
+                    <name>!platform</name>
+                </property>
+            </activation>
+            <properties>
+                <platform>${os.name}-${os.arch}</platform>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>dependency-default</id>
+            <activation>
+                <property>
+                    <name>!platform.dependency</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}</artifactId>
+                    <version>${project.version}</version>
+                    <classifier>${platform}</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
             <id>platform-dependency</id>
             <activation>
                 <property>
                     <name>platform.dependency</name>
+                    <value>true</value>
                 </property>
             </activation>
             <dependencies>
@@ -344,6 +402,7 @@
             <activation>
                 <property>
                     <name>platform.dependencies</name>
+                    <value>true</value>
                 </property>
             </activation>
             <dependencies>

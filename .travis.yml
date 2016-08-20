@@ -27,5 +27,5 @@ install:
   - cd ../../..
 
 script:
-  - mvn clean package
+  - mvn -Dplatform.dependency=false clean package
 
