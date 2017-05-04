@@ -65,8 +65,9 @@ public class TestFile {
     public void testVersion() {
         int[] version = file_open.getVersion();
         assertEquals(version[0], 1);
-        assertEquals(version[1], 0);
-        assertEquals(version[2], 0);
+        assertEquals(version[1], 1);
+        //changes of the last version component ([2])
+        //are non-breaking changes, so we ignore these
     }
 
     @Test
