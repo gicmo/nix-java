@@ -23,15 +23,20 @@ Build instructions
 Build project and generate jars:
 
 ```
-$ mvn clean package
+$ mvn -Dplatform.dependency=false clean package
 ```
 
 To specify include and link path
 ```
-$ mvn clean package -DnixIncludePath=<path> -DnixLinkPath=<path>
+$ mvn clean package -Dplatform.dependency=false -DnixIncludePath=<path> -DnixLinkPath=<path>
 ```
 
 Sample usage
 ```
-$ mvn clean package -DnixIncludePath=/usr/local/include/ -DnixLinkPath=/usr/local/lib/
+$ mvn clean package -Dplatform.dependency=false -DnixIncludePath=/usr/local/include/ -DnixLinkPath=/usr/local/lib/
 ```
+
+If you want to use them from another project, then the `install` maven
+target can be used to install them locally. See the example project
+[here](https://github.com/G-Node/nix-java-example) for how to use the
+bindings.
