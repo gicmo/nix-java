@@ -6,22 +6,21 @@ Java bindings for the NIX library
 ================================
 
 This project is an extension for the [NIX](https://github.com/G-Node/nix) library and provides Java bindings for nix.
-The project is part of the 2015 Google Summer of Code and is performed by:
 
-* Sujith V (Student)
-* Adrian Stoewer (Mentor)
 
 Development Status
 ------------------
 
 This project is still work in progress and should not be seen as a final product.
 
-Getting Started (Linux)
------------------------
+Getting Started
+---------------
 
 Build instructions
 
-Build project and generate jars :
+[NIX](https://github.com/G-Node/nix) needs to be installed.
+
+Build project and generate jars:
 
 ```
 $ mvn clean package
