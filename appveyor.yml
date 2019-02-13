@@ -8,6 +8,7 @@ environment:
   - PLATFORM: x64
     CONFIGURATION: Release
     JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+    RDP: "no"
 
   # 32 bit
   - PLATFORM: x86
@@ -17,8 +18,8 @@ environment:
 install:
 
   # Install Maven
-  - set PATH=%PATH%;C:\bin\apache-maven-3.6\bin
-  - set MVN_VERSION=3.6
+  - set MVN_VERSION=3.6.0
+  - set PATH=%PATH%;C:\bin\apache-maven-%MVN_VERSION%\bin
   - if not exist "C:\bin\apache-maven-%MVN_VERSION%\bin\*.*" (echo Maven %MVN_VERSION% not installed, so install it & cinst maven -Version %MVN_VERSION%) else (echo  Maven %MVN_VERSION% already installed)
 
 
@@ -58,5 +59,12 @@ on_failure:
 test_script: []
 
 cache:
-  - C:\bin\apache-maven-3.6
+  - C:\bin\apache-maven-3.6.0
   - C:\Users\appveyor\.m2
+
+
+on_finish:
+  - ps: |
+      if ($env:RDP -eq "yes") {
+          $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+      }
