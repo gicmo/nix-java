@@ -16,6 +16,12 @@ environment:
 
 install:
 
+  # Install Maven
+  - set PATH=%PATH%;C:\bin\apache-maven-3.6\bin
+  - set MVN_VERSION=3.6
+  - if not exist "C:\bin\apache-maven-%MVN_VERSION%\bin\*.*" (echo Maven %MVN_VERSION% not installed, so install it & cinst maven -Version %MVN_VERSION%) else (echo  Maven %MVN_VERSION% already installed)
+
+
   # Set VC variables for the platform
   - if %PLATFORM% == x64 call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\vcvarsx86_amd64.bat"
   - if %PLATFORM% == x86 call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\vcvars32.bat"
@@ -38,11 +44,6 @@ install:
   - cmake --build . --config %CONFIGURATION%
   - cd ..
   - cd ..
-
-  # Install Maven
-  - set PATH=%PATH%;C:\bin\apache-maven-3.6\bin
-  - set MVN_VERSION=3.6
-  - if not exist "C:\bin\apache-maven-%MVN_VERSION%\bin\*.*" (echo Maven %MVN_VERSION% not installed, so install it & cinst maven -Version %MVN_VERSION%) else (echo  Maven %MVN_VERSION% already installed)
 
 build_script:
 
