@@ -29,7 +29,7 @@ install:
   - c:\deps\nixenv.bat
 
   # Build NIX
-  - git clone https://github.com/G-Node/nix.git
+  - git clone https://github.com/G-Node/nix.git --branch=1.3
   - cd nix
   - mkdir build
   - cd build
