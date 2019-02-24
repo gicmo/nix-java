@@ -68,7 +68,7 @@
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacpp</artifactId>
-            <version>1.1</version>
+            <version>1.4.4</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -100,7 +100,7 @@
             <plugin>
                 <groupId>org.bytedeco</groupId>
                 <artifactId>javacpp</artifactId>
-                <version>1.1</version>
+                <version>1.4.4</version>
                 <configuration>
                     <properties>${platform.properties}</properties>
                     <classPath>${project.build.outputDirectory}</classPath>
