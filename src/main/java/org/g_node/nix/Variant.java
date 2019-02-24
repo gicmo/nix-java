@@ -8,12 +8,12 @@ import org.bytedeco.javacpp.annotation.*;
 import org.g_node.nix.internal.BuildLibs;
 
 /**
- * <h1>Value</h1>
- * Class that corresponds to the odML Value.
+ * <h1>Variant</h1>
+ * Class that is a sum type int, double, string.
  */
 
 @Properties(value = {
-        @Platform(include = {"<nix/Value.hpp>"}),
+        @Platform(include = {"<nix/Variant.hpp>"}),
         @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
         @Platform(value = "macosx", link = BuildLibs.NIX, preload = BuildLibs.HDF5),
         @Platform(value = "windows",
@@ -21,7 +21,7 @@ import org.g_node.nix.internal.BuildLibs;
                 preload = {BuildLibs.HDF5, BuildLibs.MSVCP120, BuildLibs.MSVCR120, BuildLibs.SZIP, BuildLibs.ZLIB})})
 @Namespace("nix")
 @NoOffset
-public class Value extends Pointer {
+public class Variant extends Pointer {
 
     static {
         Loader.load();
@@ -34,7 +34,7 @@ public class Value extends Pointer {
     /**
      * Constructor.
      */
-    public Value() {
+    public Variant() {
         allocate();
     }
 
@@ -45,7 +45,7 @@ public class Value extends Pointer {
      *
      * @param value boolean value to set.
      */
-    public Value(boolean value) {
+    public Variant(boolean value) {
         allocate();
         set(value);
     }
@@ -55,7 +55,7 @@ public class Value extends Pointer {
      *
      * @param value integer value to set.
      */
-    public Value(int value) {
+    public Variant(int value) {
         allocate();
         set(value);
     }
@@ -65,7 +65,7 @@ public class Value extends Pointer {
      *
      * @param value long integer value to set.
      */
-    public Value(long value) {
+    public Variant(long value) {
         allocate();
         set(value);
     }
@@ -75,7 +75,7 @@ public class Value extends Pointer {
      *
      * @param value double value to set.
      */
-    public Value(double value) {
+    public Variant(double value) {
         allocate();
         set(value);
     }
@@ -85,7 +85,7 @@ public class Value extends Pointer {
      *
      * @param value string value to set.
      */
-    public Value(String value) {
+    public Variant(String value) {
         allocate();
         set(value);
     }
@@ -166,7 +166,7 @@ public class Value extends Pointer {
         return bp.get();
     }
 
-    private native void get(@ByRef int[] value);
+    private native void get(@Cast("int32_t*") @ByRef int[] value);
 
     /**
      * Getter for integer value.
@@ -179,7 +179,7 @@ public class Value extends Pointer {
         return val[0];
     }
 
-    private native void get(@ByRef long[] value);
+    private native void get(@Cast("int64_t*") @ByRef long[] value);
 
     /**
      * Getter for long integer value.
@@ -239,7 +239,7 @@ public class Value extends Pointer {
      *
      * @param other value object.
      */
-    public native void swap(@ByRef Value other);
+    public native void swap(@ByRef Variant other);
 
     /**
      * Check if value supports a data type.

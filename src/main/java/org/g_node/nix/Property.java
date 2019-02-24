@@ -18,8 +18,7 @@ import java.util.List;
  * the type of the stored Value entities (e.g. double or integer).
  * <p>
  * The {@link Property#setUnit(String)} is the unit of the stored values. Similar
- * to the {@link Section} entity, mapping information can be provided
- * using the {@link Property#setMapping(String)} field.
+ * to the {@link Section} entity.
  *
  * @see DataType
  * @see Section
@@ -179,45 +178,6 @@ public class Property extends Entity implements Comparable<Property> {
         return null;
     }
 
-
-    private native
-    @ByVal
-    OptionalUtils.OptionalString mapping();
-
-    /**
-     * Retrieve Getter for the mapping information stored in this Property.
-     *
-     * @return The mapping for the Property. Returns <tt>null</tt> if not present.
-     */
-    public String getMapping() {
-        OptionalUtils.OptionalString mapping = mapping();
-        if (mapping.isPresent()) {
-            return mapping.getString();
-        }
-        return null;
-    }
-
-    private native void mapping(@Const @ByVal None t);
-
-    private native void mapping(@StdString String mapping);
-
-    /**
-     * Set the mapping information for this Property.
-     * <p>
-     * The mapping defines how this Property should be treated in a mapping procedure. The mapping
-     * is provided in form of an url pointing to the definition of a section into which this
-     * property should be mapped.
-     *
-     * @param mapping The mapping information. If <tt>null</tt> is passed the unit is removed.
-     */
-    public void setMapping(String mapping) {
-        if (mapping != null) {
-            mapping(mapping);
-        } else {
-            mapping(new None());
-        }
-    }
-
     /**
      * Returns the data type of the stored Values.
      *
@@ -271,7 +231,7 @@ public class Property extends Entity implements Comparable<Property> {
     /**
      * Deletes all values from the property.
      *
-     * @see Value
+     * @see Variant
      */
     public native void deleteValues();
 
@@ -279,35 +239,35 @@ public class Property extends Entity implements Comparable<Property> {
      * Get the number of values of the property.
      *
      * @return The number of values.
-     * @see Value
+     * @see Variant
      */
     public native
     @Name("valueCount")
     long getValueCount();
 
-    private native void values(@Const @ByRef VectorUtils.ValueVector values);
+    private native void values(@Const @ByRef VectorUtils.VariantVector values);
 
     /**
      * Set the values of the property.
      *
      * @param values The values to set.
-     * @see Value
+     * @see Variant
      */
-    public void setValues(List<Value> values) {
-        values(new VectorUtils.ValueVector(values));
+    public void setValues(List<Variant> values) {
+        values(new VectorUtils.VariantVector(values));
     }
 
     private native
     @ByVal
-    VectorUtils.ValueVector values();
+    VectorUtils.VariantVector values();
 
     /**
      * Get all values of the property.
      *
      * @return The values of the property.
-     * @see Value
+     * @see Variant
      */
-    public List<Value> getValues() {
+    public List<Variant> getValues() {
         return values().getValues();
     }
 

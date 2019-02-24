@@ -5,7 +5,7 @@
 
     <groupId>org.g_node</groupId>
     <artifactId>nix-java</artifactId>
-    <version>1.3.2</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
 
     <name>Java Bindings for NIX</name>
@@ -40,8 +40,12 @@
     </distributionManagement>
 
     <developers>
-        <developer>
-            <name>Adrian Stoewer</name>
+      <developer>
+        <name>Christian J. Kellner</name>
+        <email>christian@kellner.me</email>
+      </developer>
+      <developer>
+        <name>Adrian Stoewer</name>
             <email>adrian.stoewer@rz.ifi.lmu.de</email>
         </developer>
         <developer>
@@ -53,10 +57,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <platform.properties>${platform}</platform.properties>
-        <nixIncludePath>/usr/local/include/</nixIncludePath>
+        <nixIncludePath>/usr/include/nixio-1.0</nixIncludePath>
         <boostIncludePath>/usr/include/boost/</boostIncludePath>
-        <nixLinkPath>/usr/local/lib/</nixLinkPath>
-        <hdf5LinkPath>/usr/lib/lib/</hdf5LinkPath>
+        <nixLinkPath>/usr/lib/</nixLinkPath>
+        <hdf5LinkPath>/usr/lib/</hdf5LinkPath>
+	<boostLinkPath>/usr/lib/</boostLinkPath>
     </properties>
 
     <dependencies>
@@ -103,7 +108,10 @@
                         <includePath>${nixIncludePath}</includePath>
                         <includePath>${boostIncludePath}</includePath>
                     </includePaths>
-                    <linkPath>${nixLinkPath}</linkPath>
+		    <linkPaths>
+                      <linkPath>${nixLinkPath}</linkPath>
+		      <linkPath>${boostLinkPath}</linkPath>
+		    </linkPaths>
                     <compilerOptions>
                         <compilerOption>-std=c++11</compilerOption>
                     </compilerOptions>

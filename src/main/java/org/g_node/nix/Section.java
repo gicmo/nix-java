@@ -274,43 +274,6 @@ public class Section extends NamedEntity {
         link(new None());
     }
 
-    private native void mapping(@Const @ByVal None t);
-
-    private native void mapping(@StdString String mapping);
-
-    /**
-     * Sets the mapping information for this section.
-     * <p>
-     * The mapping is provided as a path or URL to another section.
-     *
-     * @param mapping The mapping information to this section.  If <tt>null</tt> is passed mapping is removed.
-     */
-    public void setMapping(String mapping) {
-        if (mapping != null) {
-            mapping(mapping);
-        } else {
-            mapping(new None());
-        }
-    }
-
-    private native
-    @ByVal
-    OptionalUtils.OptionalString mapping();
-
-    /**
-     * Gets the mapping information.
-     *
-     * @return The mapping information. Returns <tt>null</tt> if not present.
-     */
-    public String getMapping() {
-        OptionalUtils.OptionalString mapping = mapping();
-        if (mapping.isPresent()) {
-            return mapping.getString();
-        }
-        return null;
-    }
-
-
     //--------------------------------------------------
     // Methods for parent access
     //--------------------------------------------------
@@ -754,7 +717,7 @@ public class Section extends NamedEntity {
     private native
     @Name("createProperty")
     @ByVal
-    Property makeProperty(@StdString String name, @Const @ByRef Value value);
+    Property makeProperty(@StdString String name, @Const @ByRef Variant value);
 
     /**
      * Add a new Property to the Section.
@@ -764,7 +727,7 @@ public class Section extends NamedEntity {
      * @return The newly created property.
      * @see Property
      */
-    public Property createProperty(String name, Value value) {
+    public Property createProperty(String name, Variant value) {
         Property property = makeProperty(name, value);
         if (property.isNone()) {
             property = null;
@@ -775,7 +738,7 @@ public class Section extends NamedEntity {
     private native
     @Name("createProperty")
     @ByVal
-    Property makeProperty(@StdString String name, @Const @ByRef VectorUtils.ValueVector values);
+    Property makeProperty(@StdString String name, @Const @ByRef VectorUtils.VariantVector values);
 
     /**
      * Add a new Property with values to the Section.
@@ -785,8 +748,8 @@ public class Section extends NamedEntity {
      * @return The newly created property.
      * @see Property
      */
-    public Property createProperty(String name, List<Value> values) {
-        Property property = makeProperty(name, new VectorUtils.ValueVector(values));
+    public Property createProperty(String name, List<Variant> values) {
+        Property property = makeProperty(name, new VectorUtils.VariantVector(values));
         if (property.isNone()) {
             property = null;
         }

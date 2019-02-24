@@ -25,7 +25,7 @@ public class TestGroup {
         block = file.createBlock("block_one", "dataset");
         group = block.createGroup("group_one", "trial");
         section = file.createSection("session01", "RecordingSession");
-        section.createProperty("experimenter", new Value("me"));
+        section.createProperty("experimenter", new Variant("me"));
     }
 
     @After

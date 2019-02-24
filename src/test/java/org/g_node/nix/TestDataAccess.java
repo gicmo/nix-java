@@ -134,9 +134,9 @@ public class TestDataAccess {
         assertTrue(DataAccess.positionToIndex(0.001, scaled_unit, rangeDim) == 0);
         assertTrue(DataAccess.positionToIndex(0.008, scaled_unit, rangeDim) == 4);
         assertTrue(DataAccess.positionToIndex(3.4, unit, rangeDim) == 2);
-        assertTrue(DataAccess.positionToIndex(3.6, unit, rangeDim) == 3);
-        assertTrue(DataAccess.positionToIndex(4.0, unit, rangeDim) == 3);
-        assertTrue(DataAccess.positionToIndex(0.0036, scaled_unit, rangeDim) == 3);
+        assertTrue(DataAccess.positionToIndex(3.6, unit, rangeDim) == 2);
+        assertTrue(DataAccess.positionToIndex(4.0, unit, rangeDim) == 2);
+        assertTrue(DataAccess.positionToIndex(0.0036, scaled_unit, rangeDim) == 2);
     }
 
     @Test
@@ -216,7 +216,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 2 && offsets_data[2] == 2);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 6 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 7 && counts_data[2] == 2);
 
         segment_tag.setUnits(new ArrayList<String>());
         DataAccess.getOffsetAndCount(segment_tag, data_array, offsets, counts);
@@ -225,7 +225,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 2 && offsets_data[2] == 2);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 6 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 7 && counts_data[2] == 2);
 
         try {
             DataAccess.getOffsetAndCount(multi_tag, data_array, -1, offsets, counts);
@@ -245,7 +245,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 3 && offsets_data[2] == 2);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 6 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 7 && counts_data[2] == 2);
 
         DataAccess.getOffsetAndCount(multi_tag, data_array, 1, offsets, counts);
         assertTrue(offsets.getSize() == 3);
@@ -253,7 +253,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 8 && offsets_data[2] == 1);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 3 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 4 && counts_data[2] == 2);
     }
 
     @Test
@@ -298,7 +298,7 @@ public class TestDataAccess {
         NDSize data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
         int[] data_size_arr = data_size.getData();
-        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
 
         try {
             DataAccess.retrieveData(multi_tag, 1, 0);
@@ -316,7 +316,7 @@ public class TestDataAccess {
         data_size = data_view.getDataExtent();
         data_size_arr = data_size.getData();
         assertTrue(data_size.getSize() == 3);
-        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
     }
 
     @Test
@@ -355,7 +355,7 @@ public class TestDataAccess {
         data3 = DataAccess.retrieveFeatureData(pos_tag, 2);
 
         assertTrue(data1.getDataExtent().getElementsProduct() == 1);
-        assertTrue(data2.getDataExtent().getElementsProduct() == 2);
+        assertTrue(data2.getDataExtent().getElementsProduct() == 3);
         assertTrue(data3.getDataExtent().getElementsProduct() == ramp_data.length);
 
         pos_tag.deleteFeature(f1.getId());

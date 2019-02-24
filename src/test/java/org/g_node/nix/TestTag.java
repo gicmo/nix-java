@@ -405,7 +405,7 @@ public class TestTag {
         data_size = retrieved_data.getDataExtent();
         assertEquals(data_size.getSize(), 3);
         data_size_arr = data_size.getData();
-        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
 
         block.deleteTag(position_tag);
         block.deleteTag(segment_tag);
