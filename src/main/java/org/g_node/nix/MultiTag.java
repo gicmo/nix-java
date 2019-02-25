@@ -732,7 +732,7 @@ public class MultiTag extends EntityWithSources {
      */
     public native
     @ByVal
-    DataView retrieveData(@Cast("size_t") long positionIndex, @Cast("size_t") long referenceIndex);
+    DataView taggedData(@Cast("size_t") long positionIndex, @Cast("size_t") long referenceIndex);
 
     //--------------------------------------------------
     // Methods concerning features.
