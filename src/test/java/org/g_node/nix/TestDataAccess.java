@@ -340,9 +340,9 @@ public class TestDataAccess {
         Feature f2 = pos_tag.createFeature(ramp_feat, LinkType.Tagged);
         Feature f3 = pos_tag.createFeature(ramp_feat, LinkType.Untagged);
 
-        DataView data1 = DataAccess.retrieveFeatureData(pos_tag, 0);
-        DataView data2 = DataAccess.retrieveFeatureData(pos_tag, 1);
-        DataView data3 = DataAccess.retrieveFeatureData(pos_tag, 2);
+        DataView data1 = DataAccess.featureData(pos_tag, 0);
+        DataView data2 = DataAccess.featureData(pos_tag, 1);
+        DataView data3 = DataAccess.featureData(pos_tag, 2);
 
         assertTrue(pos_tag.getFeatureCount() == 3);
         assertTrue(data1.getDataExtent().getElementsProduct() == 1);
@@ -350,9 +350,9 @@ public class TestDataAccess {
         assertTrue(data3.getDataExtent().getElementsProduct() == ramp_data.length);
 
         pos_tag.setExtent(new double[]{2.0});
-        data1 = DataAccess.retrieveFeatureData(pos_tag, 0);
-        data2 = DataAccess.retrieveFeatureData(pos_tag, 1);
-        data3 = DataAccess.retrieveFeatureData(pos_tag, 2);
+        data1 = DataAccess.featureData(pos_tag, 0);
+        data2 = DataAccess.featureData(pos_tag, 1);
+        data3 = DataAccess.featureData(pos_tag, 2);
 
         assertTrue(data1.getDataExtent().getElementsProduct() == 1);
         assertTrue(data2.getDataExtent().getElementsProduct() == 3);
@@ -412,7 +412,7 @@ public class TestDataAccess {
         // preparations done, actually test
         assertTrue(multi_tag.getFeatureCount() == 3);
         // indexed feature
-        DataView data_view = DataAccess.retrieveFeatureData(multi_tag, 0, 0);
+        DataView data_view = DataAccess.featureData(multi_tag, 0, 0);
         NDSize data_size = data_view.getDataExtent();
 
         assertTrue(data_size.getSize() == 2);
@@ -423,22 +423,22 @@ public class TestDataAccess {
         NDSize offset = new NDSize(data_view.getDataExtent().getSize(), 0);
 
         // tagged feature
-        data_view = DataAccess.retrieveFeatureData(multi_tag, 0, 1);
+        data_view = DataAccess.featureData(multi_tag, 0, 1);
         data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
 
-        data_view = DataAccess.retrieveFeatureData(multi_tag, 1, 1);
+        data_view = DataAccess.featureData(multi_tag, 1, 1);
         data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
 
         try {
-            DataAccess.retrieveFeatureData(multi_tag, 2, 1);
+            DataAccess.featureData(multi_tag, 2, 1);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveFeatureData(multi_tag, 2, 3);
+            DataAccess.featureData(multi_tag, 2, 3);
             fail();
         } catch (RuntimeException re) {
         }
