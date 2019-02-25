@@ -454,14 +454,14 @@ public class TestMultiTag {
         multi_tag.setExtents(extent_array);
         multi_tag.addReference(data_array);
 
-        DataView ret_data = multi_tag.retrieveData(0, 0);
+        DataView ret_data = multi_tag.taggedData(0, 0);
         NDSize data_size = ret_data.getDataExtent();
         assertEquals(data_size.getSize(), 3);
         int[] data_size_arr = data_size.getData();
         assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
 
         try {
-            multi_tag.retrieveData(1, 0);
+            multi_tag.taggedData(1, 0);
             fail();
         } catch (RuntimeException re) {
         }
