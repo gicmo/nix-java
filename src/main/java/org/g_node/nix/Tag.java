@@ -875,7 +875,7 @@ public class Tag extends EntityWithSources {
      */
     public native
     @ByVal
-    DataView retrieveFeatureData(@Cast("size_t") long featureIndex);
+    DataView featureData(@Cast("size_t") long featureIndex);
 
     //--------------------------------------------------
     // Overrides
