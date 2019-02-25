@@ -169,7 +169,7 @@ public class DataAccess {
      */
     public static native
     @ByVal
-    DataView retrieveFeatureData(@Const @ByRef Tag tag, @Cast("size_t") long featureIndex);
+    DataView featureData(@Const @ByRef Tag tag, @Cast("size_t") long featureIndex);
 
     /**
      * Retruns the feature data associated with a Tag. Feature Index defaulted to 0.
@@ -181,7 +181,7 @@ public class DataAccess {
      */
     public static native
     @ByVal
-    DataView retrieveFeatureData(@Const @ByRef Tag tag);
+    DataView featureData(@Const @ByRef Tag tag);
 
     /**
      * Returns the feature data accosiated with the given MuliTag's position.
@@ -195,7 +195,7 @@ public class DataAccess {
      */
     public static native
     @ByVal
-    DataView retrieveFeatureData(@Const @ByRef MultiTag tag, @Cast("size_t") long positionIndex, @Cast("size_t") long featureIndex);
+    DataView featureData(@Const @ByRef MultiTag tag, @Cast("size_t") long positionIndex, @Cast("size_t") long featureIndex);
 
     /**
      * Returns the feature data accosiated with the given MuliTag's position. Feature Index defaulted to 0.
@@ -208,5 +208,5 @@ public class DataAccess {
      */
     public static native
     @ByVal
-    DataView retrieveFeatureData(@Const @ByRef MultiTag tag, @Cast("size_t") long positionIndex);
+    DataView featureData(@Const @ByRef MultiTag tag, @Cast("size_t") long positionIndex);
 }
