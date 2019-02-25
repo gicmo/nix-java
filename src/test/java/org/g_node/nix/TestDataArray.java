@@ -1,16 +1,20 @@
 package org.g_node.nix;
 
-import net.jcip.annotations.NotThreadSafe;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Date;
+import java.util.UUID;
+
 import org.g_node.nix.valid.Result;
 import org.g_node.nix.valid.Validator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.UUID;
-
-import static org.junit.Assert.*;
+import net.jcip.annotations.NotThreadSafe;
 
 @NotThreadSafe
 public class TestDataArray {
@@ -228,12 +232,12 @@ public class TestDataArray {
 
     @Test
     public void testAliasRangeDimension() {
-        RangeDimension dim = array3.createAliasRangeDimension();
+        RangeDimension dim = array3.appendAliasRangeDimension();
         assertTrue(array3.getDimensionCount() == 1);
         assertTrue(dim.getDimensionType() == DimensionType.Range);
 
         try {
-            array3.createAliasRangeDimension();
+            array3.appendAliasRangeDimension();
             fail();
         } catch (RuntimeException re) {
         }
@@ -248,7 +252,7 @@ public class TestDataArray {
                 DataType.Bool, new NDSize(new int[]{20}));
 
         try {
-            bool_array.createAliasRangeDimension();
+            bool_array.appendAliasRangeDimension();
             fail();
         } catch (RuntimeException re) {
         }
@@ -280,7 +284,7 @@ public class TestDataArray {
         DataArray int_array = block.createDataArray("int array", "int_array",
                 DataType.Int64, new NDSize(new int[]{20}));
         try {
-            int_array.createAliasRangeDimension();
+            int_array.appendAliasRangeDimension();
         } catch (Exception e) {
             fail();
         }

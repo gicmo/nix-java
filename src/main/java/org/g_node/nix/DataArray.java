@@ -674,63 +674,6 @@ public class DataArray extends EntityWithSources {
     SampledDimension appendSampledDimension(double samplingInterval);
 
     /**
-     * Create a new SetDimension at a specified dimension index.
-     * * @deprecated  As of release 1.2, replaced by {@link #appendSetDimension()}
-     * <p>
-     * This adds a new dimension descriptor of the type {@link SetDimension} that describes the dimension
-     * of the data at the specified index.
-     *
-     * @param id The index of the dimension. Must be a value > 0 and <= `dimensionCount + 1`.
-     * @return The created dimension descriptor.
-     * @see SetDimension
-     */
-    @Deprecated public native
-    @ByVal
-    SetDimension createSetDimension(@Cast("size_t") long id);
-
-    /**
-     * Create a new RangeDimension at a specified dimension index.
-     * @deprecated  As of release 1.2, replaced by {@link #appendRangeDimension(double[])}
-     * <p>
-     * This adds a new dimension descriptor of the type {@link RangeDimension} that describes the dimension
-     * of the data at the specified index.
-     *
-     * @param id    The index of the dimension. Must be a value > 0 and <= `dimensionCount + 1`.
-     * @param ticks Array with {@link RangeDimension#setTicks(double[])}.
-     * @return The created dimension descriptor.
-     * @see RangeDimension
-     */
-    @Deprecated public native
-    @ByVal
-    RangeDimension createRangeDimension(@Cast("size_t") long id, @StdVector double[] ticks);
-
-    /**
-     * Create a new RangeDimension that uses the data stored in this DataArray as ticks.
-     *
-     * @return The created dimension descriptor.
-     * @see RangeDimension
-     */
-    public native
-    @ByVal
-    RangeDimension createAliasRangeDimension();
-
-    /**
-     * Create a new SampledDimension at a specified dimension index.
-     * @deprecated  As of release 1.2, replaced by {@link #appendSampledDimension(double)}}
-     * <p>
-     * This adds a new dimension descriptor of the type {@link SampledDimension} that describes the dimension
-     * of the data at the specified index.
-     *
-     * @param id               The index of the dimension. Must be a value > 0 and <= `dimensionCount + 1`.
-     * @param samplingInterval The sampling interval of the dimension.
-     * @return The created dimension descriptor.
-     * @see SampledDimension
-     */
-    @Deprecated public native
-    @ByVal
-    SampledDimension createSampledDimension(@Cast("size_t") long id, double samplingInterval);
-
-    /**
      * Remove all dimension descriptors.
      *
      * @see Dimension
