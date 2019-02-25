@@ -271,48 +271,48 @@ public class TestDataAccess {
     @Test
     public void testRetrieveData() {
         try {
-            DataAccess.retrieveData(multi_tag, 0, -1);
+            DataAccess.taggedData(multi_tag, 0, -1);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveData(multi_tag, 0, 1);
+            DataAccess.taggedData(multi_tag, 0, 1);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveData(multi_tag, -1, 0);
+            DataAccess.taggedData(multi_tag, -1, 0);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveData(multi_tag, 10, 0);
+            DataAccess.taggedData(multi_tag, 10, 0);
             fail();
         } catch (RuntimeException re) {
         }
 
-        DataView data_view = DataAccess.retrieveData(multi_tag, 0, 0);
+        DataView data_view = DataAccess.taggedData(multi_tag, 0, 0);
         NDSize data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
         int[] data_size_arr = data_size.getData();
         assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
 
         try {
-            DataAccess.retrieveData(multi_tag, 1, 0);
+            DataAccess.taggedData(multi_tag, 1, 0);
             fail();
         } catch (RuntimeException re) {
         }
 
-        data_view = DataAccess.retrieveData(position_tag, 0);
+        data_view = DataAccess.taggedData(position_tag, 0);
         data_size = data_view.getDataExtent();
         data_size_arr = data_size.getData();
         assertTrue(data_size.getSize() == 3);
         assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 1 && data_size_arr[2] == 1);
 
-        data_view = DataAccess.retrieveData(segment_tag, 0);
+        data_view = DataAccess.taggedData(segment_tag, 0);
         data_size = data_view.getDataExtent();
         data_size_arr = data_size.getData();
         assertTrue(data_size.getSize() == 3);
@@ -461,7 +461,7 @@ public class TestDataAccess {
         testTag.addReference(data_array);
 
         try {
-            DataAccess.retrieveData(testTag, 0, 0);
+            DataAccess.taggedData(testTag, 0, 0);
         } catch (Exception e) {
             fail();
         }
@@ -469,7 +469,7 @@ public class TestDataAccess {
         testTag.setUnits(null);
 
         try {
-            DataAccess.retrieveData(testTag, 0, 0);
+            DataAccess.taggedData(testTag, 0, 0);
         } catch (Exception e) {
             fail();
         }
@@ -477,7 +477,7 @@ public class TestDataAccess {
         testTag.setUnits(invalid_units);
 
         try {
-            DataAccess.retrieveData(testTag, 0, 0);
+            DataAccess.taggedData(testTag, 0, 0);
             fail();
         } catch (RuntimeException re) {
         }

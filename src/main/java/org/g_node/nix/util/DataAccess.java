@@ -120,7 +120,7 @@ public class DataAccess {
      */
     public static native
     @ByVal
-    DataView retrieveData(@Const @ByRef MultiTag tag, @Cast("size_t") long positionIndex, @Cast("size_t") long referenceIndex);
+    DataView taggedData(@Const @ByRef MultiTag tag, @Cast("size_t") long positionIndex, @Cast("size_t") long referenceIndex);
 
     /**
      * Retrieve the data referenced by the given position and extent of the Tag.
@@ -133,7 +133,7 @@ public class DataAccess {
      */
     public static native
     @ByVal
-    DataView retrieveData(@Const @ByRef Tag tag, @Cast("size_t") long referenceIndex);
+    DataView taggedData(@Const @ByRef Tag tag, @Cast("size_t") long referenceIndex);
 
     /**
      * Checks whether a given position is in the extent of the given DataArray.
