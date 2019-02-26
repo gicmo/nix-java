@@ -49,7 +49,7 @@ install:
 build_script:
 
   # Build NIX Java bindings
-  - mvn clean package -DnixIncludePath=C:/projects/nix-java/nix/include -DboostIncludePath=%BOOST_INCLUDEDIR% -DnixLinkPath=C:/projects/nix-java/nix/build/Release -Dhdf5LinkPath=%HDF5_BASE%/bin -DboostLinkPath=%BOOST_ROOT%/lib -Dmaven.test.failure.ignore=true -Dplatform.dependency=false
+  - mvn clean package -DnixIncludePath=C:/projects/nix-java/nix/include -DboostIncludePath=%BOOST_INCLUDEDIR% -DnixLinkPath=C:/projects/nix-java/nix/build/Release -Dhdf5LinkPath=%HDF5_BASE%/bin -DboostLinkPath=%BOOST_ROOT%/lib -Dplatform.dependency=false
 
 on_failure:
 
