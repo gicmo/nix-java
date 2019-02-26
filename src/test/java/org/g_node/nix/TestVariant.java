@@ -1,14 +1,17 @@
 package org.g_node.nix;
 
-import net.jcip.annotations.NotThreadSafe;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import net.jcip.annotations.NotThreadSafe;
 
 @NotThreadSafe
-public class TestValue {
+public class TestVariant {
 
     @Before
     public void setUp() {
@@ -23,7 +26,7 @@ public class TestValue {
     @Test
     public void testObject() {
 
-        Value boolVal = new Value(true);
+        Variant boolVal = new Variant(true);
         assertEquals(boolVal.getBoolean(), true);
         try {
             boolVal.getInt();
@@ -31,7 +34,7 @@ public class TestValue {
         } catch (RuntimeException re) {
         }
 
-        Value intVal = new Value(42);
+        Variant intVal = new Variant(42);
         assertEquals(intVal.getInt(), 42);
         try {
             intVal.getBoolean();
@@ -39,7 +42,7 @@ public class TestValue {
         } catch (RuntimeException re) {
         }
 
-        Value longVal = new Value(42L);
+        Variant longVal = new Variant(42L);
         assertEquals(longVal.getLong(), 42L);
         try {
             longVal.getBoolean();
@@ -47,7 +50,7 @@ public class TestValue {
         } catch (RuntimeException re) {
         }
 
-        Value doubleVal = new Value(2.71828);
+        Variant doubleVal = new Variant(2.71828);
         assertTrue(doubleVal.getDouble() == 2.71828);
         try {
             doubleVal.getBoolean();
@@ -55,7 +58,7 @@ public class TestValue {
         } catch (RuntimeException re) {
         }
 
-        Value stringVal = new Value("When shall we three meet again");
+        Variant stringVal = new Variant("When shall we three meet again");
         assertEquals(stringVal.getString(), "When shall we three meet again");
         try {
             stringVal.getBoolean();
@@ -63,15 +66,15 @@ public class TestValue {
         } catch (RuntimeException re) {
         }
 
-        Value v1 = new Value();
+        Variant v1 = new Variant();
         assertEquals(v1.getType(), DataType.Nothing);
     }
 
     @Test
     public void testSwap() {
 
-        Value v1 = new Value("Hallo");
-        Value v2 = new Value("Welt");
+        Variant v1 = new Variant("Hallo");
+        Variant v2 = new Variant("Welt");
 
         v1.swap(v2);
 
@@ -79,8 +82,8 @@ public class TestValue {
         assertEquals(v2.getString(), "Hallo");
 
         //lets swap a int with a Nothing
-        Value v3 = new Value(42);
-        Value v4 = new Value();
+        Variant v3 = new Variant(42);
+        Variant v4 = new Variant();
 
         v4.swap(v3);
 

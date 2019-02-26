@@ -103,15 +103,15 @@ public class ImageWithMetaData {
         Section section = file.createSection("Image metadata", "image_source");
 
         // add information
-        section.createProperty("Original name", new Value("Lenna"));
-        section.createProperty("Journal", new Value("Playboy Magazine"));
-        section.createProperty("Year", new Value("1972"));
-        section.createProperty("Month", new Value("November"));
-        section.createProperty("Author", new Value("Dwight Hooker"));
-        section.createProperty("Source", new Value("http://en.wikipedia.org/wiki/File:Lenna.png#mediaviewer/File:Lenna.png"));
-        section.createProperty("Comment", new Value("512x512 electronic/mechanical scan of a section of the full portrait" +
+        section.createProperty("Original name", new Variant("Lenna"));
+        section.createProperty("Journal", new Variant("Playboy Magazine"));
+        section.createProperty("Year", new Variant("1972"));
+        section.createProperty("Month", new Variant("November"));
+        section.createProperty("Author", new Variant("Dwight Hooker"));
+        section.createProperty("Source", new Variant("http://en.wikipedia.org/wiki/File:Lenna.png#mediaviewer/File:Lenna.png"));
+        section.createProperty("Comment", new Variant("512x512 electronic/mechanical scan of a section of the full portrait" +
                 ": Alexander Sawchuk and two others[1] - The USC-SIPI image database."));
-        section.createProperty("Model", new Value("Lena Soederberg"));
+        section.createProperty("Model", new Variant("Lena Soederberg"));
 
         return section;
     }

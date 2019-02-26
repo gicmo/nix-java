@@ -864,7 +864,7 @@ public class Tag extends EntityWithSources {
      */
     public native
     @ByVal
-    DataView retrieveData(@Cast("size_t") long referenceIndex);
+    DataView taggedData(@Cast("size_t") long referenceIndex);
 
     /**
      * Returns the data stored in the selected Feature.
@@ -875,7 +875,7 @@ public class Tag extends EntityWithSources {
      */
     public native
     @ByVal
-    DataView retrieveFeatureData(@Cast("size_t") long featureIndex);
+    DataView featureData(@Cast("size_t") long featureIndex);
 
     //--------------------------------------------------
     // Overrides

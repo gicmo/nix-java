@@ -134,9 +134,9 @@ public class TestDataAccess {
         assertTrue(DataAccess.positionToIndex(0.001, scaled_unit, rangeDim) == 0);
         assertTrue(DataAccess.positionToIndex(0.008, scaled_unit, rangeDim) == 4);
         assertTrue(DataAccess.positionToIndex(3.4, unit, rangeDim) == 2);
-        assertTrue(DataAccess.positionToIndex(3.6, unit, rangeDim) == 3);
-        assertTrue(DataAccess.positionToIndex(4.0, unit, rangeDim) == 3);
-        assertTrue(DataAccess.positionToIndex(0.0036, scaled_unit, rangeDim) == 3);
+        assertTrue(DataAccess.positionToIndex(3.6, unit, rangeDim) == 2);
+        assertTrue(DataAccess.positionToIndex(4.0, unit, rangeDim) == 2);
+        assertTrue(DataAccess.positionToIndex(0.0036, scaled_unit, rangeDim) == 2);
     }
 
     @Test
@@ -216,7 +216,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 2 && offsets_data[2] == 2);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 6 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 7 && counts_data[2] == 2);
 
         segment_tag.setUnits(new ArrayList<String>());
         DataAccess.getOffsetAndCount(segment_tag, data_array, offsets, counts);
@@ -225,7 +225,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 2 && offsets_data[2] == 2);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 6 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 7 && counts_data[2] == 2);
 
         try {
             DataAccess.getOffsetAndCount(multi_tag, data_array, -1, offsets, counts);
@@ -245,7 +245,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 3 && offsets_data[2] == 2);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 6 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 7 && counts_data[2] == 2);
 
         DataAccess.getOffsetAndCount(multi_tag, data_array, 1, offsets, counts);
         assertTrue(offsets.getSize() == 3);
@@ -253,7 +253,7 @@ public class TestDataAccess {
         offsets_data = offsets.getData();
         counts_data = counts.getData();
         assertTrue(offsets_data[0] == 0 && offsets_data[1] == 8 && offsets_data[2] == 1);
-        assertTrue(counts_data[0] == 1 && counts_data[1] == 3 && counts_data[2] == 2);
+        assertTrue(counts_data[0] == 1 && counts_data[1] == 4 && counts_data[2] == 2);
     }
 
     @Test
@@ -271,52 +271,52 @@ public class TestDataAccess {
     @Test
     public void testRetrieveData() {
         try {
-            DataAccess.retrieveData(multi_tag, 0, -1);
+            DataAccess.taggedData(multi_tag, 0, -1);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveData(multi_tag, 0, 1);
+            DataAccess.taggedData(multi_tag, 0, 1);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveData(multi_tag, -1, 0);
+            DataAccess.taggedData(multi_tag, -1, 0);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveData(multi_tag, 10, 0);
+            DataAccess.taggedData(multi_tag, 10, 0);
             fail();
         } catch (RuntimeException re) {
         }
 
-        DataView data_view = DataAccess.retrieveData(multi_tag, 0, 0);
+        DataView data_view = DataAccess.taggedData(multi_tag, 0, 0);
         NDSize data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
         int[] data_size_arr = data_size.getData();
-        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
 
         try {
-            DataAccess.retrieveData(multi_tag, 1, 0);
+            DataAccess.taggedData(multi_tag, 1, 0);
             fail();
         } catch (RuntimeException re) {
         }
 
-        data_view = DataAccess.retrieveData(position_tag, 0);
+        data_view = DataAccess.taggedData(position_tag, 0);
         data_size = data_view.getDataExtent();
         data_size_arr = data_size.getData();
         assertTrue(data_size.getSize() == 3);
         assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 1 && data_size_arr[2] == 1);
 
-        data_view = DataAccess.retrieveData(segment_tag, 0);
+        data_view = DataAccess.taggedData(segment_tag, 0);
         data_size = data_view.getDataExtent();
         data_size_arr = data_size.getData();
         assertTrue(data_size.getSize() == 3);
-        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
     }
 
     @Test
@@ -340,9 +340,9 @@ public class TestDataAccess {
         Feature f2 = pos_tag.createFeature(ramp_feat, LinkType.Tagged);
         Feature f3 = pos_tag.createFeature(ramp_feat, LinkType.Untagged);
 
-        DataView data1 = DataAccess.retrieveFeatureData(pos_tag, 0);
-        DataView data2 = DataAccess.retrieveFeatureData(pos_tag, 1);
-        DataView data3 = DataAccess.retrieveFeatureData(pos_tag, 2);
+        DataView data1 = DataAccess.featureData(pos_tag, 0);
+        DataView data2 = DataAccess.featureData(pos_tag, 1);
+        DataView data3 = DataAccess.featureData(pos_tag, 2);
 
         assertTrue(pos_tag.getFeatureCount() == 3);
         assertTrue(data1.getDataExtent().getElementsProduct() == 1);
@@ -350,12 +350,12 @@ public class TestDataAccess {
         assertTrue(data3.getDataExtent().getElementsProduct() == ramp_data.length);
 
         pos_tag.setExtent(new double[]{2.0});
-        data1 = DataAccess.retrieveFeatureData(pos_tag, 0);
-        data2 = DataAccess.retrieveFeatureData(pos_tag, 1);
-        data3 = DataAccess.retrieveFeatureData(pos_tag, 2);
+        data1 = DataAccess.featureData(pos_tag, 0);
+        data2 = DataAccess.featureData(pos_tag, 1);
+        data3 = DataAccess.featureData(pos_tag, 2);
 
         assertTrue(data1.getDataExtent().getElementsProduct() == 1);
-        assertTrue(data2.getDataExtent().getElementsProduct() == 2);
+        assertTrue(data2.getDataExtent().getElementsProduct() == 3);
         assertTrue(data3.getDataExtent().getElementsProduct() == ramp_data.length);
 
         pos_tag.deleteFeature(f1.getId());
@@ -412,7 +412,7 @@ public class TestDataAccess {
         // preparations done, actually test
         assertTrue(multi_tag.getFeatureCount() == 3);
         // indexed feature
-        DataView data_view = DataAccess.retrieveFeatureData(multi_tag, 0, 0);
+        DataView data_view = DataAccess.featureData(multi_tag, 0, 0);
         NDSize data_size = data_view.getDataExtent();
 
         assertTrue(data_size.getSize() == 2);
@@ -423,22 +423,22 @@ public class TestDataAccess {
         NDSize offset = new NDSize(data_view.getDataExtent().getSize(), 0);
 
         // tagged feature
-        data_view = DataAccess.retrieveFeatureData(multi_tag, 0, 1);
+        data_view = DataAccess.featureData(multi_tag, 0, 1);
         data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
 
-        data_view = DataAccess.retrieveFeatureData(multi_tag, 1, 1);
+        data_view = DataAccess.featureData(multi_tag, 1, 1);
         data_size = data_view.getDataExtent();
         assertTrue(data_size.getSize() == 3);
 
         try {
-            DataAccess.retrieveFeatureData(multi_tag, 2, 1);
+            DataAccess.featureData(multi_tag, 2, 1);
             fail();
         } catch (RuntimeException re) {
         }
 
         try {
-            DataAccess.retrieveFeatureData(multi_tag, 2, 3);
+            DataAccess.featureData(multi_tag, 2, 3);
             fail();
         } catch (RuntimeException re) {
         }
@@ -461,7 +461,7 @@ public class TestDataAccess {
         testTag.addReference(data_array);
 
         try {
-            DataAccess.retrieveData(testTag, 0, 0);
+            DataAccess.taggedData(testTag, 0, 0);
         } catch (Exception e) {
             fail();
         }
@@ -469,7 +469,7 @@ public class TestDataAccess {
         testTag.setUnits(null);
 
         try {
-            DataAccess.retrieveData(testTag, 0, 0);
+            DataAccess.taggedData(testTag, 0, 0);
         } catch (Exception e) {
             fail();
         }
@@ -477,7 +477,7 @@ public class TestDataAccess {
         testTag.setUnits(invalid_units);
 
         try {
-            DataAccess.retrieveData(testTag, 0, 0);
+            DataAccess.taggedData(testTag, 0, 0);
             fail();
         } catch (RuntimeException re) {
         }

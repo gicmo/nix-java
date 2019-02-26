@@ -433,9 +433,9 @@ public class TestDimension {
         assertEquals(rd.getDimensionType(), DimensionType.Range);
 
         assertTrue(rd.getIndexOf(-100.) == 0);
-        assertTrue(rd.getIndexOf(-50.) == 1);
-        assertTrue(rd.getIndexOf(-70.) == 1);
-        assertTrue(rd.getIndexOf(5.0) == 3);
+        assertTrue(rd.getIndexOf(-50.) == 0);
+        assertTrue(rd.getIndexOf(-70.) == 0);
+        assertTrue(rd.getIndexOf(5.0) == 2);
         assertTrue(rd.getIndexOf(257.28) == 4);
         assertTrue(rd.getIndexOf(-257.28) == 0);
 

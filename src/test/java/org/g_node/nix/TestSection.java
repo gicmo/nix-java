@@ -117,16 +117,6 @@ public class TestSection {
     }
 
     @Test
-    public void testMapping() {
-        assertNull(section.getMapping());
-        String map = "http://foo.bar/";
-        section.setMapping(map);
-        assertEquals(section.getMapping(), map);
-        section.setMapping(null);
-        assertNull(section.getMapping());
-    }
-
-    @Test
     public void testSectionAccess() {
         List<String> names = Arrays.asList("section_a", "section_b", "section_c", "section_d", "section_e");
 
@@ -301,7 +291,7 @@ public class TestSection {
         section.deleteProperty(p.getId());
         assertEquals(section.getPropertyCount(), 0);
 
-        Value dummy = new Value(10);
+        Variant dummy = new Variant(10);
         prop = section.createProperty("single value", dummy);
         assertTrue(section.hasProperty("single value"));
         assertEquals(section.getPropertyCount(), 1);
@@ -346,9 +336,9 @@ public class TestSection {
         assertEquals(section.getProperties().size(), 0);
         assertFalse(section.hasProperty("invalid_id"));
 
-        ArrayList<Value> values = new ArrayList<Value>();
-        values.add(new Value(10));
-        values.add(new Value(100));
+        ArrayList<Variant> values = new ArrayList<Variant>();
+        values.add(new Variant(10));
+        values.add(new Variant(100));
         section.createProperty("another test", values);
         assertEquals(section.getPropertyCount(), 1);
         prop = section.getProperty("another test");

@@ -395,17 +395,17 @@ public class TestTag {
         segment_tag.setExtent(extent);
         segment_tag.setUnits(units);
 
-        DataView retrieved_data = position_tag.retrieveData(0);
+        DataView retrieved_data = position_tag.taggedData(0);
         NDSize data_size = retrieved_data.getDataExtent();
         assertEquals(data_size.getSize(), 3);
         int[] data_size_arr = data_size.getData();
         assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 1 && data_size_arr[2] == 1);
 
-        retrieved_data = segment_tag.retrieveData(0);
+        retrieved_data = segment_tag.taggedData(0);
         data_size = retrieved_data.getDataExtent();
         assertEquals(data_size.getSize(), 3);
         data_size_arr = data_size.getData();
-        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 6 && data_size_arr[2] == 2);
+        assertTrue(data_size_arr[0] == 1 && data_size_arr[1] == 7 && data_size_arr[2] == 2);
 
         block.deleteTag(position_tag);
         block.deleteTag(segment_tag);

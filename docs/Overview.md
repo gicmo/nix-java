@@ -207,13 +207,13 @@ Most of the data entities can link to metadata sections.
  ```java
   
         Section sec = nixFile.createSection("recording session", "odml.recording");
-        sec.createProperty("experimenter", new Value("John Doe"));
+        sec.createProperty("experimenter", new Variant("John Doe"));
 
         Section subject = sec.createSection("subject", "odml.subject");
-        subject.createProperty("id", new Value("mouse xyz"));
+        subject.createProperty("id", new Variant("mouse xyz"));
 
         Section cell = subject.createSection("cell", "odml.cell");
-        Value val = new Value(-64.5);
+        Variant val = new Variant(-64.5);
 
         Property property = cell.createProperty("resting potential", val);
         property.setUnit("mV");

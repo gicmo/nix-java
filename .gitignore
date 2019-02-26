@@ -19,6 +19,13 @@ target/
 *.iws
 *.iml
 
+# lsp-java (and probably eclispse stuff)
+.settings/
+.classpath
+.project
+.ccls-cache
+
+
 # Remove temporary files
 *~
 
