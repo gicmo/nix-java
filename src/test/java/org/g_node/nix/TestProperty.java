@@ -19,7 +19,7 @@ public class TestProperty {
 
     private File file;
     private Section section;
-    private Value int_dummy, str_dummy;
+    private Variant int_dummy, str_dummy;
     private Property property, property_other, property_null;
 
     private Date statup_time;
@@ -32,8 +32,8 @@ public class TestProperty {
         file = File.open("test_Property_" + UUID.randomUUID().toString() + ".h5", FileMode.Overwrite);
 
         section = file.createSection("cool section", "metadata");
-        int_dummy = new Value(10);
-        str_dummy = new Value("test");
+        int_dummy = new Variant(10);
+        str_dummy = new Variant("test");
         property = section.createProperty("prop", int_dummy);
         property_other = section.createProperty("other", int_dummy);
         property_null = null;
@@ -78,31 +78,18 @@ public class TestProperty {
     }
 
     @Test
-    public void testMapping() {
-        String map = "some_str";
-        property.setMapping(map);
-        assertEquals(property.getMapping(), map);
-        property.setMapping(null);
-        assertNull(property.getMapping());
-    }
-
-    @Test
     public void testUnit() {
         Section section = file.createSection("testSection", "test");
-        Value v = new Value(22.2);
 
         Property p1 = section.createProperty("testProperty", int_dummy);
-        String inv_unit = "invalid unit";
+        String nosi_unit = "invalid unit";
         String valid_unit = "mV*cm^-2";
         String second_unit = "mV";
 
         try {
-            p1.setUnit(inv_unit);
-            fail();
+            p1.setUnit(nosi_unit);
         } catch (RuntimeException re) {
         }
-
-        assertNull(p1.getUnit());
 
         p1.setUnit(valid_unit);
         assertEquals(p1.getUnit(), valid_unit);
@@ -123,23 +110,23 @@ public class TestProperty {
         Section section = file.createSection("Area51", "Boolean");
         Property p1 = section.createProperty("strProperty", str_dummy);
 
-        List<Value> strValues = new ArrayList<Value>();
-        strValues.add(new Value("Freude"));
-        strValues.add(new Value("schoener"));
-        strValues.add(new Value("Goetterfunken"));
+        List<Variant> strValues = new ArrayList<Variant>();
+        strValues.add(new Variant("Freude"));
+        strValues.add(new Variant("schoener"));
+        strValues.add(new Variant("Goetterfunken"));
 
         p1.setValues(strValues);
         assertEquals(p1.getValueCount(), strValues.size());
 
-        List<Value> ctrlValues = p1.getValues();
+        List<Variant> ctrlValues = p1.getValues();
         for (int i = 0; i < ctrlValues.size(); ++i) {
             assertEquals(strValues.get(i).getString(), ctrlValues.get(i).getString());
         }
 
-        strValues.add(new Value("Tochter"));
-        strValues.add(new Value("aus"));
-        strValues.add(new Value("Elysium"));
-        strValues.add(new Value("Wir betreten feuertrunken"));
+        strValues.add(new Variant("Tochter"));
+        strValues.add(new Variant("aus"));
+        strValues.add(new Variant("Elysium"));
+        strValues.add(new Variant("Wir betreten feuertrunken"));
 
         p1.setValues(strValues);
         assertEquals(p1.getValueCount(), strValues.size());
@@ -163,15 +150,15 @@ public class TestProperty {
     @Test
     public void testDataType() {
         Section section = file.createSection("Area51", "Boolean");
-        List<Value> strValues = new ArrayList<Value>();
-        strValues.add(new Value("Freude"));
-        strValues.add(new Value("schoener"));
-        strValues.add(new Value("Goetterfunken"));
+        List<Variant> strValues = new ArrayList<Variant>();
+        strValues.add(new Variant("Freude"));
+        strValues.add(new Variant("schoener"));
+        strValues.add(new Variant("Goetterfunken"));
 
-        List<Value> doubleValues = new ArrayList<Value>();
-        doubleValues.add(new Value(1.0));
-        doubleValues.add(new Value(2.0));
-        doubleValues.add(new Value(-99.99));
+        List<Variant> doubleValues = new ArrayList<Variant>();
+        doubleValues.add(new Variant(1.0));
+        doubleValues.add(new Variant(2.0));
+        doubleValues.add(new Variant(-99.99));
 
         Property p1 = section.createProperty("strProperty", strValues);
         Property p2 = section.createProperty("doubleProperty", doubleValues);

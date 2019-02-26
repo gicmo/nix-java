@@ -1,23 +1,32 @@
 package org.g_node.nix;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
+
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.annotation.*;
+import org.bytedeco.javacpp.annotation.ByRef;
+import org.bytedeco.javacpp.annotation.ByVal;
+import org.bytedeco.javacpp.annotation.Cast;
+import org.bytedeco.javacpp.annotation.Const;
+import org.bytedeco.javacpp.annotation.Name;
+import org.bytedeco.javacpp.annotation.Namespace;
+import org.bytedeco.javacpp.annotation.Platform;
+import org.bytedeco.javacpp.annotation.Properties;
+import org.bytedeco.javacpp.annotation.StdString;
+import org.bytedeco.javacpp.annotation.StdVector;
 import org.g_node.nix.base.ImplContainer;
 import org.g_node.nix.internal.BuildLibs;
 import org.g_node.nix.internal.DateUtils;
 import org.g_node.nix.internal.VectorUtils;
 import org.g_node.nix.valid.Result;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.function.Predicate;
-
 /**
  * <h1>File</h1>
  * A File represents a specific data source of a NIX back-end for example an NIX HDF5 file.
- * All entities of the nix data model (except the Value entity) must exist in the context of an open File object.
+ * All entities of the nix data model (except the Variant entity) must exist in the context of an open File object.
  * Therefore NIX entities can’t be initialized via their constructors but only through the factory methods of their
  * respective parent entity.
  */

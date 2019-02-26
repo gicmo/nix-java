@@ -107,7 +107,6 @@ public class TestDataArray {
 
         try {
             array1.setUnit(testStr);
-            fail();
         } catch (RuntimeException re) {
         }
 

@@ -8,7 +8,7 @@ public class BuildLibs {
     /**
      * nix library
      */
-    public static final String NIX = "nix";
+    public static final String NIX = "nixio";
 
     /**
      * hdf5 library
@@ -18,7 +18,7 @@ public class BuildLibs {
     /**
      * libnix.so.1 shared library
      */
-    public static final String NIX_1 = "nix@.1";
+    public static final String NIX_1 = "nixio@.1";
 
     /**
      * libhdf5.so.7 shared library

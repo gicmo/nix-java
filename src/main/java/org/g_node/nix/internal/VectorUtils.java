@@ -28,7 +28,7 @@ import java.util.List;
                 "<nix/Section.hpp>",
                 "<nix/Source.hpp>",
                 "<nix/Tag.hpp>",
-                "<nix/Value.hpp>",
+                "<nix/Variant.hpp>",
                 "<nix/valid/helper.hpp>"}),
         @Platform(value = "linux", link = BuildLibs.NIX_1, preload = BuildLibs.HDF5_7),
         @Platform(value = "macosx", link = BuildLibs.NIX, preload = BuildLibs.HDF5),
@@ -519,15 +519,15 @@ public class VectorUtils {
     }
 
     //--------------------------------------------------
-    // Value vector
+    // Variant vector
     //--------------------------------------------------
 
     /**
-     * <h1>ValueVector</h1>
-     * Low level <tt>std::vector&lt;nix::Value&gt;</tt> wrapper
+     * <h1>VariantVector</h1>
+     * Low level <tt>std::vector&lt;nix::Variant&gt;</tt> wrapper
      */
-    @Name("std::vector<nix::Value>")
-    public static class ValueVector extends Pointer {
+    @Name("std::vector<nix::Variant>")
+    public static class VariantVector extends Pointer {
         static {
             Loader.load();
         }
@@ -536,9 +536,9 @@ public class VectorUtils {
          * Set values.
          *
          * @param lst list of values.
-         * @see Value
+         * @see Variant
          */
-        public ValueVector(List<Value> lst) {
+        public VariantVector(List<Variant> lst) {
             allocate(lst.size());
 
             for (int i = 0; i < lst.size(); i++) {
@@ -552,18 +552,18 @@ public class VectorUtils {
 
         @Index
         @ByRef
-        private native Value get(@Cast("size_t") long i);
+        private native Variant get(@Cast("size_t") long i);
 
-        private native ValueVector put(@Cast("size_t") long i, Value value);
+        private native VariantVector put(@Cast("size_t") long i, Variant value);
 
         /**
          * Get values.
          *
          * @return list of values.
-         * @see Value
+         * @see Variant
          */
-        public List<Value> getValues() {
-            ArrayList<Value> values = new ArrayList<Value>();
+        public List<Variant> getValues() {
+            ArrayList<Variant> values = new ArrayList<Variant>();
             for (int i = 0; i < size(); i++) {
                 values.add(get(i));
             }
@@ -689,12 +689,19 @@ public class VectorUtils {
      */
     public static int[] convertPointerToArray(IntPointer ip) {
         int[] arr = null;
-        if (ip != null) {
-            arr = new int[ip.capacity()];
-            for (int i = 0; i < ip.capacity(); i++) {
-                arr[i] = ip.get(i);
-            }
-        }
+
+	if (ip == null)
+	    return null;
+
+	if (ip.capacity() > Integer.MAX_VALUE)
+	    throw new IllegalArgumentException("capacity of pointer too big");
+
+	int c = (int) ip.capacity();
+	arr = new int[c];
+	for (int i = 0; i < c; i++) {
+	    arr[i] = ip.get(i);
+	}
+
         return arr;
     }
 
@@ -710,12 +717,17 @@ public class VectorUtils {
      */
     public static double[] convertPointerToArray(DoublePointer dp) {
         double[] arr = null;
-        if (dp != null) {
-            arr = new double[dp.capacity()];
-            for (int i = 0; i < dp.capacity(); i++) {
-                arr[i] = dp.get(i);
-            }
-        }
-        return arr;
+
+	if (dp == null)
+	    return null;
+
+	int c = (int) dp.capacity();
+
+	arr = new double[c];
+	for (int i = 0; i < c; i++) {
+	    arr[i] = dp.get(i);
+	}
+
+	return arr;
     }
 }
