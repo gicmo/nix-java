@@ -150,70 +150,40 @@ public class Variant extends Pointer {
     // Getters
     //--------------------------------------------------
 
-    private native void get(@Cast("bool*") @ByRef BoolPointer out);
-
     /**
      * Getter for boolean value.
      *
      * @return boolean data.
      */
-    public boolean getBoolean() {
-        BoolPointer bp = new BoolPointer(1);
-        get(bp);
-        return bp.get();
-    }
-
-    private native void get(@Cast("int32_t*") @ByRef IntPointer value);
+    public native @Cast("bool") @Name("get<bool>") boolean getBoolean();
 
     /**
      * Getter for 32 bit integer value.
      *
      * @return 32 bit integer data as int.
      */
-    public int getInt() {
-	IntPointer p = new IntPointer(1);
-        get(p);
-        return p.get();
-    }
-
-    private native void get(@Cast("int64_t*") @ByRef LongPointer value);
+    public native @Cast("int32_t") @Name("get<int32_t>") int getInt();
 
     /**
      * Getter for 64 bit integer value.
      *
      * @return 64 bit int in NIX as long.
      */
-    public long getLong() {
-	LongPointer p = new LongPointer(1);
-        get(p);
-        return p.get();
-    }
-
-    private native void get(@ByRef double[] value);
+    public native @Cast("int64_t") @Name("get<int64_t>") long getLong();
 
     /**
      * Getter for double value.
      *
      * @return double data.
      */
-    public double getDouble() {
-        double[] val = new double[1];
-        get(val);
-        return val[0];
-    }
-
-    private native void get(@StdString BytePointer value);
+    public native @Cast("double") @Name("get<double>") double getDouble();
 
     /**
      * Getter for string value.
      *
      * @return string data.
      */
-    public String getString() {
-        BytePointer bp = new BytePointer(1);
-        get(bp);
-        return bp.getString();
-    }
+    public native @StdString @Name("get<std::string>") String getString();
 
     //--------------------------------------------------
     // Other functions
